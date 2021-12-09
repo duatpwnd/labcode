@@ -25,7 +25,6 @@
   "extends": "./tsconfig.paths.json",
   "include": [
     "craco.config.js",
-    "src",
-    "public/zwibbler.js"
+    "src"
   ]
 }

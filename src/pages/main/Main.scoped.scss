@@ -1,0 +1,58 @@
+.bg {
+  background: #5138e5;
+  width: 100%;
+  height: calc(100vh - 80px);
+  position: relative;
+  overflow: hidden;
+  .center-area {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 320px;
+    margin: auto;
+    text-align: left;
+    height: 324px;
+    z-index: 1;
+    .h2-title {
+      color: #ffffff;
+      line-height: 76px;
+      font-size: 54px;
+    }
+    .h3-title {
+      margin-top: 20px;
+      color: #b3e052;
+      font-size: 28px;
+      font-weight: 400;
+    }
+    .btn-wrap {
+      margin-top: 56px;
+      .apple-download-btn {
+        width: 200px;
+        height: 60px;
+        background: url("~src/assets/images/appStore_download.svg") no-repeat
+          center / 200px 60px;
+        &:hover {
+          background: url("~src/assets/images/appStore_download_hover.svg")
+            no-repeat center / 200px 60px;
+        }
+      }
+      .google-download-btn {
+        width: 200px;
+        height: 60px;
+        margin-left: 12px;
+        background: url("~src/assets/images/googlePlay_download.svg") no-repeat
+          center / 200px 60px;
+        &:hover {
+          background: url("~src/assets/images/googlePlay_download_hover.svg")
+            no-repeat center / 200px 60px;
+        }
+      }
+    }
+  }
+}
+.ball {
+  position: absolute;
+  display: inline-block;
+  border-radius: 50%;
+  box-shadow: -130px 130px 0px rgba(0, 0, 0, 0.05);
+}
