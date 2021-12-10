@@ -107,13 +107,14 @@ export default function Main() {
     useEffect(() => {
         window.addEventListener('resize', function () {
             // your custom logic
-            console.log("resize");
+            console.log("resize", window.innerWidth, window.innerHeight);
+
         });
-        Ball.create("#F2A268", 4, 3, "a").draw(100, 0);
+        Ball.create("#F2A268", 4, 3, "a").draw(window.innerWidth / 10, 0);
         Ball.create("#73D27D", 5, 2, "b").draw(0, 0);
-        Ball.create("#EA43CF", 5, 8, "c").draw(200, 0);
+        Ball.create("#EA43CF", 5, 8, "c").draw(window.innerWidth / 3, 0);
         Ball.create("#F2D568", 6, 5, "d").draw(0, 0);
-        Ball.create("#B3E052", 9, 2, "e").draw(800, 0);
+        Ball.create("#B3E052", 9, 2, "e").draw(window.innerWidth / 5, 0);
     }, [])
     return (
         <div className="bg" ref={canvasRef} >
