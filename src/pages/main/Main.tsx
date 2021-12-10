@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import Typewriter from 'typewriter-effect';
 import "./Main.scoped.scss"
 import { useTranslation } from 'react-i18next';
+import { debounce } from "lodash"
 const AnimatedTypingComponent = () => {
     const { t, i18n } = useTranslation();
     const [arr, arrSet] = useState<string[]>([]);
@@ -25,7 +26,6 @@ const AnimatedTypingComponent = () => {
 export default function Main() {
     const canvasRef = useRef<HTMLDivElement | null>(null);
     const { t } = useTranslation();
-    console.log("부모컴포넌트");
 
     const Ball = {
         create: function (color, dx, dy, name) {
@@ -105,12 +105,15 @@ export default function Main() {
         }
     };
     useEffect(() => {
+        window.addEventListener('resize', function () {
+            // your custom logic
+            console.log("resize");
+        });
         Ball.create("#F2A268", 4, 3, "a").draw(100, 0);
         Ball.create("#73D27D", 5, 2, "b").draw(0, 0);
         Ball.create("#EA43CF", 5, 8, "c").draw(200, 0);
         Ball.create("#F2D568", 6, 5, "d").draw(0, 0);
         Ball.create("#B3E052", 9, 2, "e").draw(800, 0);
-
     }, [])
     return (
         <div className="bg" ref={canvasRef} >

@@ -11,4 +11,20 @@ header {
     display: inline-block;
     vertical-align: middle;
   }
+  .right-buttons {
+    float: right;
+    .lang-btn {
+      border-radius: 8px;
+      font-size: 13px;
+      color: #525a61;
+      background: #e5e5e5;
+      font-weight: 700;
+      height: 44px;
+      width: 44px;
+      margin-right: 12px;
+      &:hover {
+        background: #d1d6db;
+      }
+    }
+  }
 }

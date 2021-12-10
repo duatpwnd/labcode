@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useTranslation } from 'react-i18next';
+import { useState } from "react"
 import { Languages, languages } from "src/lang/i18n"
 
 import "./Header.scoped.scss"
@@ -10,12 +11,9 @@ const SignIndButton = styled.button`
     color: #525A61;
     background: #E5E5E5;
     font-weight: 700;
-    height: 40px;
+    height: 44px;
     width: 112px;
-    float:right;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-right: 12px;
     &:hover {
       background: #D1D6DB;
     }
@@ -32,7 +30,9 @@ const VersionIcon = styled.span`
 `
 export default function Header() {
     const { t, i18n } = useTranslation();
+    const [lang, langUpdate] = useState("ko");
     const handleChangeLanguage = (lang: Languages) => {
+        langUpdate(lang);
         i18n.changeLanguage(lang);
     }
     return (
@@ -43,12 +43,17 @@ export default function Header() {
                 </Link>
             </h1>
             <VersionIcon>{t('version')}</VersionIcon>
-            {/* {languages.map(lang => (
-                <button key={lang} onClick={() => handleChangeLanguage(lang)}>
-                    {t(`language_${lang}`)}
-                </button>
-            ))} */}
-            <SignIndButton onClick={() => { alert("준비중입니다.") }}>{t('signInBtn')}</SignIndButton>
+            <div className="right-buttons">
+                <SignIndButton onClick={() => { alert("준비중입니다.") }}>{t('signInBtn')}</SignIndButton>
+                {
+                    lang == "ko" ? <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("en")}>
+                        {t(`language_${lang}`)}
+                    </button> : <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("ko")}>
+                        {t(`language_${lang}`)}
+                    </button>
+
+                }
+            </div>
         </header>
     )
 }
