@@ -75,7 +75,6 @@ export default function Main() {
         },
         changeDirectionIfNecessary: function (x, y) {
             const ball = this as { [key: string]: any };
-
             const canvasWidth = (canvasRef.current as unknown as HTMLDivElement).clientWidth;
             const canvasHeight = (canvasRef.current as unknown as HTMLDivElement).clientHeight;
             if (x < 0 || x > canvasWidth - ball.width) {
@@ -87,7 +86,6 @@ export default function Main() {
         },
 
         draw: function (x, y) {
-
             this.moveTo(x, y);
             const ball = this as { [key: string]: any };
             setTimeout(() => {
