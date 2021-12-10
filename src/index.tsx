@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from "src/store"
 import axios from "src/utils/axios"
+import 'src/lang/i18n';
 import {
   BrowserRouter,
 } from "react-router-dom";

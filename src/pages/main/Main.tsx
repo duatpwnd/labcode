@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import Typing from 'react-typing-animation';
 import "./Main.scoped.scss"
+import { useTranslation } from 'react-i18next';
 const AnimatedTypingComponent = () => {
     return (
         <Typing hideCursor={true}>
@@ -15,11 +16,11 @@ const AnimatedTypingComponent = () => {
 };
 export default function Main() {
     const canvasRef = useRef<HTMLDivElement | null>(null);
+    const { t, i18n } = useTranslation();
     const Ball = {
         create: function (color, dx, dy) {
             const newBall = Object.create(this);
-            newBall.velocity =
-                newBall.dx = dx;
+            newBall.dx = dx;
             newBall.dy = dy;
             newBall.radius = 500;
             newBall.width = 350;
@@ -81,6 +82,8 @@ export default function Main() {
     }, [])
     return (
         <div className="bg" ref={canvasRef} >
+            <p>{t('title')}</p>
+
             <div className="center-area">
                 <AnimatedTypingComponent />
                 <div className="btn-wrap">

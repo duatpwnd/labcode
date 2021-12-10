@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useTranslation } from 'react-i18next';
+import { Languages, languages } from "src/lang/i18n"
+
 import "./Header.scoped.scss"
 const SignIndButton = styled.button`
     border-radius: 8px;
@@ -15,6 +18,11 @@ const SignIndButton = styled.button`
     }
 `;
 export default function Header() {
+    const { t, i18n } = useTranslation();
+    const handleChangeLanguage = (lang: Languages) => {
+        i18n.changeLanguage(lang);
+    }
+
     return (
         <header>
             <h1 className="logo">
@@ -22,6 +30,11 @@ export default function Header() {
                     <img src={require("src/assets/images/logo.svg").default} />
                 </Link>
             </h1>
+            {languages.map(lang => (
+                <button key={lang} onClick={() => handleChangeLanguage(lang)}>
+                    {t(`language_${lang}`)}
+                </button>
+            ))}
             <SignIndButton onClick={() => { alert("준비중입니다.") }}>관리자 로그인</SignIndButton>
         </header>
     )
