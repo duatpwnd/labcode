@@ -28,7 +28,7 @@ export default function Main() {
     const { t } = useTranslation();
 
     const Ball = {
-        create: function (color, dx, dy, name) {
+        create: function (color, dx, dy, name, width) {
             const newBall = Object.create(this);
             newBall.dx = dx;
             newBall.dy = dy;
@@ -38,13 +38,25 @@ export default function Main() {
             newBall.height = 350;
             newBall.element = document.createElement('div');
             newBall.element.style.backgroundColor = color;
-            newBall.element.style.width = newBall.width + 'px';
-            newBall.element.style.height = newBall.height + 'px';
+            newBall.element.style.width = width + 'px';
+            newBall.element.style.height = width + 'px';
+            newBall.element.style.boxShadow = `-${window.innerWidth / 20}px ${window.innerWidth / 20}px 0px rgba(0, 0, 0, 0.05)`
             newBall.element.className += ' ball';
             newBall.width = parseInt(newBall.element.style.width);
             newBall.height = parseInt(newBall.element.style.height);
             (canvasRef.current as unknown as HTMLDivElement).appendChild(newBall.element);
             return newBall;
+        },
+        delete: function () {
+            document.querySelectorAll(".ball").forEach((el, index) => {
+                el.remove();
+            })
+            Ball.create("#F2A268", 4, 3, "a", window.innerWidth / 8).draw(window.innerWidth / 10, 0);
+            Ball.create("#73D27D", 5, 2, "b", window.innerWidth / 8).draw(0, 0);
+            Ball.create("#EA43CF", 5, 8, "c", window.innerWidth / 8).draw(window.innerWidth / 3, 0);
+            Ball.create("#F2D568", 6, 5, "d", window.innerWidth / 8).draw(0, 0);
+            Ball.create("#B3E052", 9, 2, "e", window.innerWidth / 8).draw(window.innerWidth / 5, 0);
+
         },
         moveTo: function (x, y) {
             const thisObj = this as { [key: string]: any };
@@ -103,16 +115,16 @@ export default function Main() {
         }
     };
     useEffect(() => {
+        Ball.create("#F2A268", 4, 3, "a", window.innerWidth / 8).draw(window.innerWidth / 10, 0);
+        Ball.create("#73D27D", 5, 2, "b", window.innerWidth / 8).draw(0, 0);
+        Ball.create("#EA43CF", 5, 8, "c", window.innerWidth / 8).draw(window.innerWidth / 3, 0);
+        Ball.create("#F2D568", 6, 5, "d", window.innerWidth / 8).draw(0, 0);
+        Ball.create("#B3E052", 9, 2, "e", window.innerWidth / 8).draw(window.innerWidth / 5, 0);
         window.addEventListener('resize', function () {
             // your custom logic
-            console.log("resize", window.innerWidth, window.innerHeight);
-
+            Ball.delete();
         });
-        Ball.create("#F2A268", 4, 3, "a").draw(window.innerWidth / 10, 0);
-        Ball.create("#73D27D", 5, 2, "b").draw(0, 0);
-        Ball.create("#EA43CF", 5, 8, "c").draw(window.innerWidth / 3, 0);
-        Ball.create("#F2D568", 6, 5, "d").draw(0, 0);
-        Ball.create("#B3E052", 9, 2, "e").draw(window.innerWidth / 5, 0);
+
     }, [])
     return (
         <div className="bg" ref={canvasRef} >

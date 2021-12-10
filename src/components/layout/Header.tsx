@@ -47,9 +47,9 @@ export default function Header() {
                 <SignIndButton onClick={() => { alert("준비중입니다.") }}>{t('signInBtn')}</SignIndButton>
                 {
                     lang == "ko" ? <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("en")}>
-                        {t(`language_${lang}`)}
+                        A
                     </button> : <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("ko")}>
-                        {t(`language_${lang}`)}
+                        가
                     </button>
 
                 }
