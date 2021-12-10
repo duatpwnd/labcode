@@ -4,10 +4,12 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from "src/store"
+import axios from "src/utils/axios"
 import {
   BrowserRouter,
 } from "react-router-dom";
 import App from "src/App"
+axios();
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

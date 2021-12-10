@@ -2,9 +2,7 @@ import { all, fork, takeLatest, call, put } from "redux-saga/effects";
 import axios from "axios";
 import { SIGN_IN_SUCCESS } from "src/actions/signIn";
 function signInAPI(data) {
-  return axios.post(`http://localhost:4000/auth/login`, data, {
-    withCredentials: true,
-  });
+  return axios.post(``, data);
 }
 function* signIn(action) {
   try {
