@@ -1,22 +1,32 @@
 import { useEffect, useRef, useState } from "react"
-import Typing from 'react-typing-animation';
+import Typewriter from 'typewriter-effect';
 import "./Main.scoped.scss"
 import { useTranslation } from 'react-i18next';
 const AnimatedTypingComponent = () => {
+    const { t, i18n } = useTranslation();
+    const [arr, arrSet] = useState<string[]>([]);
+    useEffect(() => {
+        arrSet(t('changeTitle').split(","));
+    }, [i18n.language])
     return (
-        <Typing hideCursor={true}>
-            <h2 className="h2-title">
-                비 가시성 랩 코드<br />다양한 정보를 한눈에,
-            </h2>
-            <h3 className="h3-title">
-                새로운 데이터 구축 기술
-            </h3>
-        </Typing>
+        <h2 className="h2-title">
+            <Typewriter
+                options={{
+                    delay: 85,
+                    deleteSpeed: 1,
+                    strings: arr,
+                    autoStart: true,
+                    loop: true,
+                }}
+            />
+        </h2>
     )
 };
 export default function Main() {
     const canvasRef = useRef<HTMLDivElement | null>(null);
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
+    console.log("부모컴포넌트");
+
     const Ball = {
         create: function (color, dx, dy) {
             const newBall = Object.create(this);
@@ -82,10 +92,14 @@ export default function Main() {
     }, [])
     return (
         <div className="bg" ref={canvasRef} >
-            <p>{t('title')}</p>
-
             <div className="center-area">
+                <h2 className="h2-title">
+                    {t('fixedTitle')}
+                </h2>
                 <AnimatedTypingComponent />
+                <h3 className="h3-title">
+                    {t('explain')}
+                </h3>
                 <div className="btn-wrap">
                     <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
                         className="btn apple-download-btn"></button>

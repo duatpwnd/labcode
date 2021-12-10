@@ -1,5 +1,9 @@
 {
-    "title": "Hello world!",
+    "fixedTitle": "With invisible LAB Code",
+    "changeTitle":"Protect security of documents,Verify authenticity of products,Protect environment with no label,Prevents,unauthorized digital theft,Create offline NFTs",
+    "explain":"4th generation standard code to replace QR code",
+    "signInBtn":"Admin Login",
+    "version":"BETA",
     "language_en": "English",
     "language_ko": "한국어"
   }

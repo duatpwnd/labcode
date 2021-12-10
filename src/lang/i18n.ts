@@ -16,6 +16,6 @@ i18n.use(initReactI18next).init({
     escapeValue: false,
   },
 });
-export const languages = ["en", "ko"] as const;
+export const languages = ["ko", "en"] as const;
 
 export type Languages = typeof languages[number];

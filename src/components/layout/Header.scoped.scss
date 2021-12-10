@@ -1,6 +1,14 @@
 header {
   height: 80px;
   padding: 0 16.5vw;
-  display: flex;
-  justify-content: space-between;
+  line-height: 80px;
+  &:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+  .logo {
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
