@@ -28,10 +28,11 @@ export default function Main() {
     console.log("부모컴포넌트");
 
     const Ball = {
-        create: function (color, dx, dy) {
+        create: function (color, dx, dy, name) {
             const newBall = Object.create(this);
             newBall.dx = dx;
             newBall.dy = dy;
+            newBall.name = name;
             newBall.radius = 500;
             newBall.width = 350;
             newBall.height = 350;
@@ -48,8 +49,29 @@ export default function Main() {
         moveTo: function (x, y) {
             const thisObj = this as { [key: string]: any };
             const el = thisObj.element
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
+            if (thisObj.name == 'a') {
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+            }
+            if (thisObj.name == "b") {
+                el.style.right = x + 'px';
+                el.style.top = y + 'px';
+            }
+            if (thisObj.name == "c") {
+
+                el.style.left = x + 'px';
+                el.style.bottom = y + 'px';
+            }
+            if (thisObj.name == "d") {
+                el.style.right = x + 'px';
+                el.style.bottom = y + 'px';
+            }
+            if (thisObj.name == "e") {
+                el.style.right = x + 'px';
+                el.style.top = y + 'px';
+
+
+            }
         },
         changeDirectionIfNecessary: function (x, y) {
             const ball = this as { [key: string]: any };
@@ -83,11 +105,11 @@ export default function Main() {
         }
     };
     useEffect(() => {
-        Ball.create("#F2A268", 4, 3).draw(70, 0);
-        Ball.create("#73D27D", 2, 2).draw(70, 0);
-        Ball.create("#EA43CF", 5, 8).draw(70, 0);
-        Ball.create("#F2D568", 6, 5).draw(70, 0);
-        Ball.create("#B3E052", 9, 2).draw(70, 0);
+        Ball.create("#F2A268", 4, 3, "a").draw(100, 0);
+        Ball.create("#73D27D", 5, 2, "b").draw(0, 0);
+        Ball.create("#EA43CF", 5, 8, "c").draw(200, 0);
+        Ball.create("#F2D568", 6, 5, "d").draw(0, 0);
+        Ball.create("#B3E052", 9, 2, "e").draw(800, 0);
 
     }, [])
     return (
