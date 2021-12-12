@@ -84,10 +84,10 @@ const Test = () => {
 
     draw(ctx) {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, window.innerWidth / 15, 0, 360);
+      ctx.arc(this.x, this.y, this.radius, 0, 360);
       ctx.fill();
-      ctx.shadowOffsetX = -(window.innerWidth / 15 - 10);
-      ctx.shadowOffsetY = window.innerWidth / 15 - 10;
+      ctx.shadowOffsetX = -(this.radius - 10);
+      ctx.shadowOffsetY = this.radius - 10;
       ctx.shadowBlur = 6;
       ctx.shadowColor = "rgba(0,0,255,0.1)";
       ctx.fillStyle = this.backgroundColor;
@@ -109,7 +109,7 @@ const Test = () => {
       if (dvdr > 0) return Infinity;
       let dvdv = dvx * dvx + dvy * dvy;
       let drdr = dx * dx + dy * dy;
-      let sigma = window.innerWidth / 15 + window.innerWidth / 15;
+      let sigma = this.radius + that.radius;
       let d = dvdr * dvdr - dvdv * (drdr - sigma * sigma);
       if (d < 0) return Infinity;
       return -(dvdr + Math.sqrt(d)) / dvdv;
@@ -117,24 +117,20 @@ const Test = () => {
 
     timeToHitVerticallWall() {
       if (this.velocityX > 0)
-        return (
-          (window.innerWidth - this.x - window.innerWidth / 15) / this.velocityX
-        );
+        return (window.innerWidth - this.x - this.radius) / this.velocityX;
       else if (this.velocityX < 0)
-        return (window.innerWidth / 15 - this.x) / this.velocityX;
+        return (this.radius - this.x) / this.velocityX;
       else return Infinity;
     }
 
     timeToHitHorizontalWall() {
       if (this.velocityY > 0)
         return (
-          (document.querySelector(".bg").clientHeight -
-            this.y -
-            window.innerWidth / 15) /
+          (document.querySelector(".bg").clientHeight - this.y - this.radius) /
           this.velocityY
         );
       else if (this.velocityY < 0)
-        return (window.innerWidth / 15 - this.y) / this.velocityY;
+        return (this.radius - this.y) / this.velocityY;
       return Infinity;
     }
 
@@ -144,7 +140,7 @@ const Test = () => {
       let dvx = that.velocityX - this.velocityX;
       let dvy = that.velocityY - this.velocityY;
       let dvdr = dx * dvx + dy * dvy;
-      let dist = window.innerWidth / 15 + window.innerWidth / 15;
+      let dist = this.radius + that.radius;
       let J =
         (2 * this.mass * that.mass * dvdr) / ((this.mass + that.mass) * dist);
       let Jx = (J * dx) / dist;
@@ -213,7 +209,6 @@ const Test = () => {
       this.t = 0;
       this.hz = 1; //frequency
       this.pq = new CustomPQ();
-      this.numBalls = ["#73D27D", "#EA43CF", "#F2D568", "#B3E052", "#F2A268"];
       window.addEventListener(
         "resize",
         this.windowResizeHandler.bind(this),
@@ -288,14 +283,15 @@ const Test = () => {
           me.predict(a);
           me.predict(b);
         }
-        window.setTimeout(step, 5);
+        window.setTimeout(step, 0);
       }
-      window.setTimeout(step, 5);
+      window.setTimeout(step, 0);
     }
 
     start() {
-      for (let i = 0; i < this.numBalls.length; ++i) {
-        this.balls[i] = new Ball(this.numBalls[i]);
+      let numBalls = ["#73D27D", "#EA43CF", "#F2D568", "#B3E052", "#F2A268"];
+      for (let i = 0; i < numBalls.length; ++i) {
+        this.balls[i] = new Ball(numBalls[i]);
       }
       this.simulate();
     }
