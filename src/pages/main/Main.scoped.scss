@@ -6,22 +6,23 @@
   overflow: hidden;
   .center-area {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 320px;
+    top: 50%;
+    transform: translate(0%, -50%);
+    max-width: 1280px;
+    left: 0;
+    right: 0;
     margin: auto;
-    text-align: left;
-    height: 324px;
-    z-index: 1;
+    padding: 0 3%;
+    box-sizing: border-box;
     .h2-title {
       color: #ffffff;
       line-height: 76px;
-      font-size: 54px;
+      font-size: 3.375rem;
     }
     .h3-title {
       margin-top: 24px;
       color: #b3e052;
-      font-size: 28px;
+      font-size: 1.75rem;
       font-weight: 400;
     }
     .btn-wrap {
@@ -29,8 +30,9 @@
       .apple-download-btn {
         width: 200px;
         height: 60px;
+        margin-right: 16px;
         background: url("~src/assets/images/appStore_download.svg") no-repeat
-          center / 200px 60px;
+          center / 100% 60px;
         &:hover {
           background: url("~src/assets/images/appStore_download_hover.svg")
             no-repeat center / 200px 60px;
@@ -39,7 +41,6 @@
       .google-download-btn {
         width: 200px;
         height: 60px;
-        margin-left: 16px;
         background: url("~src/assets/images/googlePlay_download.svg") no-repeat
           center / 200px 60px;
         &:hover {
@@ -54,4 +55,19 @@
   position: absolute;
   display: inline-block;
   border-radius: 500px;
+}
+@media all and (max-width: 479px) {
+  .bg {
+    .center-area {
+      .btn-wrap {
+        .apple-download-btn,
+        .google-download-btn {
+          width: 100%;
+        }
+        .google-download-btn {
+          margin-top: 20px;
+        }
+      }
+    }
+  }
 }

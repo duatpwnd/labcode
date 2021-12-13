@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react"
 import Typewriter from 'typewriter-effect';
 import "./Main.scoped.scss"
 import { useTranslation } from 'react-i18next';
-import { debounce } from "lodash"
 import BounceBalls from "src/components/BounceBalls";
 const AnimatedTypingComponent = () => {
     const { t, i18n } = useTranslation();
@@ -26,11 +25,12 @@ const AnimatedTypingComponent = () => {
 };
 export default function Main() {
     const { t } = useTranslation();
+    const bgRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         console.log("onmounted");
     }, [])
     return (
-        <div className="bg">
+        <div className="bg" ref={bgRef}>
             <div className="center-area">
                 <h2 className="h2-title">
                     {t('fixedTitle')}
@@ -45,7 +45,7 @@ export default function Main() {
                     <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')} className="btn google-download-btn"></button>
                 </div>
             </div>
-            <BounceBalls />
+            <BounceBalls bg={bgRef} />
         </div>
     )
 }

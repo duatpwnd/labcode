@@ -1,7 +1,10 @@
 header {
   height: 80px;
-  padding: 0 16.5vw;
   line-height: 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 3%;
+  box-sizing: border-box;
   &:after {
     display: block;
     content: "";
@@ -21,7 +24,6 @@ header {
       font-weight: 700;
       height: 44px;
       width: 44px;
-      margin-right: 12px;
       &:hover {
         background: #d1d6db;
       }
