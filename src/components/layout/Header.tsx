@@ -13,13 +13,12 @@ const SignIndButton = styled.button`
     font-weight: 700;
     height: 44px;
     width: 112px;
-    margin-right: 12px;
     &:hover {
       background: #D1D6DB;
     }
 `;
 const VersionIcon = styled.span`
-vertical-align: text-bottom;
+    vertical-align: text-bottom;
     color: #5138E5;
     font-size: 12px;
     padding: 4px 8px;
@@ -28,6 +27,9 @@ vertical-align: text-bottom;
     line-height: 16px;
     border-radius: 4px;
     margin-left:28px;
+    @media all and (max-width: 479px) {
+        display:none
+    }
 `
 export default function Header() {
     const { t, i18n } = useTranslation();

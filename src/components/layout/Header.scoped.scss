@@ -3,7 +3,7 @@ header {
   line-height: 80px;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 3%;
+  padding: 0 20px;
   box-sizing: border-box;
   &:after {
     display: block;
@@ -22,10 +22,19 @@ header {
       background: #e5e5e5;
       font-weight: 700;
       height: 44px;
+      margin-left: 12px;
       width: 44px;
       &:hover {
         background: #d1d6db;
       }
+    }
+  }
+}
+@media all and (max-width: 479px) {
+  .right-buttons {
+    float: right;
+    .lang-btn {
+      display: none;
     }
   }
 }
