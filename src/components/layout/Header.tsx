@@ -19,6 +19,7 @@ const SignIndButton = styled.button`
     }
 `;
 const VersionIcon = styled.span`
+vertical-align: text-bottom;
     color: #5138E5;
     font-size: 12px;
     padding: 4px 8px;
