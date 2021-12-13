@@ -11,7 +11,7 @@ const AnimatedTypingComponent = () => {
         arrSet(t('changeTitle').split(","));
     }, [i18n.language])
     return (
-        <h2 className={i18n.language == "en" ? "h2-title lang-en" : "h2-title"}>
+        <h2 className={i18n.language == "en" ? "typing-title lang-en" : "typing-title"}>
             <Typewriter
                 options={{
                     delay: 85,
