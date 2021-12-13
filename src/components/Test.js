@@ -283,9 +283,9 @@ const Test = () => {
           me.predict(a);
           me.predict(b);
         }
-        window.setTimeout(step, 0);
+        window.setTimeout(step, 10);
       }
-      window.setTimeout(step, 0);
+      window.setTimeout(step, 10);
     }
 
     start() {
