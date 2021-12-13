@@ -21,6 +21,13 @@ format을 작성해서 해당폰트를 지원해주는 브라우저에서 해당
   src: url("fonts/AppleSDGothicNeoR.woff2") format("woff2"),
     url("fonts/AppleSDGothicNeoR.woff") format("woff");
 }
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/Poppins-Regular.woff") format("woff");
+}
 button,
 input,
 select,
@@ -139,6 +146,9 @@ body {
   font-family: "AppleSDGothic", sans-serif;
   font-weight: 400;
   font-size: 16px;
+}
+.lang-en {
+  font-family: "Poppins", sans-serif;
 }
 ol,
 ul {

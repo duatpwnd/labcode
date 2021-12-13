@@ -6,11 +6,12 @@ import BounceBalls from "src/components/BounceBalls";
 const AnimatedTypingComponent = () => {
     const { t, i18n } = useTranslation();
     const [arr, arrSet] = useState<string[]>([]);
+    console.log(i18n.language)
     useEffect(() => {
         arrSet(t('changeTitle').split(","));
     }, [i18n.language])
     return (
-        <h2 className="h2-title">
+        <h2 className={i18n.language == "en" ? "h2-title lang-en" : "h2-title"}>
             <Typewriter
                 options={{
                     delay: 85,
@@ -24,7 +25,7 @@ const AnimatedTypingComponent = () => {
     )
 };
 export default function Main() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const bgRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         console.log("onmounted");
@@ -32,11 +33,11 @@ export default function Main() {
     return (
         <div className="bg" ref={bgRef}>
             <div className="center-area">
-                <h2 className="h2-title">
+                <h2 className={i18n.language == "en" ? "h2-title lang-en" : "h2-title"}>
                     {t('fixedTitle')}
                 </h2>
                 <AnimatedTypingComponent />
-                <h3 className="h3-title">
+                <h3 className={i18n.language == "en" ? "h3-title lang-en" : "h3-title"}>
                     {t('explain')}
                 </h3>
                 <div className="btn-wrap">
