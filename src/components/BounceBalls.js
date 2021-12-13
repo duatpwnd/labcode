@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 import "./Test.scss";
-const Test = () => {
-  const requestAnimation =
-    window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame;
-  window.requestAnimationFrame = requestAnimation;
+const BounceBalls = () => {
+  let timer = null;
+
+  const debounce = (func) => {
+    var timer;
+    return function (event) {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(func, 100, event);
+    };
+  };
   class CustomPQ {
     constructor() {
       this.arr = [];
@@ -259,6 +262,7 @@ const Test = () => {
       if (dtY !== Infinity) this.pq.insert(new Event(this.t + dtY, null, a));
     }
     simulate() {
+      console.log("simulate");
       let me = this;
       for (let i = 0; i < this.balls.length; ++i) {
         this.predict(this.balls[i]);
@@ -283,22 +287,36 @@ const Test = () => {
           me.predict(a);
           me.predict(b);
         }
-        window.setTimeout(step, 10);
       }
-      window.setTimeout(step, 10);
+      if (timer != null) {
+        window.clearInterval(timer);
+      }
+      timer = window.setInterval(step, 10);
     }
-
-    start() {
+    init() {
+      this.balls = [];
+      this.start();
+    }
+    addBounceBall() {
       let numBalls = ["#73D27D", "#EA43CF", "#F2D568", "#B3E052", "#F2A268"];
       for (let i = 0; i < numBalls.length; ++i) {
         this.balls[i] = new Ball(numBalls[i]);
       }
+    }
+    start() {
+      this.addBounceBall();
       this.simulate();
     }
   }
   useEffect(() => {
     new CollisionSystem().start();
+    window.addEventListener(
+      "resize",
+      debounce(() => {
+        new CollisionSystem().init();
+      })
+    );
   }, []);
   return <canvas id="main"></canvas>;
 };
-export default Test;
+export default BounceBalls;

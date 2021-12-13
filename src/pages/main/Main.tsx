@@ -3,7 +3,7 @@ import Typewriter from 'typewriter-effect';
 import "./Main.scoped.scss"
 import { useTranslation } from 'react-i18next';
 import { debounce } from "lodash"
-import Test from "src/components/Test";
+import BounceBalls from "src/components/BounceBalls";
 const AnimatedTypingComponent = () => {
     const { t, i18n } = useTranslation();
     const [arr, arrSet] = useState<string[]>([]);
@@ -45,7 +45,7 @@ export default function Main() {
                     <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')} className="btn google-download-btn"></button>
                 </div>
             </div>
-            <Test />
+            <BounceBalls />
         </div>
     )
 }
