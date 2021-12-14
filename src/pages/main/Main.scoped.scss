@@ -72,9 +72,7 @@
         .apple-download-btn,
         .google-download-btn {
           width: 100%;
-          &:hover {
-            background: unset;
-          }
+          pointer-events: none;
         }
         .google-download-btn {
           margin-top: 20px;
