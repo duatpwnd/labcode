@@ -73,7 +73,7 @@ const BounceBalls = ({ bg }) => {
             y = 100,
             velocityX = 10,
             velocityY = 10,
-            radius = window.innerWidth / 15
+            radius = window.innerWidth < 479 ? window.innerWidth / 6 : window.innerWidth / 15
         ) {
             this.x = Math.random() * window.innerWidth;
             this.y = Math.random() * bg.current.clientHeight;
@@ -96,7 +96,7 @@ const BounceBalls = ({ bg }) => {
             ctx.shadowOffsetX = -(this.radius - 10);
             ctx.shadowOffsetY = this.radius - 10;
             ctx.shadowBlur = 6;
-            ctx.shadowColor = "rgba(0,0,255,0.1)";
+            ctx.shadowColor = "rgba(77,53,218,1)";
             ctx.fillStyle = this.backgroundColor;
         }
         move(time) {
