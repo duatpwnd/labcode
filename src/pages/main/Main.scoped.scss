@@ -14,8 +14,7 @@
     margin: auto;
     padding: 0 20px;
     box-sizing: border-box;
-    .h2-title,
-    .typing-title {
+    .h2-title {
       color: #ffffff;
       line-height: 76px;
       font-size: 3.375rem;
@@ -61,9 +60,10 @@
   .bg {
     .center-area {
       text-align: center;
-      .typing-title {
-        font-size: 20px;
+      .h2-title {
+        font-size: 7.22vw;
       }
+
       .btn-wrap {
         .apple-download-btn,
         .google-download-btn {

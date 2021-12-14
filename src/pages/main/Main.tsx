@@ -11,7 +11,7 @@ const AnimatedTypingComponent = () => {
         arrSet(t('changeTitle').split(","));
     }, [i18n.language])
     return (
-        <h2 className={i18n.language == "en" ? "typing-title lang-en" : "typing-title"}>
+        <h2 className={i18n.language == "en" ? "h2-title lang-en" : "h2-title"}>
             <Typewriter
                 options={{
                     delay: 85,
@@ -27,6 +27,7 @@ const AnimatedTypingComponent = () => {
 export default function Main() {
     const { t, i18n } = useTranslation();
     const bgRef = useRef<HTMLDivElement>(null);
+    const uesrAgent = navigator.userAgent.toLowerCase();
     useEffect(() => {
         console.log("onmounted");
     }, [])
@@ -41,9 +42,13 @@ export default function Main() {
                     {t('explain')}
                 </h3>
                 <div className="btn-wrap">
-                    <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
-                        className="btn apple-download-btn"></button>
-                    <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')} className="btn google-download-btn"></button>
+                    {
+                        uesrAgent.match("iphone") ?
+                            <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
+                                className="btn apple-download-btn"></button>
+                            :
+                            <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')} className="btn google-download-btn"></button>
+                    }
                 </div>
             </div>
             <BounceBalls bg={bgRef} />
