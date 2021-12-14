@@ -17,9 +17,7 @@ const SignIndButton = styled.button`
       background: #D1D6DB;
     }
      @media all and (max-width: 479px) {
-        display:none;
-        pointer-events: none;
-
+        background: #E5E5E5;
     }
 `;
 const VersionIcon = styled.span`
