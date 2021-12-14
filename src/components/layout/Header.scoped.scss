@@ -5,6 +5,8 @@ header {
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
+  position: sticky;
+  top: 0;
   &:after {
     display: block;
     content: "";
