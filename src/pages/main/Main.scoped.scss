@@ -27,9 +27,11 @@
     }
     .btn-wrap {
       margin-top: 5.55vh;
-      .apple-download-btn {
+      .btn {
         width: 200px;
         height: 60px;
+      }
+      .apple-download-btn {
         margin-right: 16px;
         background: url("~src/assets/images/appStore_download.svg") no-repeat
           center / 100% 60px;
@@ -39,8 +41,6 @@
         }
       }
       .google-download-btn {
-        width: 200px;
-        height: 60px;
         background: url("~src/assets/images/googlePlay_download.svg") no-repeat
           center / 200px 60px;
         &:hover {
@@ -49,15 +49,11 @@
         }
       }
       .mobile-apple-download-btn {
-        width: 200px;
-        height: 60px;
         margin-right: 16px;
         background: url("~src/assets/images/appStore_download.svg") no-repeat
           center / 100% 60px;
       }
       .mobile-google-download-btn {
-        width: 200px;
-        height: 60px;
         background: url("~src/assets/images/googlePlay_download.svg") no-repeat
           center / 200px 60px;
       }
