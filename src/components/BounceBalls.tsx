@@ -73,7 +73,7 @@ const BounceBalls = ({ bg }) => {
             y = 100,
             velocityX = 10,
             velocityY = 10,
-            radius = window.innerWidth < 479 ? window.innerWidth / 6 : window.innerWidth / 15
+            radius = window.innerWidth < 479 ? window.innerWidth / 7 : window.innerWidth / 15,
         ) {
             this.x = Math.random() * window.innerWidth;
             this.y = Math.random() * bg.current.clientHeight;
@@ -95,7 +95,8 @@ const BounceBalls = ({ bg }) => {
             ctx.fill();
             ctx.shadowOffsetX = -(this.radius - 10);
             ctx.shadowOffsetY = this.radius - 10;
-            ctx.shadowColor = "rgba(77,53,218,1)";
+            ctx.shadowColor = "rgba(0,0,0,0.05)";
+            ctx.shadowBlur = 1;
             ctx.fillStyle = this.backgroundColor;
         }
         move(time) {
@@ -226,6 +227,7 @@ const BounceBalls = ({ bg }) => {
                 false
             );
             this.windowResizeHandler();
+
         }
 
         //todo: doesn't really belong to this class, but meh
@@ -249,11 +251,9 @@ const BounceBalls = ({ bg }) => {
         redraw() {
             let k = 0;
             this.ctx.clearRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
-
             this.balls.forEach((ball) => {
                 ball.draw(this.ctx);
             });
-
             this.pq.insert(new Event(this.t + 1 / this.hz, null, null));
         }
 
@@ -270,7 +270,6 @@ const BounceBalls = ({ bg }) => {
             if (dtY !== Infinity) this.pq.insert(new Event(this.t + dtY, null, a));
         }
         simulate() {
-            console.log("simulate");
             let me = this;
             for (let i = 0; i < this.balls.length; ++i) {
                 this.predict(this.balls[i]);
@@ -282,7 +281,6 @@ const BounceBalls = ({ bg }) => {
                 if (ev.isValid()) {
                     let a = ev.getA();
                     let b = ev.getB();
-
                     me.balls.forEach((ball) => {
                         ball.move(ev.getTime() - me.t);
                     });
@@ -306,7 +304,7 @@ const BounceBalls = ({ bg }) => {
             this.start();
         }
         addBounceBall() {
-            let numBalls = ["#73D27D", "#EA43CF", "#F2D568", "#B3E052", "#F2A268"];
+            let numBalls = ["#F2D568", "#73D27D", "#EA43CF", "#B3E052", "#F2A268"];
             for (let i = 0; i < numBalls.length; ++i) {
                 this.balls[i] = new Ball(numBalls[i]);
             }

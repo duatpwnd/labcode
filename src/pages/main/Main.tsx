@@ -27,7 +27,7 @@ const AnimatedTypingComponent = () => {
 const isMobile = () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
-const Btns = () => {
+const LinkButtons = () => {
     const uesrAgent = navigator.userAgent.toLowerCase();
     if (isMobile()) {
         return <div className="btn-wrap">
@@ -72,7 +72,7 @@ export default function Main() {
                 <h3 className={i18n.language == "en" ? "h3-title lang-en" : "h3-title"}>
                     {t('explain')}
                 </h3>
-                <Btns />
+                <LinkButtons />
             </div>
             <BounceBalls bg={bgRef} />
         </div>
