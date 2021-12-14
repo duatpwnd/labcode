@@ -35,6 +35,9 @@ header {
     float: right;
     .lang-btn {
       display: none;
+      &:hover {
+        background: unset;
+      }
     }
   }
 }
