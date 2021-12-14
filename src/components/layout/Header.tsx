@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useTranslation } from 'react-i18next';
 import { useState } from "react"
 import { Languages, languages } from "src/lang/i18n"
-
+import { useMediaQuery } from "react-responsive";
 import "./Header.scoped.scss"
 const SignIndButton = styled.button`
     border-radius: 8px;
@@ -15,6 +15,11 @@ const SignIndButton = styled.button`
     width: 112px;
     &:hover {
       background: #D1D6DB;
+    }
+    @media all and (max-width: 479px) {
+        color:#5138E5;
+        background:white;
+        font-weight:700;
     }
 `;
 const VersionIcon = styled.span`
@@ -31,9 +36,13 @@ const VersionIcon = styled.span`
         display:none
     }
 `
+
 export default function Header() {
     const { t, i18n } = useTranslation();
     const [lang, langUpdate] = useState("ko");
+    const isMobile = useMediaQuery({
+        query: "(max-width: 479px)"
+    });
     const handleChangeLanguage = (lang: Languages) => {
         langUpdate(lang);
         i18n.changeLanguage(lang);
@@ -42,7 +51,8 @@ export default function Header() {
         <header>
             <h1 className="logo">
                 <Link to="/">
-                    <img src={require("src/assets/images/logo.svg").default} />
+                    {isMobile ? <img src={require("src/assets/images/mobile_logo.svg").default} /> : <img src={require("src/assets/images/logo.svg").default} />}
+
                 </Link>
             </h1>
             <VersionIcon>{t('version')}</VersionIcon>

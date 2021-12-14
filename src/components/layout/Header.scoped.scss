@@ -35,10 +35,13 @@ header {
   }
 }
 @media all and (max-width: 479px) {
-  .right-buttons {
-    float: right;
-    .lang-btn {
-      display: none;
+  header {
+    background: #5138e5;
+    .right-buttons {
+      float: right;
+      .lang-btn {
+        display: none;
+      }
     }
   }
 }

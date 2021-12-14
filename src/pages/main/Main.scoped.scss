@@ -76,6 +76,14 @@
           display: unset;
         }
       }
+      .btn-wrap {
+        .apple-download-btn {
+          margin-right: 0;
+        }
+        .google-download-btn {
+          margin-top: 14px;
+        }
+      }
     }
   }
 }
