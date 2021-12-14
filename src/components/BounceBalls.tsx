@@ -304,7 +304,12 @@ const BounceBalls = ({ bg }) => {
             this.start();
         }
         addBounceBall() {
-            let numBalls = ["#F2D568", "#73D27D", "#EA43CF", "#B3E052", "#F2A268"];
+            let numBalls
+            if (window.innerWidth < 480) {
+                numBalls = ["#F2D568", "#73D27D", "#EA43CF"];
+            } else {
+                numBalls = ["#F2D568", "#73D27D", "#EA43CF", "#B3E052", "#F2A268"];
+            }
             for (let i = 0; i < numBalls.length; ++i) {
                 this.balls[i] = new Ball(numBalls[i]);
             }

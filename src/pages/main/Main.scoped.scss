@@ -17,45 +17,57 @@
     .h2-title {
       color: #ffffff;
       line-height: 76px;
-      font-size: 3.375rem;
+      font-size: 54px;
+      .Typewriter__cursor,
+      .Typewriter__wrapper {
+        display: unset;
+      }
     }
     .h3-title {
       margin-top: 24px;
       color: #b3e052;
-      font-size: 1.75rem;
+      font-size: 28px;
       font-weight: 400;
     }
     .btn-wrap {
       margin-top: 5.55vh;
+      max-width: 412px;
       .btn {
-        width: 200px;
+        width: 48%;
         height: 60px;
       }
       .apple-download-btn {
-        margin-right: 16px;
+        float: left;
         background: url("~src/assets/images/appStore_download.svg") no-repeat
           center / 100% 60px;
         &:hover {
           background: url("~src/assets/images/appStore_download_hover.svg")
-            no-repeat center / 200px 60px;
+            no-repeat center / 100% 60px;
         }
       }
       .google-download-btn {
+        float: right;
         background: url("~src/assets/images/googlePlay_download.svg") no-repeat
-          center / 200px 60px;
+          center / 100% 60px;
         &:hover {
           background: url("~src/assets/images/googlePlay_download_hover.svg")
-            no-repeat center / 200px 60px;
+            no-repeat center / 100% 60px;
         }
       }
       .mobile-apple-download-btn {
-        margin-right: 16px;
+        float: left;
         background: url("~src/assets/images/appStore_download.svg") no-repeat
           center / 100% 60px;
       }
       .mobile-google-download-btn {
+        float: right;
         background: url("~src/assets/images/googlePlay_download.svg") no-repeat
-          center / 200px 60px;
+          center / 100% 60px;
+      }
+      &:after {
+        display: block;
+        content: "";
+        clear: both;
       }
     }
   }
@@ -65,20 +77,32 @@
   display: inline-block;
   border-radius: 500px;
 }
+
+@media all and (max-width: 768px) {
+  .bg {
+    .center-area {
+      .h2-title {
+        font-size: 7.3vw;
+      }
+      .h3-title {
+        font-size: 3.7vw;
+      }
+    }
+  }
+}
 @media all and (max-width: 479px) {
   .bg {
     .center-area {
       text-align: center;
       .h2-title {
         line-height: 40px;
-        .Typewriter__cursor,
-        .Typewriter__wrapper {
-          display: unset;
-        }
+      }
+      .h3-title {
+        font-size: 20px;
       }
       .btn-wrap {
-        .apple-download-btn {
-          margin-right: 0;
+        .btn {
+          width: 100%;
         }
         .google-download-btn {
           margin-top: 14px;

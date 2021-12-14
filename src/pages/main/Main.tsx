@@ -3,6 +3,7 @@ import Typewriter from 'typewriter-effect';
 import "./Main.scoped.scss"
 import { useTranslation } from 'react-i18next';
 import BounceBalls from "src/components/BounceBalls";
+import { useMediaQuery } from "react-responsive";
 const AnimatedTypingComponent = () => {
     const { t, i18n } = useTranslation();
     const [arr, arrSet] = useState<string[]>([]);
@@ -57,17 +58,20 @@ const LinkButtons = () => {
 export default function Main() {
     const { t, i18n } = useTranslation();
     const bgRef = useRef<HTMLDivElement>(null);
-    const uesrAgent = navigator.userAgent.toLowerCase();
-
+    const isMobile = useMediaQuery({
+        query: "(max-width: 479px)"
+    });
+    const innerText = t('fixedTitle').replace(/<br>/gi, " ");
     useEffect(() => {
-        console.log("onmounted", isMobile());
+        console.log("onmounted", innerText);
     }, [])
     return (
         <div className="bg" ref={bgRef}>
             <div className="center-area">
-                <h2 className={i18n.language == "en" ? "h2-title lang-en" : "h2-title"}>
-                    {t('fixedTitle')}
-                </h2>
+                {isMobile ? <h2 className={i18n.language == "en" ? "h2-title lang-en" : "h2-title"} dangerouslySetInnerHTML={{ __html: t('fixedTitle') }}>
+                </h2> : <h2 className={i18n.language == "en" ? "h2-title lang-en" : "h2-title"}>
+                    {innerText}
+                </h2>}
                 <AnimatedTypingComponent />
                 <h3 className={i18n.language == "en" ? "h3-title lang-en" : "h3-title"}>
                     {t('explain')}
