@@ -61,8 +61,11 @@
     .center-area {
       text-align: center;
       .h2-title {
-        font-size: 7.22vw;
         line-height: 40px;
+        .Typewriter__cursor,
+        .Typewriter__wrapper {
+          display: unset;
+        }
       }
 
       .btn-wrap {
