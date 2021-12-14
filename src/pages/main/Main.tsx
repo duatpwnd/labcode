@@ -28,6 +28,9 @@ export default function Main() {
     const { t, i18n } = useTranslation();
     const bgRef = useRef<HTMLDivElement>(null);
     const uesrAgent = navigator.userAgent.toLowerCase();
+    const isMobile = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
     useEffect(() => {
         console.log("onmounted");
     }, [])
@@ -45,9 +48,13 @@ export default function Main() {
                     {
                         uesrAgent.match("iphone") ?
                             <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
-                                className="btn apple-download-btn"></button>
+                                className={isMobile() ? "btn mobile-apple-download-btn" : "btn apple-download-btn"}
+
+                            ></button>
                             :
-                            <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')} className="btn google-download-btn"></button>
+                            <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')}
+                                className={isMobile() ? "btn mobile-google-download-btn" : "btn google-download-btn"}
+                            ></button>
                     }
                 </div>
             </div>

@@ -16,9 +16,6 @@ const SignIndButton = styled.button`
     &:hover {
       background: #D1D6DB;
     }
-     @media all and (max-width: 479px) {
-        background: #E5E5E5;
-    }
 `;
 const VersionIcon = styled.span`
     vertical-align: text-bottom;
