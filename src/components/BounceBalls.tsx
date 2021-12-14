@@ -95,7 +95,6 @@ const BounceBalls = ({ bg }) => {
             ctx.fill();
             ctx.shadowOffsetX = -(this.radius - 10);
             ctx.shadowOffsetY = this.radius - 10;
-            ctx.shadowBlur = 6;
             ctx.shadowColor = "rgba(77,53,218,1)";
             ctx.fillStyle = this.backgroundColor;
         }
@@ -233,7 +232,6 @@ const BounceBalls = ({ bg }) => {
         windowResizeHandler() {
             this.SCREEN_WIDTH = window.innerWidth;
             this.SCREEN_HEIGHT = bg.current.clientHeight;
-            console.log("cleint", bg.current.clientHeight);
             this.c.width = this.SCREEN_WIDTH;
             this.c.height = this.SCREEN_HEIGHT;
             const grd = this.ctx.createRadialGradient(

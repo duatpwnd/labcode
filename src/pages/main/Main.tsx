@@ -24,15 +24,43 @@ const AnimatedTypingComponent = () => {
         </h2>
     )
 };
+const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+const Btns = () => {
+    const uesrAgent = navigator.userAgent.toLowerCase();
+    if (isMobile()) {
+        return <div className="btn-wrap">
+            {
+                uesrAgent.match("iphone") ?
+                    <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
+                        className={isMobile() ? "btn mobile-apple-download-btn" : "btn apple-download-btn"}
+
+                    ></button>
+                    :
+                    <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')}
+                        className={isMobile() ? "btn mobile-google-download-btn" : "btn google-downlo isMobile() &&ad-btn"}
+                    ></button>
+            }
+        </div>
+    } else {
+        return <div className="btn-wrap">
+            <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
+                className="btn apple-download-btn"
+            ></button>
+            <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')}
+                className="btn google-download-btn"
+            ></button>
+        </div>
+    }
+}
 export default function Main() {
     const { t, i18n } = useTranslation();
     const bgRef = useRef<HTMLDivElement>(null);
     const uesrAgent = navigator.userAgent.toLowerCase();
-    const isMobile = () => {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
+
     useEffect(() => {
-        console.log("onmounted");
+        console.log("onmounted", isMobile());
     }, [])
     return (
         <div className="bg" ref={bgRef}>
@@ -44,19 +72,7 @@ export default function Main() {
                 <h3 className={i18n.language == "en" ? "h3-title lang-en" : "h3-title"}>
                     {t('explain')}
                 </h3>
-                <div className="btn-wrap">
-                    {
-                        uesrAgent.match("iphone") ?
-                            <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
-                                className={isMobile() ? "btn mobile-apple-download-btn" : "btn apple-download-btn"}
-
-                            ></button>
-                            :
-                            <button onClick={() => window.open('https://play.google.com/store/apps/details?id=com.snaptag.labCode', '_blank')}
-                                className={isMobile() ? "btn mobile-google-download-btn" : "btn google-download-btn"}
-                            ></button>
-                    }
-                </div>
+                <Btns />
             </div>
             <BounceBalls bg={bgRef} />
         </div>
