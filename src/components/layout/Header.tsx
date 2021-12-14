@@ -20,7 +20,11 @@ const SignIndButton = styled.button`
         color:#5138E5;
         background:white;
         font-weight:700;
+        :hover {
+            background: white;
+          }
     }
+  
 `;
 const VersionIcon = styled.span`
     vertical-align: text-bottom;
