@@ -232,6 +232,7 @@ const BounceBalls = ({ bg }) => {
 
         //todo: doesn't really belong to this class, but meh
         windowResizeHandler() {
+            console.log("resize")
             this.SCREEN_WIDTH = window.innerWidth;
             this.SCREEN_HEIGHT = bg.current.clientHeight;
             this.c.width = this.SCREEN_WIDTH;
@@ -321,12 +322,14 @@ const BounceBalls = ({ bg }) => {
     }
     useEffect(() => {
         new CollisionSystem().start();
-        window.addEventListener(
-            "resize",
-            debounce(() => {
-                new CollisionSystem().init();
-            })
-        );
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) == false) {
+            window.addEventListener(
+                "resize",
+                debounce(() => {
+                    new CollisionSystem().init();
+                })
+            );
+        }
     }, []);
     return <canvas id="main" ref={bgRef}></canvas>;
 };
