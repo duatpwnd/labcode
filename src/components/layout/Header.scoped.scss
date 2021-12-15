@@ -45,3 +45,10 @@ header {
     }
   }
 }
+@media all and (max-width: 320px) {
+  .logo {
+    img {
+      width: 40vw;
+    }
+  }
+}

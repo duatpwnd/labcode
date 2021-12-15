@@ -20,10 +20,12 @@ const SignIndButton = styled.button`
         color:#5138E5;
         background:white;
         font-weight:700;
-        display:none;
         :hover {
             background: white;
           }
+    }
+    @media all and (max-width:320px){
+        width: 35vw;
     }
   
 `;
