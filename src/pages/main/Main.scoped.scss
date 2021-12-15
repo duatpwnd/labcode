@@ -37,7 +37,7 @@
         height: 60px;
       }
       .apple-download-btn {
-        float: left;
+        margin-right: 12px;
         background: url("~src/assets/images/appStore_download.svg") no-repeat
           center / 100% 60px;
         &:hover {
@@ -46,7 +46,6 @@
         }
       }
       .google-download-btn {
-        float: right;
         background: url("~src/assets/images/googlePlay_download.svg") no-repeat
           center / 100% 60px;
         &:hover {
@@ -55,12 +54,10 @@
         }
       }
       .mobile-apple-download-btn {
-        float: left;
         background: url("~src/assets/images/appStore_download.svg") no-repeat
           center / 100% 60px;
       }
       .mobile-google-download-btn {
-        float: right;
         background: url("~src/assets/images/googlePlay_download.svg") no-repeat
           center / 100% 60px;
       }
