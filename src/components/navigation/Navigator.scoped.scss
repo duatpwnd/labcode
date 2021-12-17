@@ -1,0 +1,21 @@
+nav {
+  width: 320px;
+  display: inline-block;
+  vertical-align: top;
+  background: #ccc;
+  ul {
+    li {
+      a {
+        width: 100%;
+        padding: 25px 35px;
+        box-sizing: border-box;
+        display: block;
+        color: #79828a;
+        font-size: 18px;
+      }
+      .active {
+        background: #f6f5fe;
+      }
+    }
+  }
+}

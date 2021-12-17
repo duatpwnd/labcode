@@ -56,23 +56,25 @@ export default function Header() {
     }
     return (
         <header>
-            <h1 className="logo">
-                <Link to="/">
-                    {isMobile ? <img src={require("src/assets/images/mobile_logo.svg").default} /> : <img src={require("src/assets/images/logo.svg").default} />}
+            <div className="header-contents">
+                <h1 className="logo">
+                    <Link to="/">
+                        {isMobile ? <img src={require("src/assets/images/mobile_logo.svg").default} /> : <img src={require("src/assets/images/logo.svg").default} />}
 
-                </Link>
-            </h1>
-            <VersionIcon>{t('version')}</VersionIcon>
-            <div className="right-buttons">
-                <SignIndButton onClick={() => { alert("준비중입니다.") }}>{t('signInBtn')}</SignIndButton>
-                {
-                    lang == "ko" ? <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("en")}>
-                        A
-                    </button> : <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("ko")}>
-                        가
-                    </button>
+                    </Link>
+                </h1>
+                <VersionIcon>{t('version')}</VersionIcon>
+                <div className="right-buttons">
+                    <SignIndButton onClick={() => { alert("준비중입니다.") }}>{t('signInBtn')}</SignIndButton>
+                    {
+                        lang == "ko" ? <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("en")}>
+                            A
+                        </button> : <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("ko")}>
+                            가
+                        </button>
 
-                }
+                    }
+                </div>
             </div>
         </header>
     )

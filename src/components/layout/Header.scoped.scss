@@ -1,35 +1,38 @@
 header {
-  height: 80px;
-  line-height: 80px;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 20px;
-  box-sizing: border-box;
+  z-index: 1;
+  background: white;
   position: sticky;
   top: 0;
-  z-index: 1;
   background: white;
   &:after {
     display: block;
     content: "";
     clear: both;
   }
-  .logo {
-    display: inline-block;
-  }
-  .right-buttons {
-    float: right;
-    .lang-btn {
-      border-radius: 8px;
-      font-size: 13px;
-      color: #525a61;
-      background: #e5e5e5;
-      font-weight: 700;
-      height: 44px;
-      margin-left: 12px;
-      width: 44px;
-      &:hover {
-        background: #d1d6db;
+  .header-contents {
+    height: 80px;
+    line-height: 80px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    .logo {
+      display: inline-block;
+    }
+    .right-buttons {
+      float: right;
+      .lang-btn {
+        border-radius: 8px;
+        font-size: 13px;
+        color: #525a61;
+        background: #e5e5e5;
+        font-weight: 700;
+        height: 44px;
+        margin-left: 12px;
+        width: 44px;
+        &:hover {
+          background: #d1d6db;
+        }
       }
     }
   }

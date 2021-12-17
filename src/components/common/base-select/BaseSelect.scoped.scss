@@ -1,0 +1,19 @@
+.select {
+  background: #f6f6f6;
+  width: 220px;
+  border-radius: 8px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  select {
+    width: 220px;
+    height: 48px;
+    border: 1px solid #333333;
+    background: #f6f6f6;
+    border: 0;
+    font-size: 13px;
+    color: #333333;
+    font-weight: 700;
+    background: url("~src/assets/images/arrow_bottom.svg") no-repeat right 40px
+      center / 16px 16px;
+  }
+}
