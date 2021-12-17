@@ -17,7 +17,6 @@ const DoughuntChart = ({ data }) => {
             <div className="ico-wrap">{
                 data.label.map((el, index) => {
                     const bg = data.datasets[0].backgroundColor;
-                    console.log(`${data}`);
                     return (
                         <span className='ico'>
                             <span className='circle' style={{

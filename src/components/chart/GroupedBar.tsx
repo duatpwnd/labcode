@@ -18,7 +18,6 @@ ChartJS.register(
 );
 const GroupedBar = () => {
     const options = {
-
         plugins: {
             legend: {
                 display: false
@@ -44,7 +43,7 @@ const GroupedBar = () => {
             y: {
                 ticks: {
                     color: "white",
-                    maxTicksLimit: 4
+                    maxTicksLimit: 4,
                 },
                 min: 0,
                 max: 60,
@@ -65,12 +64,16 @@ const GroupedBar = () => {
         labels,
         datasets: [
             {
+                borderColor: "transparent",
+                borderWidth: 2,
                 borderRadius: 10,
                 data: [40, 59, 10, 51, 56, 55, 40],
                 backgroundColor: "#CCCCCC",
-                categoryPercentage: 0.5
+                categoryPercentage: 0.5,
             },
             {
+                borderColor: "transparent",
+                borderWidth: 2,
                 borderRadius: 10,
                 data: [45, 60, 50, 41, 16, 5, 20],
                 backgroundColor: "#FFFFFF",
