@@ -1,6 +1,12 @@
 import "./Footer.scoped.scss"
 import BaseSelect from "../common/base-select/BaseSelect"
 export default function Footer() {
+    const handleSelect = (e) => {
+        if (e.target.value != "null") {
+            window.open(e.target.value, '_blank')
+        }
+    };
+
     return (
         <footer>
             <img className="snaptag-logo" src={require("src/assets/images/snaptag_logo.svg").default} />
@@ -17,7 +23,10 @@ export default function Footer() {
             </div>
             <div className="link-wrap">
                 <b>패밀리 사이트 이동</b>
-                <BaseSelect option={["ONME"]} />
+                <BaseSelect eventHandler={handleSelect}>
+                    <option value="null">Family Site</option>
+                    <option value={'https://onme.gallery/'}>ONME</option>
+                </BaseSelect>
             </div>
         </footer>
     )
