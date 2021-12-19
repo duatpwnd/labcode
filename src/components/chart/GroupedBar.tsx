@@ -5,7 +5,7 @@ import {
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 ChartJS.register(
@@ -16,9 +16,26 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+
 const GroupedBar = () => {
     const options = {
         plugins: {
+            tooltip: {
+                interaction: {
+                    mode: 'point'
+                },
+                caretSize: 0,
+                displayColors: false,
+                enabled: true,
+                usePointStyle: false,
+                callbacks: {
+                    title: function () { return []; },
+                    label: function (context) {
+                        return data.datasets[0].data[context.dataIndex] + "/" + data.datasets[1].data[context.dataIndex] + "명";
+                    },
+
+                }
+            },
             legend: {
                 display: false
             },
@@ -30,7 +47,6 @@ const GroupedBar = () => {
         responsive: true,
         scales: {
             x: {
-
                 ticks: {
                     color: "white",
                 },
@@ -64,6 +80,11 @@ const GroupedBar = () => {
         labels,
         datasets: [
             {
+
+                hoverBackgroundColor: [
+                    '#5138E5',
+                    '#5138E5CC'
+                ],
                 borderColor: "transparent",
                 borderWidth: 2,
                 borderRadius: 10,
@@ -72,10 +93,14 @@ const GroupedBar = () => {
                 categoryPercentage: 0.5,
             },
             {
+                hoverBackgroundColor: [
+                    '#5138E5',
+                    '#5138E5CC'
+                ],
                 borderColor: "transparent",
                 borderWidth: 2,
                 borderRadius: 10,
-                data: [45, 60, 50, 41, 16, 5, 20],
+                data: [45, 60, 10, 41, 16, 5, 20],
                 backgroundColor: "#FFFFFF",
                 categoryPercentage: 0.5
             }
