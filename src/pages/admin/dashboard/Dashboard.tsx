@@ -60,7 +60,7 @@ const Dashboard = () => {
             </div>
             <div>
                 <KoreaMap data={{
-                    서울: 12,
+                    서울: 2,
                     경기도: 1,
                     인천: 5,
                     강원도: 16545,
