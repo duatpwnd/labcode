@@ -2,9 +2,7 @@ import "./Dashboard.scoped.scss"
 import Doughnut from "src/components/chart/Doughnut"
 import GroupedBar from "src/components/chart/GroupedBar"
 import LineChart from "src/components/chart/LineChart"
-import svg from "src/assets/images/Frame.svg"
-import SVG, { Props as SVGProps } from 'react-inlinesvg';
-import Test from "src/pages/admin/dashboard/SvgComp"
+import KoreaMap from "src/assets/images/Frame"
 import { useEffect } from "react"
 const Dashboard = () => {
     useEffect(() => {
@@ -12,7 +10,6 @@ const Dashboard = () => {
     }, [])
     return (
         <div className="contents">
-            <Test />
             <div className="box">
                 <span className="statistic-ico"></span>
                 <div className="statistic-info">
@@ -62,7 +59,25 @@ const Dashboard = () => {
                 </div>
             </div>
             <div>
-                <SVG src={`${svg}`} />
+                <KoreaMap data={{
+                    서울: 12,
+                    경기도: 1,
+                    인천: 5,
+                    강원도: 16545,
+                    충청북도: 12,
+                    충청남도: 15,
+                    세종: 19,
+                    대전: 25,
+                    경상북도: 1555,
+                    대구: 239,
+                    울산: 56,
+                    경상남도: 20,
+                    부산: 4,
+                    제주도: 12,
+                    광주: 9,
+                    전라남도: 12,
+                    전라북도: 1555,
+                }} />
             </div>
             <Doughnut className="gender-chart" data={{
                 title: "성별 유저",
