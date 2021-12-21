@@ -2,60 +2,69 @@ import "./Dashboard.scoped.scss"
 import Doughnut from "src/components/chart/Doughnut"
 import GroupedBar from "src/components/chart/GroupedBar"
 import LineChart from "src/components/chart/LineChart"
+import svg from "src/assets/images/Frame.svg"
+import SVG, { Props as SVGProps } from 'react-inlinesvg';
+import Test from "src/pages/admin/dashboard/SvgComp"
+import { useEffect } from "react"
 const Dashboard = () => {
-    var mapVars = "rMateOnLoadCallFunction=mapReadyHandler";
+    useEffect(() => {
 
+    }, [])
     return (
-        <div>
-
-            <div className="statistic-box">
-                <div className="box">
-                    <span className="statistic-ico"></span>
-                    <div className="statistic-info">
-                        <strong className="number">300</strong>
-                        <span>오늘 유저</span>
-                    </div>
-                </div>
-                <div className="box">
-                    <span className="statistic-ico"></span>
-                    <div className="statistic-info">
-                        <strong className="number">300</strong>
-                        <span>오늘 유저</span>
-                    </div>
-                </div>
-                <div className="box">
-                    <span className="statistic-ico"></span>
-                    <div className="statistic-info">
-                        <strong className="number">300</strong>
-                        <span className="user">오늘 유저</span>
-                    </div>
+        <div className="contents">
+            <Test />
+            <div className="box">
+                <span className="statistic-ico"></span>
+                <div className="statistic-info">
+                    <strong className="number">300</strong>
+                    <span>오늘 유저</span>
                 </div>
             </div>
-            <div className="chart-wrap">
-                <div className="chart">
-                    <div className=" grouped-bar">
-                        <GroupedBar />
-                    </div>
-                    <div className="total">
-                        <strong>이번주 유저수</strong>
-                        <span className="ago">4분전</span>
-                    </div>
-                </div>
-                <div className="chart">
-                    <div className="line">
-                        <LineChart />
-                    </div>
-                    <div className="total">
-                        <strong>월별 유저수</strong>
-                        <span className="ago">4분전</span>
-                    </div>
-                </div>
-                <div className="chart">
-                    준비중
+            <div className="box">
+                <span className="statistic-ico"></span>
+                <div className="statistic-info">
+                    <strong className="number">300</strong>
+                    <span>오늘 유저</span>
                 </div>
             </div>
-
-            <Doughnut data={{
+            <div className="box">
+                <span className="statistic-ico"></span>
+                <div className="statistic-info">
+                    <strong className="number">300</strong>
+                    <span className="user">오늘 유저</span>
+                </div>
+            </div>
+            <div className="chart">
+                <div className=" grouped-bar">
+                    <GroupedBar />
+                </div>
+                <div className="total">
+                    <strong>이번주 유저수</strong>
+                    <span className="ago">4분전</span>
+                </div>
+            </div>
+            <div className="chart">
+                <div className="line">
+                    <LineChart />
+                </div>
+                <div className="total">
+                    <strong>월별 유저수</strong>
+                    <span className="ago">4분전</span>
+                </div>
+            </div>
+            <div className="chart">
+                <div className=" grouped-bar">
+                    <GroupedBar />
+                </div>
+                <div className="total">
+                    <strong>이번주 유저수</strong>
+                    <span className="ago">4분전</span>
+                </div>
+            </div>
+            <div>
+                <SVG src={`${svg}`} />
+            </div>
+            <Doughnut className="gender-chart" data={{
                 title: "성별 유저",
                 label: ["남자", "여자"],
                 datasets: [
@@ -71,7 +80,7 @@ const Dashboard = () => {
                 labels: [],
 
             }} />
-            <Doughnut data={{
+            <Doughnut className="age-chart" data={{
                 title: "연령별 유저",
                 label: ["10대", "20대", "30대", "40대", "50대"],
                 datasets: [
@@ -97,7 +106,6 @@ const Dashboard = () => {
                 ],
                 labels: [],
             }} />
-
         </div>
     )
 }

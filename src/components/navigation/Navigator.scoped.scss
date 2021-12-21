@@ -1,8 +1,9 @@
 nav {
   width: 320px;
-  display: inline-block;
-  vertical-align: top;
   background: #ccc;
+  position: fixed;
+  top: 80px;
+  height: 100%;
   ul {
     li {
       a {
@@ -17,5 +18,10 @@ nav {
         background: #f6f5fe;
       }
     }
+  }
+}
+@media all and (max-width: 1199px) {
+  nav {
+    display: none;
   }
 }

@@ -1,4 +1,9 @@
 main {
-  width: calc(100% - 320px);
-  display: inline-block;
+  padding: 40px;
+  margin-left: 320px;
+}
+@media all and (max-width: 1199px) {
+  main {
+    margin-left: 0;
+  }
 }

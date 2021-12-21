@@ -1,6 +1,7 @@
 const CracoAlias = require("craco-alias");
 const ScopedScss = require("craco-plugin-scoped-css");
 module.exports = {
+  presets: ["@babel/preset-react"],
   plugins: [
     {
       plugin: CracoAlias,
