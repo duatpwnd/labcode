@@ -1,7 +1,7 @@
-import { all, call } from "redux-saga/effects";
+import { all, fork } from "redux-saga/effects";
 import { watchSignIn } from "./signIn";
 function* rootSaga() {
-  yield all([watchSignIn()]);
+  yield all([fork(watchSignIn)]);
 } // rootSaga를 만들어 줍니다.
 
 export default rootSaga;

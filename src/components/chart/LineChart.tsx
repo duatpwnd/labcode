@@ -47,6 +47,19 @@ const LineChart = () => {
             }
         },
         plugins: {
+            tooltip: {
+                caretSize: 0,
+                displayColors: false,
+                enabled: true,
+                usePointStyle: false,
+                callbacks: {
+                    title: function () { return []; },
+                    label: function (context) {
+                        return context.formattedValue + "명"
+                    },
+
+                }
+            },
             legend: {
                 position: "top" as const,
                 display: false
@@ -65,7 +78,7 @@ const LineChart = () => {
                 label: "Dataset 1",
                 scaleGridLineColor: "rgba(0,0,0,.05)",
                 data: [
-                    0, 100, 150, 200, 250, 300, 250, 200, 400, 450, 500, 600
+                    50, 100, 150, 200, 250, 300, 250, 200, 400, 450, 500, 600
                 ],
                 borderColor: "white",
                 backgroundColor: "white",

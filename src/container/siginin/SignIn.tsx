@@ -1,8 +1,15 @@
 import "./SignIn.scoped.scss"
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signInRequest } from "src/actions/signIn"
 const SignIn = (props) => {
+    const dispatch = useDispatch();
     const [data, setData] = useState(true);
+    const signIn = () => {
+        console.log("로그인");
+        dispatch(signInRequest({ userId: "test", userPw: "test" }))
+    }
     return (
         <div className="mask">
             <div className="signin-modal">
@@ -21,7 +28,7 @@ const SignIn = (props) => {
                             className="user-pw"
                             placeholder="비밀번호"
                         />
-                        <button type="button">관리자 로그인</button>
+                        <button type="button" onClick={signIn}>관리자 로그인</button>
                     </fieldset>
                 </form>
                 <div className="sub-area">
