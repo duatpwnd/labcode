@@ -7,6 +7,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const DoughuntChart = ({ data, className }) => {
     const options = {
         responsive: true,
+        maintainAspectRatio: true,
         plugins: {
             tooltip: {
                 caretSize: 0,
@@ -29,23 +30,24 @@ const DoughuntChart = ({ data, className }) => {
         console.log("data", data);
     }, [])
     return (
-        <div className={className + " doughnut-wrap"} >
+        <div className={className + " doughnut-chart"} >
             <h2>{data.title}</h2>
             <div className="doughnut">
                 <Doughnut data={data} options={options} />
+                <div className="ico-wrap">{
+                    data.label.map((el, index) => {
+                        const bg = data.datasets[0].backgroundColor;
+                        return (
+                            <span className='ico' key={index}>
+                                <span className='circle' style={{
+                                    backgroundColor: bg[index]
+                                }}></span>{el}
+                            </span>
+                        )
+                    })}
+                </div>
             </div>
-            <div className="ico-wrap">{
-                data.label.map((el, index) => {
-                    const bg = data.datasets[0].backgroundColor;
-                    return (
-                        <span className='ico' key={index}>
-                            <span className='circle' style={{
-                                backgroundColor: bg[index]
-                            }}></span>{el}
-                        </span>
-                    )
-                })}
-            </div>
+
         </div>
 
     )

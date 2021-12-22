@@ -8,6 +8,7 @@ import {
     Tooltip,
     Legend
 } from "chart.js";
+import { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 ChartJS.register(
     CategoryScale,
@@ -73,6 +74,9 @@ const LineChart = () => {
 
         ]
     };
+    useEffect(() => {
+
+    }, [])
     return (
         <Line options={options} data={data} />
     )

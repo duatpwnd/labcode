@@ -19,6 +19,7 @@ ChartJS.register(
 
 const GroupedBar = () => {
     const options = {
+        responsive: true,
         plugins: {
             tooltip: {
                 interaction: {
@@ -44,7 +45,6 @@ const GroupedBar = () => {
                 text: "Chart.js Bar Chart - Stacked"
             }
         },
-        responsive: true,
         scales: {
             x: {
                 ticks: {
