@@ -8,6 +8,7 @@ function signInAPI(data) {
 function* signIn(action) {
   try {
     console.log("액션명", action);
+    // call을 통하여 동기적으로 호출, fork를 통하여 비동기적으로 호출
     const result = yield call(signInAPI, action.payload);
     yield put({
       type: SIGN_IN_SUCCESS,
