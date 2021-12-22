@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Languages, languages } from "src/lang/i18n"
 import { useMediaQuery } from "react-responsive";
 import "./Header.scoped.scss"
+import SignIn from 'src/components/siginin/SignIn';
 const SignIndButton = styled.button`
     border-radius: 8px;
     font-size: 13px;
@@ -47,9 +48,13 @@ const VersionIcon = styled.span`
 export default function Header() {
     const { t, i18n } = useTranslation();
     const [lang, langUpdate] = useState("ko");
+    const [isModal, modalUpdate] = useState(false);
     const isMobile = useMediaQuery({
         query: "(max-width: 479px)"
     });
+    const closeModal = (type: boolean): void => {
+        modalUpdate(type)
+    }
     const handleChangeLanguage = (lang: Languages) => {
         langUpdate(lang);
         i18n.changeLanguage(lang);
@@ -65,7 +70,10 @@ export default function Header() {
                 </h1>
                 <VersionIcon>{t('version')}</VersionIcon>
                 <div className="right-buttons">
-                    <SignIndButton onClick={() => { alert("준비중입니다.") }}>{t('signInBtn')}</SignIndButton>
+                    <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton>
+                    {
+                        isModal && <SignIn setData={closeModal} />
+                    }
                     {
                         lang == "ko" ? <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("en")}>
                             A

@@ -1,10 +1,12 @@
 import "./SignIn.scoped.scss"
 import { Link } from "react-router-dom";
-const SignIn = () => {
+import { useState } from "react";
+const SignIn = (props) => {
+    const [data, setData] = useState(true);
     return (
         <div className="mask">
             <div className="signin-modal">
-                <button className="close-btn"></button>
+                <button className="close-btn" onClick={() => props.setData(false)}></button>
                 <div className="signin-logo"></div>
                 <form className="form">
                     <fieldset>
