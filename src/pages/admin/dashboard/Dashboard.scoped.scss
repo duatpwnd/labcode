@@ -40,6 +40,7 @@
     grid-template-columns: repeat(3, 1fr);
     margin-top: 40px;
     .map-chart {
+      text-align: center;
       grid-column: 1 / span 2;
       padding: 32px 36px;
       box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);

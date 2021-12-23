@@ -18,11 +18,11 @@ ChartJS.register(
 );
 const GroupedBar = () => {
     const options = {
-        responsive: true,
+        maintainAspectRatio: false,
         layout: {
             padding: {
                 left: 17,
-                right: 16,
+                right: 24,
                 top: 30,
                 bottom: 18,
             },

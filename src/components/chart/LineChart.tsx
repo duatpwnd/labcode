@@ -21,13 +21,13 @@ ChartJS.register(
 );
 const LineChart = () => {
     const options = {
-        responsive: true,
+        maintainAspectRatio: false,
         layout: {
             padding: {
                 left: 12,
-                right: 15,
-                top: 22,
-                bottom: 22,
+                right: 24,
+                top: 21,
+                bottom: 13
             },
         },
         scales: {
@@ -58,6 +58,7 @@ const LineChart = () => {
                 interaction: {
                     xAlign: "center", //'left','center','right'
                     yAlign: 'bottom', //'top','center','bottom'
+
                 },
                 caretSize: 0,
                 displayColors: false,

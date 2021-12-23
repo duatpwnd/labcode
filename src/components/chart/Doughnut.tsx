@@ -16,8 +16,8 @@ Tooltip.positioners.custom = function (elements, position) {
 }
 const DoughuntChart = ({ data, className }) => {
     const options = {
-        responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
+
         plugins: {
             tooltip: {
                 interaction: {
@@ -49,7 +49,7 @@ const DoughuntChart = ({ data, className }) => {
         <div className={className + " doughnut-chart"} >
             <h2>{data.title}</h2>
             <div className="doughnut">
-                <Doughnut data={data} options={options} />
+                <Doughnut data={data} options={options} style={{ "maxHeight": "240px" }} />
                 <div className="ico-wrap">{
                     data.label.map((el, index) => {
                         const bg = data.datasets[0].backgroundColor;
