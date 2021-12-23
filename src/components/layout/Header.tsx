@@ -5,7 +5,7 @@ import { useState } from "react"
 import { Languages, languages } from "src/lang/i18n"
 import { useMediaQuery } from "react-responsive";
 import "./Header.scoped.scss"
-import SignIn from 'src/container/siginin/SignIn';
+import SignIn from 'src/container/signin/SignIn';
 const SignIndButton = styled.button`
     border-radius: 8px;
     font-size: 13px;
