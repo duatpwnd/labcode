@@ -16,15 +16,25 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
 const GroupedBar = () => {
     const options = {
         responsive: true,
+        layout: {
+            padding: {
+                left: 17,
+                right: 16,
+                top: 30,
+                bottom: 18,
+            },
+        },
         plugins: {
             tooltip: {
                 interaction: {
+                    xAlign: "center", //'left','center','right'
+                    yAlign: 'bottom', //'top','center','bottom'
                     mode: 'point'
                 },
+
                 caretSize: 0,
                 displayColors: false,
                 enabled: true,
@@ -35,7 +45,8 @@ const GroupedBar = () => {
                         return data.datasets[0].data[context.dataIndex] + "/" + data.datasets[1].data[context.dataIndex] + "명";
                     },
 
-                }
+                },
+
             },
             legend: {
                 display: false
@@ -61,8 +72,6 @@ const GroupedBar = () => {
                     color: "white",
                     maxTicksLimit: 4,
                 },
-                min: 0,
-                max: 60,
                 grid: {
                     borderDash: [3, 3],
                     color: "#ccc",
@@ -72,7 +81,7 @@ const GroupedBar = () => {
         },
         interaction: {
             mode: "index" as const,
-            intersect: false
+            intersect: true
         }
     };
     const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];

@@ -22,6 +22,14 @@ ChartJS.register(
 const LineChart = () => {
     const options = {
         responsive: true,
+        layout: {
+            padding: {
+                left: 12,
+                right: 15,
+                top: 22,
+                bottom: 22,
+            },
+        },
         scales: {
             x: {
                 ticks: {
@@ -37,8 +45,6 @@ const LineChart = () => {
                     color: "white",
                     maxTicksLimit: 4,
                 },
-                min: 0,
-                max: 600,
                 grid: {
                     borderDash: [3, 3],
                     color: "#ccc",
@@ -46,8 +52,13 @@ const LineChart = () => {
                 }
             }
         },
+
         plugins: {
             tooltip: {
+                interaction: {
+                    xAlign: "center", //'left','center','right'
+                    yAlign: 'bottom', //'top','center','bottom'
+                },
                 caretSize: 0,
                 displayColors: false,
                 enabled: true,
@@ -75,14 +86,13 @@ const LineChart = () => {
         labels,
         datasets: [
             {
+                hoverBackgroundColor: "#5138E5",
                 label: "Dataset 1",
-                scaleGridLineColor: "rgba(0,0,0,.05)",
                 data: [
-                    50, 100, 150, 200, 250, 300, 250, 200, 400, 450, 500, 600
+                    0, 100, 150, 200, 250, 300, 250, 200, 400, 450, 500, 600
                 ],
                 borderColor: "white",
                 backgroundColor: "white",
-
             },
 
         ]
