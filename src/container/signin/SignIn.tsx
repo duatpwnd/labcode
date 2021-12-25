@@ -28,13 +28,13 @@ const SignIn = (props) => {
                             className="user-pw"
                             placeholder="비밀번호"
                         />
-                        <button type="button" onClick={signIn}>관리자 로그인</button>
+                        <button type="button" onClick={signIn}>로그인</button>
                     </fieldset>
                 </form>
                 <div className="sub-area">
+                    <Link to="">이메일 찾기</Link>
                     <Link to="">비밀번호 찾기</Link>
-                    <Link to="">아이디 찾기</Link>
-                    <Link to="">회원가입 찾기</Link>
+                    <Link to="">문의하기</Link>
                 </div>
             </div>
         </div>
