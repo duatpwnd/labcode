@@ -13,28 +13,30 @@ const SignIn = (props) => {
     return (
         <div className="mask">
             <div className="signin-modal">
-                <button className="close-btn" onClick={() => props.setData(false)}></button>
-                <div className="signin-logo"></div>
-                <form className="form">
-                    <fieldset>
-                        <legend>로그인정보</legend>
-                        <input
-                            type="text"
-                            className="user-id"
-                            placeholder="아이디"
-                        />
-                        <input
-                            type="password"
-                            className="user-pw"
-                            placeholder="비밀번호"
-                        />
-                        <button type="button" onClick={signIn}>로그인</button>
-                    </fieldset>
-                </form>
-                <div className="sub-area">
-                    <Link to="">이메일 찾기</Link>
-                    <Link to="">비밀번호 찾기</Link>
-                    <Link to="">문의하기</Link>
+                <div>
+                    <button className="close-btn" onClick={() => props.setData(false)}></button>
+                    <div className="signin-logo"></div>
+                    <form className="form">
+                        <fieldset>
+                            <legend>로그인정보</legend>
+                            <input
+                                type="text"
+                                className="user-id"
+                                placeholder="아이디"
+                            />
+                            <input
+                                type="password"
+                                className="user-pw"
+                                placeholder="비밀번호"
+                            />
+                            <button type="button" onClick={signIn}>로그인</button>
+                        </fieldset>
+                    </form>
+                    <div className="sub-area">
+                        <Link to="">이메일 찾기</Link>
+                        <Link to="">비밀번호 찾기</Link>
+                        <Link to="">문의하기</Link>
+                    </div>
                 </div>
             </div>
         </div>

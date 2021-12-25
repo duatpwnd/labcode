@@ -11,7 +11,7 @@
   .signin-modal {
     background: white;
     max-width: 454px;
-    padding: 7.69vh 0;
+    padding: 7.69vh 36px;
     box-sizing: border-box;
     top: 50%;
     left: 50%;
@@ -20,7 +20,7 @@
     position: relative;
     .close-btn {
       position: absolute;
-      top: -4.9vh;
+      top: -5.2vh;
       right: 0;
       width: 24px;
       height: 24px;
@@ -38,8 +38,6 @@
     .form {
       max-width: 350px;
       margin: 0 auto;
-      padding: 0 20px;
-      box-sizing: border-box;
       input,
       button {
         display: block;
