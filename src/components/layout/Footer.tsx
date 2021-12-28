@@ -19,10 +19,7 @@ export default function Footer() {
                 <div>이메일 : funny@snaptag.co.kr</div>
                 <span className="policy">개인정보처리방침</span>
                 <span>이용약관</span>
-<<<<<<< HEAD
                 <div>Copyright</div>
-=======
->>>>>>> 7b6ae84e7028b2c6c6b4dd178004e51e2a4c7db4
             </div>
             <div className="link-wrap">
                 <b>패밀리 사이트 이동</b>

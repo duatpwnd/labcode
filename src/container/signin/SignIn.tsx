@@ -24,7 +24,7 @@ const SignIn = (props) => {
                         <input
                             type="text"
                             className="user-id"
-                            placeholder="아이디"
+                            placeholder="이메일"
                         />
                         <input
                             type="password"
