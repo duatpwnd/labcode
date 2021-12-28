@@ -20,20 +20,21 @@
     position: relative;
     .close-btn {
       position: absolute;
-      top: -60px;
+      top: 0px;
       right: 0;
       width: 36px;
       height: 36px;
       background: url("~src/assets/images/close_btn.svg") no-repeat center /
         36px 36px;
     }
-    .signin-logo {
-      max-width: 214px;
-      height: 135px;
-      background: url("~src/assets/images/signin_logo.svg") no-repeat center /
-        100%;
-      margin: 0 auto;
-      margin-bottom: 62px;
+    .signin-title {
+      text-align: center;
+      line-height: 50px;
+      font-size: 32px;
+      margin-bottom: 24px;
+      strong {
+        color: #5138e5;
+      }
     }
     .form {
       max-width: 350px;
@@ -64,20 +65,10 @@
       }
     }
     .sub-area {
-      max-width: 273px;
-      margin: 0 auto;
-      margin-top: 60px;
-      color: #79828a;
-      font-size: 14px;
-      word-break: keep-all;
+      text-align: center;
       a {
-        &:not(:last-child) {
-          &::after {
-            content: "|";
-            margin: 0 12px;
-            color: #e8e8e8;
-          }
-        }
+        font-size: 12px;
+        color: #79828a;
       }
     }
   }

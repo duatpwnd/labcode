@@ -14,7 +14,10 @@ const SignIn = (props) => {
         <div className="mask">
             <div className="signin-modal">
                 <button className="close-btn" onClick={() => props.setData(false)}></button>
-                <div className="signin-logo"></div>
+                <h2 className="signin-title">
+                    <strong>랩코드 관리</strong>를 위해<br />
+                    로그인해주세요.
+                </h2>
                 <form className="form">
                     <fieldset>
                         <legend>로그인정보</legend>
@@ -28,13 +31,11 @@ const SignIn = (props) => {
                             className="user-pw"
                             placeholder="비밀번호"
                         />
-                        <button type="button" onClick={signIn}>관리자 로그인</button>
+                        <button type="button" onClick={signIn}>로그인</button>
                     </fieldset>
                 </form>
                 <div className="sub-area">
-                    <Link to="">비밀번호 찾기</Link>
-                    <Link to="">아이디 찾기</Link>
-                    <Link to="">회원가입 찾기</Link>
+                    <Link to="">관리자 서비스 신청하기</Link>
                 </div>
             </div>
         </div>
