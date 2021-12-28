@@ -61,6 +61,9 @@ export default function Header() {
     }
     return (
         <header>
+            {
+                isModal && <SignIn setData={closeModal} />
+            }
             <div className="header-contents">
                 <h1 className="logo">
                     <Link to="/">
@@ -71,9 +74,7 @@ export default function Header() {
                 <VersionIcon>{t('version')}</VersionIcon>
                 <div className="right-buttons">
                     <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton>
-                    {
-                        isModal && <SignIn setData={closeModal} />
-                    }
+
                     {
                         lang == "ko" ? <button className="lang-btn" key={lang} onClick={() => handleChangeLanguage("en")}>
                             A

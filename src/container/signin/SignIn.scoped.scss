@@ -11,7 +11,7 @@
   .signin-modal {
     background: white;
     max-width: 454px;
-    padding: 120px 0;
+    padding: 7.69vh 36px;
     box-sizing: border-box;
     top: 50%;
     left: 50%;
@@ -20,13 +20,18 @@
     position: relative;
     .close-btn {
       position: absolute;
+<<<<<<< HEAD
       top: 0px;
+=======
+      top: -5.2vh;
+>>>>>>> 7b6ae84e7028b2c6c6b4dd178004e51e2a4c7db4
       right: 0;
-      width: 36px;
-      height: 36px;
+      width: 24px;
+      height: 24px;
       background: url("~src/assets/images/close_btn.svg") no-repeat center /
-        36px 36px;
+        24px 24px;
     }
+<<<<<<< HEAD
     .signin-title {
       text-align: center;
       line-height: 50px;
@@ -35,17 +40,22 @@
       strong {
         color: #5138e5;
       }
+=======
+    .signin-logo {
+      width: 163px;
+      height: 116px;
+      background: url("~src/assets/images/signin_logo.svg") no-repeat center /
+        100%;
+      margin: 0 auto;
+      margin-bottom: 7.69vh;
+>>>>>>> 7b6ae84e7028b2c6c6b4dd178004e51e2a4c7db4
     }
     .form {
-      max-width: 350px;
-      margin: 0 auto;
-      padding: 0 20px;
-      box-sizing: border-box;
       input,
       button {
         display: block;
         width: 100%;
-        height: 56px;
+        height: 52px;
         border-radius: 12px;
       }
       input {
@@ -66,9 +76,24 @@
     }
     .sub-area {
       text-align: center;
+<<<<<<< HEAD
       a {
         font-size: 12px;
         color: #79828a;
+=======
+      margin: 0 auto;
+      margin-top: 5.13vh;
+      color: #79828a;
+      font-size: 12px;
+      a {
+        &:not(:last-child) {
+          &::after {
+            content: "|";
+            margin: 0 8px;
+            color: #e8e8e8;
+          }
+        }
+>>>>>>> 7b6ae84e7028b2c6c6b4dd178004e51e2a4c7db4
       }
     }
   }
