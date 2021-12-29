@@ -3,10 +3,10 @@ import { initReactI18next } from "react-i18next";
 import langEn from "src/lang/lang.en.json";
 import langKo from "src/lang/lang.ko.json";
 import langCh from "src/lang/lang.ch.json";
-const resources = {
-  en: { translation: langEn },
-  ko: { translation: langKo },
-  ch: { translation: langCh },
+export const resources = {
+  en: { translation: langEn, value: "English" },
+  ko: { translation: langKo, value: "한국어" },
+  ch: { translation: langCh, value: "中國語" },
 };
 const userLanguage = window.navigator.language;
 i18n.use(initReactI18next).init({
@@ -19,5 +19,4 @@ i18n.use(initReactI18next).init({
   },
 });
 export const languages = "ko" as const;
-
 export type Languages = typeof languages[number];

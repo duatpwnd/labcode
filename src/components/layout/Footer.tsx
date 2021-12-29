@@ -25,7 +25,7 @@ export default function Footer() {
                 <b>패밀리 사이트 이동</b>
                 <BaseSelect eventHandler={handleSelect}>
                     <option value="null">Family Site</option>
-                    <option value={'https://onme.gallery/'}>안전하고 쉬운 미술품 투자,ONME</option>
+                    <option value={'https://onme.gallery/'}>ONME</option>
                 </BaseSelect>
             </div>
         </footer>

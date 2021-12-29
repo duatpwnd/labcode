@@ -1,0 +1,136 @@
+.wrap {
+  max-width: 840px;
+  margin: 7.7vh auto 0;
+  padding: 0 20px;
+  .h2-title {
+    font-size: 44px;
+  }
+  .guide-msg {
+    line-height: 23px;
+    color: #79828a;
+    margin: 18px 0 7.38vh 0;
+  }
+  form {
+    label {
+      font-weight: 700;
+      width: 110px;
+      display: inline-block;
+      &:not(.except) {
+        &::after {
+          content: "*";
+          margin-left: 8px;
+          color: #5138e5;
+        }
+      }
+    }
+    input {
+      border-bottom: 1px solid #e6e8eb;
+      padding-bottom: 13px;
+      width: calc(100% - 110px);
+      font-weight: 700;
+      &::placeholder {
+        color: #9ea7ad;
+      }
+    }
+    .row1 {
+      &:after {
+        display: block;
+        content: "";
+        clear: both;
+      }
+      .row-span {
+        width: 46%;
+      }
+      .name-field {
+        float: left;
+      }
+      .email-field {
+        float: right;
+      }
+    }
+    .row2 {
+      margin: 32px 0;
+    }
+    .row3 {
+      textarea {
+        border: 1px solid #e6e8eb;
+        width: calc(100% - 110px);
+        padding: 20px;
+        box-sizing: border-box;
+        vertical-align: top;
+        border-radius: 8px;
+        resize: none;
+        height: 365px;
+        font-size: 14px;
+        color: #555555;
+        outline: none;
+      }
+    }
+    .btn-wrap {
+      width: calc(100% - 110px);
+      display: inline-flex;
+      justify-content: center;
+      margin-top: 40px;
+      button {
+        border-radius: 8px;
+        font-size: 18px;
+        padding: 22px 0;
+      }
+      .cancel-btn {
+        background: #e6e8eb;
+        color: black;
+        width: 27%;
+      }
+      .submit-btn {
+        background: #5138e5;
+        color: white;
+        margin-left: 12px;
+        width: 47%;
+      }
+    }
+  }
+}
+@media all and (max-width: 767px) {
+  .wrap {
+    form {
+      .row1 {
+        .row-span {
+          width: 100%;
+        }
+        .email-field {
+          margin-top: 32px;
+        }
+      }
+    }
+  }
+}
+@media all and (max-width: 479px) {
+  .wrap {
+    form {
+      label {
+        display: block;
+        margin-bottom: 14px;
+      }
+      input {
+        width: 100%;
+      }
+      .row3 {
+        textarea {
+          width: 100%;
+        }
+      }
+      .except {
+        display: none;
+      }
+      .btn-wrap {
+        width: 100%;
+        .cancel-btn {
+          width: 40%;
+        }
+        .submit-btn {
+          width: 60%;
+        }
+      }
+    }
+  }
+}

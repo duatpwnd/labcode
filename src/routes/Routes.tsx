@@ -8,6 +8,7 @@ import Team from "src/pages/admin/team/Team";
 import Dashboard from "src/pages/admin/dashboard/Dashboard";
 import Project from "src/pages/admin/project/Project";
 import Production from "src/pages/admin/production/Production";
+import Help from "src/pages/help/Help";
 export default function CreateRoutes() {
     return (
         <Routes>
@@ -19,6 +20,7 @@ export default function CreateRoutes() {
                 <Route path="project" element={<Project />} />
                 <Route path="production" element={<Production />} />
             </Route>
+            <Route path="/help" element={<Help />}></Route>
         </Routes>
     );
 }
