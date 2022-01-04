@@ -22,7 +22,7 @@ module.exports = {
       },
     },
     {
-      plugin: ScopedScss,
+      plugin: require("craco-plugin-scoped-css"),
     },
   ],
 };
