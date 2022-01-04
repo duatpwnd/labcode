@@ -14,7 +14,7 @@ const SignIndButton = styled.button`
     background: #E5E5E5;
     font-weight: 700;
     height: 44px;
-    width: 76px;
+    width: 111px;
     @media all and (min-width: 480px) {
     &:hover {
       background: #D1D6DB;
@@ -26,7 +26,7 @@ const SignIndButton = styled.button`
         font-weight:700;
     }
     @media all and (max-width:320px){
-        width: 18vw;
+        width: 31vw;
     }
   
 `;
@@ -59,6 +59,7 @@ const LangIcon = styled.button`
     }
     @media all and (max-width: 479px) {
         background-color:white;
+        display:none
     }
 `
 
