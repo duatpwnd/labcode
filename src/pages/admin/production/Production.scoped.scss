@@ -1,0 +1,31 @@
+main {
+  padding: 40px;
+  margin-left: 320px;
+  table {
+    width: 100%;
+    table-layout: fixed;
+    th,
+    td {
+      text-align: left;
+      padding: 18px 0;
+      color: #9ea7ad;
+      font-size: 14px;
+    }
+    tr {
+      border-bottom: 1px solid #e6e8eb;
+      th {
+        background: #f6f7f8;
+      }
+      td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+@media all and (max-width: 1199px) {
+  main {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,38 @@
+main {
+  padding: 40px;
+  margin-left: 320px;
+  .form {
+    max-width: 840px;
+    margin: 0 auto;
+    margin-top: 48px;
+    .h2-title {
+      margin-top: 54px;
+      margin-bottom: 40px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #79828a;
+    }
+    .row {
+      margin-top: 16px;
+      label {
+        font-weight: 700;
+        width: 180px;
+        vertical-align: top;
+        display: inline-block;
+      }
+      textarea {
+        height: 220px;
+        padding: 20px;
+        resize: none;
+        box-sizing: border-box;
+        border: 1px solid #e6e8eb;
+        border-radius: 8px;
+        width: calc(100% - 180px);
+      }
+    }
+  }
+}
+@media all and (max-width: 1199px) {
+  main {
+    margin-left: 0;
+  }
+}

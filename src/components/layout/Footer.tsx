@@ -1,32 +1,65 @@
 import "./Footer.scoped.scss"
-import BaseSelect from "../common/base-select/BaseSelect"
-export default function Footer() {
-    const handleSelect = (e) => {
-        if (e.target.value != "null") {
-            window.open(e.target.value, '_blank')
-        }
+import { Link } from "react-router-dom";
+import { useState } from "react";
+const SelectBox = () => {
+    const [index, indexUpdate] = useState(0);
+    const [isTab, modalUpdate] = useState(false);
+    const moveLink = (link, index) => {
+        window.open(link, '_blank')
+        indexUpdate(index);
+        modalUpdate(false)
     };
 
     return (
+        <div className="select-box">
+            <div className="tab" onClick={() => modalUpdate(!isTab)}>
+                {
+                    index == 0 ?
+                        <div>
+                            <img src={require("images/onme_logo_ico.svg").default} alt="ONME" title="ONME" className="ico" />
+                            <span className="text">안전하고 쉬운 투자, 온미</span>
+                        </div>
+                        :
+                        <div>
+                            <img src={require("images/labcode_logo_ico.svg").default} alt="LABCODE" title="LABCODE" className="ico" />
+                            <span className="text">LAB Code 솔루션 구축하는, 스냅태그</span>
+                        </div>
+                }
+            </div>
+            {isTab &&
+                <div className="list-wrap">
+                    <div className="list" onClick={() => { moveLink("https://onme.gallery/", 0) }}>
+                        <img src={require("images/onme_logo_ico.svg").default} alt="ONME" title="ONME" className="ico" />
+                        <span className="text">안전하고 쉬운 투자, 온미</span>
+                    </div>
+                    <div className="list" onClick={() => { moveLink("https://onme.gallery/", 1) }}>
+                        <img src={require("images/labcode_logo_ico.svg").default} alt="LABCODE" title="LABCODE" className="ico" />
+                        <span className="text">LAB Code 솔루션 구축하는, 스냅태그</span>
+                    </div>
+                </div>
+            }
+        </div >
+    )
+}
+export default function Footer() {
+    return (
         <footer>
-            <img className="snaptag-logo" src={require("src/assets/images/snaptag_logo.svg").default} />
-            <strong className="snaptag">(주)스냅태그</strong>
-            <div className="col col1"><div >대표이사 : 민경웅,김정희</div>
-                <div >주소 : 경기 성남시 분당구 서현1동 황새울로 354, 8F</div>
-                <div>대표번호 : 031-628-4350</div>
+            <div className="col1">
+                <strong className="snaptag">(주)스냅태그</strong>
+                <address><span>경기 성남시 분당구 서현1동 황새울로 354,  8F (13591)</span>     <span>대표이사 : 민경웅, 김정희</span>     <span>대표번호 : <strong>031-628-4350</strong></span>     <span>이메일 : <strong>funny@snaptag.co.kr</strong>
+                </span>
+                </address>
+                <p className="copyright">
+                    Copyright Ⓒ 2020 snaptag all rights reserved.
+                </p>
+                <div className="policy">
+                    <Link to="" className="privacy">개인정보처리방침</Link>
+                    <Link to="">이용약관</Link>
+                </div>
             </div>
-            <div className="col col2">
-                <div>이메일 : funny@snaptag.co.kr</div>
-                <span className="policy">개인정보처리방침</span>
-                <span>이용약관</span>
-                <div>Copyright</div>
-            </div>
-            <div className="link-wrap">
-                <b>패밀리 사이트 이동</b>
-                <BaseSelect eventHandler={handleSelect}>
-                    <option value="null">Family Site</option>
-                    <option value={'https://onme.gallery/'}>ONME</option>
-                </BaseSelect>
+            <div className="col2">
+                <b>패밀리 사이트</b>
+                <SelectBox />
             </div>
         </footer>
     )

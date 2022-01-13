@@ -5,22 +5,22 @@ const Navigator = () => {
         <nav>
             <ul>
                 <li>
-                    <NavLink to="/admin/dashboard">
+                    <NavLink to="/dashboard">
                         대시보드
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/admin/team">
+                    <NavLink to="/team">
                         팀
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/admin/project">
+                    <NavLink to="/project">
                         프로젝트
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/admin/production">
+                    <NavLink to="/production">
                         제품
                     </NavLink>
                 </li>

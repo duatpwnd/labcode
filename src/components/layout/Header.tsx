@@ -93,7 +93,7 @@ const Header = () => {
             <div className="header-contents">
                 <h1 className="logo">
                     <Link to="/">
-                        {isMobile ? <img src={require("src/assets/images/mobile_logo.svg").default} /> : <img src={require("src/assets/images/logo.svg").default} />}
+                        {isMobile ? <img src={require("images/mobile_logo.svg").default} alt="LABCODE" title="LABCODE" /> : <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />}
                     </Link>
                 </h1>
                 <VersionIcon>{t('version')}</VersionIcon>

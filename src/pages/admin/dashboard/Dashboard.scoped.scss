@@ -1,4 +1,6 @@
-.contents {
+main {
+  padding: 40px;
+  margin-left: 320px;
   .box {
     width: 100%;
     background: #ffffff;
@@ -79,9 +81,13 @@
     border-top-right-radius: 12px;
   }
 }
-
+@media all and (max-width: 1199px) {
+  main {
+    margin-left: 0;
+  }
+}
 @media all and (max-width: 991px) {
-  .contents {
+  main {
     .chart-wrap {
       grid-template-columns: repeat(2, 1fr);
       .chart1 {
@@ -101,15 +107,16 @@
     }
   }
 }
+
 @media all and (max-width: 767px) {
-  .contents {
+  main {
     .chart-wrap {
       grid-template-columns: 1fr;
     }
   }
 }
 @media all and (max-width: 604px) {
-  .contents {
+  main {
     .bottom-chart-wrap {
       .doughnut-wrap {
         flex-direction: column;

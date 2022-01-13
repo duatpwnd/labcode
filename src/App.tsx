@@ -1,6 +1,7 @@
 import './App.css';
-import Header from "src/components/layout/Header";
-import Footer from "src/components/layout/Footer";
+import Header from "components/layout/Header";
+import Footer from "components/layout/Footer";
+import Navigator from 'components/layout/navigation/Navigator';
 import Routes from "src/routes/Routes"
 import {
   useLocation
@@ -10,6 +11,9 @@ function App() {
   return (
     <div className="App">
       <Header />
+      {pathname != "/" &&
+        <Navigator />
+      }
       {Routes()}
       {pathname == "/" &&
         <Footer />

@@ -1,0 +1,58 @@
+main {
+  padding: 40px;
+  margin-left: 320px;
+  .nav {
+    margin: 40px 0 20px 0;
+    border-bottom: 1px solid rgb(234, 234, 235);
+    display: flex;
+    li {
+      width: 140px;
+      text-align: center;
+      font-size: 18px;
+      padding-bottom: 14px;
+      color: #79828a;
+    }
+    .active {
+      font-weight: 700;
+      color: black;
+      border-bottom: 3px solid #303538;
+    }
+  }
+  .project-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    .list {
+      border-radius: 8px;
+      border: 1px solid #e6e8eb;
+      .thumbnail {
+        width: 100%;
+        height: 210px;
+      }
+      dl {
+        border-top: 1px solid #e6e8eb;
+        padding: 16px;
+      }
+    }
+  }
+}
+@media all and (max-width: 1199px) {
+  main {
+    margin-left: 0;
+  }
+}
+@media all and (max-width: 900px) {
+  main {
+    .project-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media all and (max-width: 479px) {
+  main {
+    .project-list {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}

@@ -8,7 +8,7 @@ const Dashboard = () => {
     useEffect(() => {
     }, [])
     return (
-        <div className="contents">
+        <main>
             <div className="chart-wrap">
                 <div className="box">
                     <span className="statistic-ico"></span>
@@ -127,7 +127,7 @@ const Dashboard = () => {
                     }} />
                 </div>
             </div>
-        </div>
+        </main>
     )
 }
 export default Dashboard
