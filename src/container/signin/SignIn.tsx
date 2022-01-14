@@ -1,15 +1,23 @@
 import "./SignIn.scoped.scss"
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { signInRequest } from "src/actions/signIn"
+import { RootState } from "src/reducers";
 const SignIn = (props) => {
+    console.log("리랜");
     const dispatch = useDispatch();
-    const [data, setData] = useState(true);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const signinError = useSelector((state: RootState) => {
+        return state.signIn.signinError
+    })
     const signIn = () => {
-        console.log("로그인");
-        dispatch(signInRequest({ userId: "test", userPw: "test" }))
+        dispatch(signInRequest({ email: email, password: password }))
     }
+    useEffect(() => {
+        console.log("props", props);
+    }, [])
     return (
         <div className="mask">
             <div className="signin-modal">
@@ -25,12 +33,17 @@ const SignIn = (props) => {
                             type="text"
                             className="user-id"
                             placeholder="이메일"
+                            onChange={({ target: { value } }) => setEmail("snaptag_official@snaptag.co.kr")}
                         />
                         <input
                             type="password"
                             className="user-pw"
                             placeholder="비밀번호"
+                            onChange={({ target: { value } }) => setPassword("Snaptag0911!")}
                         />
+                        {signinError &&
+                            <p className="guide-message">아이디 또는 비밀번호가 일치하지 않습니다.</p>
+                        }
                         <button type="button" onClick={signIn}>로그인</button>
                     </fieldset>
                 </form>

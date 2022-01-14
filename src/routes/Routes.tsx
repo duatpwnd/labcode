@@ -7,8 +7,9 @@ import Team from "src/pages/admin/team/Team";
 import Dashboard from "src/pages/admin/dashboard/Dashboard";
 import ProjectList from "src/pages/admin/project/ProjectList";
 import ProjectDetail from "src/pages/admin/project/ProjectDetail";
-import Production from "src/pages/admin/production/Production";
+import Product from "src/pages/admin/production/Product";
 import Help from "src/pages/help/Help";
+import Profile from "src/pages/profile/Profile";
 export default function CreateRoutes() {
     return (
         <Routes>
@@ -17,8 +18,9 @@ export default function CreateRoutes() {
             <Route path="/team" element={<Team />} />
             <Route path="/project" element={<ProjectList />} />
             <Route path="/project/:id" element={<ProjectDetail />} />
-            <Route path="/production" element={<Production />} />
+            <Route path="/product" element={<Product />} />
             <Route path="/help" element={<Help />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
         </Routes>
     );
 }

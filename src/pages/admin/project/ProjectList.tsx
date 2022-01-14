@@ -3,22 +3,28 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "./ProjectList.scoped.scss"
 const SearchInput = styled.input`
-    width:calc(100% - 190px);
-    margin-right:30px;
-    padding:14px 10px;
+    padding-left:14px;
     box-sizing:border-box;
-    border-radius: 8px;
-    @media all and (max-width: 767px) {
-        width:100%;
-    }
+    font-size:18px;
+    width:calc(100% - 24px);
+    overflow:hidden;
+    text-overflow:ellipsis;
+`
+const SearchButton = styled.button`
+    width:24px;
+    height:24px;
+    vertical-align:middle;
+    background: url(${require('images/search_ico.svg').default}) no-repeat center center /
+    24px 24px;
 `
 const SelectBox = styled.select`
-    width: 58px;
-    border: 0;
-    margin-bottom:28px;
-    font-size: 13px;
+    width: 89px;
+    margin-bottom:20px;
+    border: 1px solid #DBDFE1;
+    border-radius: 8px;
+    padding: 8px 16px;
     color: #333333;
-    background: url(${require('images/arrow_bottom.svg').default}) no-repeat right center /
+    background: url(${require('images/arrow_bottom.svg').default}) no-repeat right 8px center /
     16px 16px;
 `
 const CreateBtn = styled.button`
@@ -26,13 +32,46 @@ const CreateBtn = styled.button`
     border-radius:8px;
     font-size:18px;
     width:160px;
-    padding:14px 0;
+    padding:19px 0;
     color:white;
     @media all and (max-width: 767px) {
         margin-top:20px;
         width:100%;
     }
 `
+const StatusText = styled.strong`
+    font-size:14px;
+    text-align:center;
+    color:${(props) => props.color};
+    background:${(props) => props.background};
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding:9px 8px;
+    border-radius:4px;
+`
+const ProjectMenu = () => {
+    const [isActive, menuUpdate] = useState(false);
+    return (
+        <div>
+            <button className="menu-btn" onClick={() => menuUpdate(!isActive)}></button>
+            {
+                isActive &&
+                <div className="menu">
+                    <h3 className="h3-title">커피빈 패키지 프로젝트</h3>
+                    <ul >
+                        <li className="manage">
+                            프로젝트 관리
+                        </li>
+                        <li className="delete">
+                            삭제
+                        </li>
+                    </ul>
+                </div>
+            }
+        </div>
+    )
+}
 const Project = () => {
     const a = 3;
     const [index, indexUpdate] = useState(0);
@@ -41,17 +80,20 @@ const Project = () => {
     }, [])
     return (
         <main>
-            <SearchInput placeholder="원하는 프로젝트를 검색해보세요." />
+            <div className="search-area">
+                <SearchButton />
+                <SearchInput placeholder="원하는 프로젝트를 검색해보세요." />
+            </div>
             <CreateBtn>프로젝트 생성</CreateBtn>
             <ul className="nav">
                 <li className={index == 0 ? 'active' : ''} onClick={() => indexUpdate(0)}>
-                    전체 프로젝트(14)
+                    전체 프로젝트<span>(14)</span>
                 </li>
                 <li className={index == 1 ? 'active' : ''} onClick={() => indexUpdate(1)}>
-                    신청접수(2)
+                    신청접수<span>(14)</span>
                 </li>
                 <li className={index == 2 ? 'active' : ''} onClick={() => indexUpdate(2)}>
-                    승인완료(12)
+                    승인완료<span>(14)</span>
                 </li>
             </ul>
             <SelectBox>
@@ -60,60 +102,19 @@ const Project = () => {
                 </option>
             </SelectBox>
             <ul className="project-list">
-                <li className="list">
-                    <Link to={{ pathname: `${a}` }}>
-                        <img src={require("images/ex.png").default} alt="LABCODE" title="LABCODE" className="thumbnail" />
-                    </Link>
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
-                <li className="list">
-                    <img src={require("images/ex.png").default} alt="LABCODE" title="LABCODE" className="thumbnail" />
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
-                <li className="list">
-                    <img src={require("images/ex.png").default} alt="LABCODE" title="LABCODE" className="thumbnail" />
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
-                <li className="list">
-                    <img src={require("images/ex.png").default} alt="LABCODE" title="LABCODE" className="thumbnail" />
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
-                <li className="list">
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
-                <li className="list">
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
-                <li className="list">
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
-                <li className="list">
-                    <dl>
-                        <dt>프로젝트명</dt>
-                        <dd>프로젝트</dd>
-                    </dl>
-                </li>
+                {
+                    [0, 1, 2, 3].map((el, index) => <li className="list">
+                        <Link to={{ pathname: `${a}` }}>
+                            <img src={require("images/ex.svg").default} alt="LABCODE" title="LABCODE" className="thumbnail" />
+                        </Link>
+                        <StatusText color="#EA43CF" background="#FFF0F7">신청접수</StatusText>
+                        <dl>
+                            <dt>프로젝트명</dt>
+                            <dd>프로젝트</dd>
+                        </dl>
+                        <ProjectMenu />
+                    </li>)
+                }
             </ul>
         </main>
     )

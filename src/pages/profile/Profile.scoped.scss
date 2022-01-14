@@ -1,0 +1,56 @@
+main {
+  padding: 40px;
+  margin-left: 320px;
+  section {
+    position: relative;
+    .h3-title {
+      padding-bottom: 15px;
+      border-bottom: 2px solid #9ea7ad;
+    }
+    .message {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: #79828a;
+      font-size: 14px;
+    }
+    .row {
+      margin-top: 30px;
+      label {
+        width: 180px;
+        font-weight: 700;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      input[type="file"] {
+        display: none;
+      }
+      .input-file {
+        width: calc(100% - 328px);
+        margin-right: 20px;
+      }
+      .file {
+        background: #dbdfe1;
+        border-radius: 8px;
+        text-align: center;
+        padding: 14px 0;
+        width: 128px;
+        height: 52px;
+        line-height: 24px;
+        box-sizing: border-box;
+      }
+      input {
+        width: calc(100% - 180px);
+        border-bottom: 1px solid #f2f4f5;
+        padding: 13px 0;
+        vertical-align: middle;
+        &::placeholder {
+          color: #9ea7ad;
+        }
+      }
+    }
+  }
+  .section1 {
+    margin: 62px 0;
+  }
+}

@@ -12,9 +12,7 @@ header {
   .header-contents {
     height: 80px;
     line-height: 80px;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 35px;
     box-sizing: border-box;
     .logo {
       display: inline-block;
@@ -50,10 +48,10 @@ header {
     background: #5138e5;
   }
 }
-@media all and (max-width: 320px) {
+@media all and (max-width: 360px) {
   .logo {
     img {
-      width: 40vw;
+      width: 35.7vw;
     }
   }
 }

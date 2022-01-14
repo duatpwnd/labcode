@@ -1,4 +1,4 @@
-import "./Production.scoped.scss"
+import "./Product.scoped.scss"
 import styled from "styled-components";
 const SelectBox = styled.select`
     width: 58px;
@@ -8,7 +8,7 @@ const SelectBox = styled.select`
     background: url(${require('images/arrow_bottom.svg').default}) no-repeat right center /
     16px 16px;
 `
-const Production = () => {
+const Product = () => {
     return (
         <main>
             <SelectBox>
@@ -66,4 +66,4 @@ const Production = () => {
         </main>
     )
 }
-export default Production
+export default Product

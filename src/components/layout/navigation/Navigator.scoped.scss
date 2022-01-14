@@ -1,6 +1,5 @@
 nav {
   width: 320px;
-  background: #ccc;
   position: fixed;
   top: 80px;
   height: 100%;
@@ -8,14 +7,35 @@ nav {
     li {
       a {
         width: 100%;
-        padding: 25px 35px;
+        padding: 25px 35px 25px 80px;
         box-sizing: border-box;
         display: block;
         color: #79828a;
         font-size: 18px;
       }
+      .dashboard {
+        background: url("~images/dashboard_ico.svg") no-repeat left 44px top
+          20px / 24px 24px;
+      }
+      .dashboard.active {
+        background: url("~images/active_dashboard_ico.svg") #f6f7f8 no-repeat
+          left 44px top 20px / 24px 24px;
+      }
+      .team {
+        background: url("~images/team_ico.svg") no-repeat left 44px top 20px /
+          24px 24px;
+      }
+      .project {
+        background: url("~images/project_ico.svg") no-repeat left 44px top 20px /
+          24px 24px;
+      }
+      .project.active {
+        background: url("~images/active_project_ico.svg") #f6f7f8 no-repeat left
+          44px top 20px / 24px 24px;
+      }
       .active {
-        background: #f6f5fe;
+        color: black;
+        font-weight: 700;
       }
     }
   }

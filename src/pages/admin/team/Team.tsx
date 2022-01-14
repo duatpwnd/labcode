@@ -1,6 +1,6 @@
 const Team = () => {
     return (
-        <main>Team</main>
+        <main></main>
     )
 
 }

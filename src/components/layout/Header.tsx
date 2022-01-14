@@ -25,7 +25,7 @@ const SignIndButton = styled.button`
         background:white;
         font-weight:700;
     }
-    @media all and (max-width:320px){
+    @media all and (max-width:360px){
         width: 31vw;
     }
   
@@ -40,7 +40,7 @@ const VersionIcon = styled.span`
     line-height: 16px;
     border-radius: 4px;
     margin-left:28px;
-    @media all and (max-width: 479px) {
+    @media all and (max-width: 510px) {
         display:none
     }
 `
