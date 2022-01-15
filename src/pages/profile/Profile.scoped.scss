@@ -28,6 +28,11 @@ main {
       .input-file {
         width: calc(100% - 328px);
         margin-right: 20px;
+        border-bottom: 1px solid #f2f4f5;
+        padding: 13px 0;
+        color: #9ea7ad;
+        display: inline-block;
+        vertical-align: middle;
       }
       .file {
         background: #dbdfe1;
@@ -52,5 +57,10 @@ main {
   }
   .section1 {
     margin: 62px 0;
+  }
+}
+@media all and (max-width: 1199px) {
+  main {
+    margin-left: 0;
   }
 }

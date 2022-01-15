@@ -7,7 +7,7 @@ import Team from "src/pages/admin/team/Team";
 import Dashboard from "src/pages/admin/dashboard/Dashboard";
 import ProjectList from "src/pages/admin/project/ProjectList";
 import ProjectDetail from "src/pages/admin/project/ProjectDetail";
-import Product from "src/pages/admin/production/Product";
+import Product from "src/pages/admin/product/Product";
 import Inquiryies from "src/pages/inquiries/Inquiryies";
 import Profile from "src/pages/profile/Profile";
 export default function CreateRoutes() {

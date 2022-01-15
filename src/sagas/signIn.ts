@@ -23,15 +23,20 @@ function signInAPI(data) {
 function* signIn(action) {
   // call을 통하여 동기적으로 호출, fork를 통하여 비동기적으로 호출
   const result = yield call(signInAPI, action.payload);
-  console.log("result", result);
+
   if (result.data.statusCode == 200) {
     console.log("성공");
+    let date = new Date();
+    date.setTime(date.getTime() + 1000 * 60 * 60);
     yield put({
       type: SIGN_IN_SUCCESS,
       payload: result.data.data,
     });
-    cookies.set("user_info", result.data.data);
-    history.push("/dashboard");
+    cookies.set("user_info", result.data.data, {
+      path: "/",
+      expires: date,
+    });
+    history.push("/project");
   } else {
     console.log("실패");
     yield put({

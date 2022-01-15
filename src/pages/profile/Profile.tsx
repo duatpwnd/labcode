@@ -1,13 +1,44 @@
+import axios from "axios";
+import apiUrl from "src/utils/api";
 import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 import "./Profile.scoped.scss"
 const Profile = () => {
-    const [company, setCompany] = useState("");
-    const [registerNumber, setRegisterNumber] = useState("");
-    const [file, setFile] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [manager, setManager] = useState("");
-    const [address, setAddress] = useState("");
+    const [inputs, setInputs] = useState({
+        title: "",
+        description: "",
+        businessNumber: "",
+        logoImage: {} as { [key: string]: any },
+        businessImage: {} as { [key: string]: any },
+        homepage: "",
+        managerName: "",
+        managerEmail: "",
+        managerPhone: ""
+    });
+    const onChange = (e: { [key: string]: any }) => {
+        if (e.target.id == "logoImage" || e.target.id == "businessImage") {
+            setInputs({
+                ...inputs,
+                logoImage: e.target.files[0],
+                businessImage: e.target.files[0]
+            })
+        } else {
+            setInputs({
+                ...inputs,
+                [e.target.id]: e.target.value,
+            })
+        }
+    };
+    const modify = () => {
+        console.log("body", inputs);
+        axios
+            .patch(apiUrl.team, inputs)
+            .then((result: any) => {
+                console.log("수정결과:", result);
+            }).catch((err: any) => {
+                console.log('수정에러:', err);
+            });
+    }
     return (
         <main>
             <h2>정보 입력</h2>
@@ -15,40 +46,44 @@ const Profile = () => {
                 <h3 className="h3-title">회사 정보</ h3>
                 <p className="message">* 정보를 변경하면 자동으로 저장됩니다.</p>
                 <div className="row">
-                    <label htmlFor="company">회사명</label>
-                    <input type="text" id="company" placeholder="회사명을 입력해주세요." onChange={({ target: { value } }) => setCompany(value)} />
+                    <label htmlFor="title">회사명</label>
+                    <input type="text" id="title" placeholder="회사명을 입력해주세요." onChange={onChange} />
                 </div>
                 <div className="row">
-                    <label htmlFor="registerNumber">사업자등록번호</label>
-                    <input type="text" id="registerNumber" placeholder="사업자등록번호를 입력해주세요." onChange={({ target: { value } }) => setRegisterNumber(value)} />
+                    <label htmlFor="description">팀소개</label>
+                    <input type="text" id="description" placeholder="팀소개를 입력해주세요." onChange={onChange} />
                 </div>
                 <div className="row">
-                    {file}
+                    <label htmlFor="businessNumber">사업자등록번호</label>
+                    <input type="text" id="businessNumber" placeholder="사업자등록번호를 입력해주세요." onChange={onChange} />
+                </div>
+                <div className="row">
                     <label >사업자등록증</label>
-                    <input type="text" className="input-file" placeholder="사업자등록증을 첨부해주세요." readOnly />
-                    <input type="file" id="file" onChange={({ target: { value } }) => setFile(value)} />
-                    <label htmlFor="file" className="file">찾아보기</label>
+                    <input type="text" className="input-file" value={inputs.businessImage.name || ""} placeholder="사업자등록증을 첨부해주세요." readOnly />
+                    <input type="file" id="businessImage" onChange={onChange} />
+                    <label htmlFor="businessImage" className="file">찾아보기</label>
                 </div>
                 <div className="row">
-                    <label htmlFor="address">홈페이지 주소</label>
-                    <input type="text" id="address" placeholder="홈페이지 주소를 입력해주세요." onChange={({ target: { value } }) => setAddress(value)} />
+                    <label htmlFor="homepage">홈페이지 주소</label>
+                    <input type="text" id="homepage" placeholder="홈페이지 주소를 입력해주세요." onChange={onChange} />
                 </div>
             </section>
             <section>
                 <h3 className="h3-title">담당자 정보</ h3>
                 <div className="row">
-                    <label htmlFor="manager">담당자명</label>
-                    <input type="text" id="manager" placeholder="담당자명을 입력해주세요." onChange={({ target: { value } }) => setManager(value)} />
+                    <label htmlFor="managerName">담당자명</label>
+                    <input type="text" id="managerName" placeholder="담당자명을 입력해주세요." onChange={onChange} />
                 </div>
                 <div className="row">
-                    <label htmlFor="email">메일 주소</label>
-                    <input type="text" id="email" placeholder="메일주소를 입력해주세요." onChange={({ target: { value } }) => setEmail(value)} />
+                    <label htmlFor="managerEmail">메일 주소</label>
+                    <input type="text" id="managerEmail" placeholder="메일주소를 입력해주세요." onChange={onChange} />
                 </div>
                 <div className="row">
-                    <label htmlFor="phone">전화번호</label>
-                    <input type="text" id="phone" placeholder="전화번호를 입력해주세요." onChange={({ target: { value } }) => setPhone(value)} />
+                    <label htmlFor="managerPhone">전화번호</label>
+                    <input type="text" id="managerPhone" placeholder="전화번호를 입력해주세요." onChange={onChange} />
                 </div>
             </section>
+            <button type="button" onClick={modify}>수정</button>
         </main >
     )
 }

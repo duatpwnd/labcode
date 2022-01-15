@@ -27,6 +27,9 @@ const axiosSet = () => {
     },
     (err: any) => {
       console.log("요청후에러:", err.response);
+      if (err.response.data.statusCode == 401) {
+        history.push("/");
+      }
       return Promise.reject(err.response);
     }
   );
