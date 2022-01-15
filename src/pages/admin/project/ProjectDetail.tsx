@@ -23,10 +23,9 @@ const BackButton = styled.button`
     13px 24px
 `
 const ProjectDetail = () => {
-    const location = useLocation();
     const params = useParams();
     useEffect(() => {
-        console.log("프로젝트 상세페이지 노출", location, params);
+        console.log("프로젝트 상세페이지 노출", params.id);
         axios.post("", { id: params.id }).then((result: { [key: string]: any }) => {
             console.log("프로젝트 상세페이지 결과:", result);
         })

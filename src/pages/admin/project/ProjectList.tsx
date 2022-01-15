@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import apiUrl from "src/utils/api";
 import "./ProjectList.scoped.scss"
 const SearchInput = styled.input`
     padding-left:14px;
@@ -73,10 +75,19 @@ const ProjectMenu = () => {
     )
 }
 const Project = () => {
-    const a = 3;
+    const [list, setupList] = useState<{ [key: string]: any }[]>([]);
     const [index, indexUpdate] = useState(0);
+    const getProjectList = () => {
+        axios
+            .get(apiUrl.project)
+            .then((result: any) => {
+                console.log('프로젝트리스트:', result.data.data);
+                setupList(result.data.data);
+            })
+    }
     useEffect(() => {
         console.log('프로젝트 리스트페이지 노출');
+        getProjectList();
     }, [])
     return (
         <main>
@@ -103,14 +114,17 @@ const Project = () => {
             </SelectBox>
             <ul className="project-list">
                 {
-                    [0, 1, 2, 3].map((el, index) => <li className="list">
-                        <Link to={{ pathname: `${a}` }}>
-                            <img src={require("images/ex.svg").default} alt="LABCODE" title="LABCODE" className="thumbnail" />
+                    list.map((list, index) => <li className="list" key={index}>
+                        <Link to={{ pathname: `/project/${list.id}` }}>
+                            <img src={list.bannerImage} alt="LABCODE" title="LABCODE" className="thumbnail" />
                         </Link>
-                        <StatusText color="#EA43CF" background="#FFF0F7">신청접수</StatusText>
+                        {
+                            list.isActive ? <StatusText color="#5138E5" background="#EEEBFC">승인완료</StatusText>
+                                : <StatusText color="#EA43CF" background="#FFF0F7">신청접수</StatusText>
+                        }
                         <dl>
-                            <dt>프로젝트명</dt>
-                            <dd>프로젝트</dd>
+                            <dt>{list.title}</dt>
+                            <dd>{list.description}</dd>
                         </dl>
                         <ProjectMenu />
                     </li>)

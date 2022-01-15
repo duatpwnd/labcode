@@ -14,8 +14,8 @@ function App() {
   const { pathname } = useLocation();
   const [cookies, setCookie] = useCookies();
   const dispatch = useDispatch();
-
   useEffect(() => {
+    console.log('cookies', cookies);
     if (cookies.user_info != null) {
       dispatch(signInSuccess(cookies.user_info))
     }

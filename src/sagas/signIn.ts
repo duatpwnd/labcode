@@ -28,9 +28,9 @@ function* signIn(action) {
     console.log("성공");
     yield put({
       type: SIGN_IN_SUCCESS,
-      payload: result.data.data.user,
+      payload: result.data.data,
     });
-    cookies.set("user_info", result.data.data.user);
+    cookies.set("user_info", result.data.data);
     history.push("/dashboard");
   } else {
     console.log("실패");

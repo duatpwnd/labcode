@@ -1,11 +1,20 @@
 import axios from "axios";
 import history from "src/utils/history";
+import { Cookies } from "react-cookie";
+const cookies = new Cookies();
+
 const axiosSet = () => {
   console.log("process.env", process.env);
   axios.defaults.baseURL = process.env.REACT_APP_API_URL;
   axios.interceptors.request.use(
     (config: any) => {
-      console.log("요청전:", config);
+      const userInfo = cookies.get("user_info");
+      console.log("요청전:", userInfo);
+      if (userInfo != undefined) {
+        config.headers.Authorization = "Bearer " + userInfo.jwt.accessToken;
+        config.headers.common["Authorization"] =
+          "Bearer " + userInfo.jwt.accessToken;
+      }
       return config;
     },
     (error) => {
