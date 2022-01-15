@@ -1,4 +1,5 @@
 import axios from "axios";
+import history from "src/utils/history";
 const axiosSet = () => {
   console.log("process.env", process.env);
   axios.defaults.baseURL = process.env.REACT_APP_API_URL;

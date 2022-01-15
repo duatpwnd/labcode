@@ -2,26 +2,34 @@ import "./SignIn.scoped.scss"
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signInRequest } from "src/actions/signIn"
+import { signInRequest, signInFail } from "src/actions/signIn"
 import { RootState } from "src/reducers";
 const SignIn = (props) => {
     console.log("리랜");
     const dispatch = useDispatch();
+    // snaptag_official@snaptag.co.kr
+    // Snaptag0911!
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const signinError = useSelector((state: RootState) => {
+        console.log("state", state);
         return state.signIn.signinError
     })
+    const reset = () => {
+        setEmail("");
+        setPassword("");
+        dispatch(signInFail(false))
+    }
     const signIn = () => {
         dispatch(signInRequest({ email: email, password: password }))
     }
     useEffect(() => {
-        console.log("props", props);
+        console.log("props", signinError);
     }, [])
     return (
         <div className="mask">
             <div className="signin-modal">
-                <button className="close-btn" onClick={() => props.setData(false)}></button>
+                <button className="close-btn" onClick={() => { props.setData(false); reset(); }}></button>
                 <h2 className="signin-title">
                     <strong>랩코드 관리</strong>를 위해<br />
                     로그인해주세요.
@@ -33,15 +41,15 @@ const SignIn = (props) => {
                             type="text"
                             className="user-id"
                             placeholder="이메일"
-                            onChange={({ target: { value } }) => setEmail("snaptag_official@snaptag.co.kr")}
+                            onChange={({ target: { value } }) => setEmail(value)}
                         />
                         <input
                             type="password"
                             className="user-pw"
                             placeholder="비밀번호"
-                            onChange={({ target: { value } }) => setPassword("Snaptag0911!")}
+                            onChange={({ target: { value } }) => setPassword(value)}
                         />
-                        {signinError &&
+                        {signinError != false &&
                             <p className="guide-message">아이디 또는 비밀번호가 일치하지 않습니다.</p>
                         }
                         <button type="button" onClick={signIn}>로그인</button>

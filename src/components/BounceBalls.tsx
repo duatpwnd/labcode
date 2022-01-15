@@ -131,14 +131,16 @@ const BounceBalls = ({ bg }) => {
         }
 
         timeToHitHorizontalWall() {
-            if (this.velocityY > 0)
-                return (
-                    (bg.current.clientHeight - this.y - this.radius) /
-                    this.velocityY
-                );
-            else if (this.velocityY < 0)
-                return (this.radius - this.y) / this.velocityY;
-            return Infinity;
+            if (bg.current != null) {
+                if (this.velocityY > 0)
+                    return (
+                        (bg.current.clientHeight - this.y - this.radius) /
+                        this.velocityY
+                    );
+                else if (this.velocityY < 0)
+                    return (this.radius - this.y) / this.velocityY;
+                return Infinity;
+            }
         }
 
         bounceOff(that) {

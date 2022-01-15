@@ -7,8 +7,7 @@ import {
   SIGN_IN_REQUEST,
   SIGN_IN_FAILURE,
 } from "src/actions/signIn";
-import { createBrowserHistory } from "history";
-const history = createBrowserHistory();
+import history from "src/utils/history";
 const cookies = new Cookies();
 function signInAPI(data) {
   return axios
@@ -24,6 +23,7 @@ function signInAPI(data) {
 function* signIn(action) {
   // call을 통하여 동기적으로 호출, fork를 통하여 비동기적으로 호출
   const result = yield call(signInAPI, action.payload);
+  console.log("result", result);
   if (result.data.statusCode == 200) {
     console.log("성공");
     yield put({
@@ -31,9 +31,9 @@ function* signIn(action) {
       payload: result.data.data.user,
     });
     cookies.set("user_info", result.data.data.user);
+    history.push("/dashboard");
   } else {
     console.log("실패");
-    history.push("/dashboard");
     yield put({
       type: SIGN_IN_FAILURE,
       payload: result.data,

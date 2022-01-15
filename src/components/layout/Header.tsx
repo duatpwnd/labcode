@@ -6,6 +6,8 @@ import { resources, Languages } from "src/lang/i18n"
 import { useMediaQuery } from "react-responsive";
 import SignIn from 'src/container/signin/SignIn';
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/reducers";
 import "./Header.scoped.scss"
 const SignIndButton = styled.button`
     border-radius: 8px;
@@ -75,7 +77,9 @@ const Header = () => {
         langUpdate(lang);
         i18n.changeLanguage(lang);
     }
-
+    const userInfo = useSelector((state: RootState) => {
+        return state.signIn.userInfo
+    })
     const isMobile = useMediaQuery({
         query: "(max-width: 479px)"
     });
@@ -83,12 +87,12 @@ const Header = () => {
         modalUpdate(type)
     }
     useEffect(() => {
-        console.log("useeffect", resources);
-    }, [])
+        console.log("useeffect", userInfo);
+    }, [userInfo])
     return (
         <header>
             {
-                isModal && <SignIn setData={closeModal} />
+                isModal && userInfo == null && <SignIn setData={closeModal} />
             }
             <div className="header-contents">
                 <h1 className="logo">
@@ -98,7 +102,9 @@ const Header = () => {
                 </h1>
                 <VersionIcon>{t('version')}</VersionIcon>
                 <div className="right-buttons">
-                    <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton>
+                    {
+                        userInfo == null ? <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton> : <img src={require("images/profile_image.svg").default} />
+                    }
                     <LangIcon onClick={() => langModalUpdate(!langModal)} />
                     {langModal &&
                         <ul className="lang-select">

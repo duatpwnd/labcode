@@ -1,21 +1,20 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from "src/store"
 import axios from "src/utils/axios"
 import 'src/lang/i18n';
-import {
-  BrowserRouter,
-} from "react-router-dom";
+import CustomRouter from './CustomRouter';
 import App from "src/App"
+import history from "src/utils/history"
 axios();
+
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <CustomRouter history={history}>
       <App />
-    </BrowserRouter>
+    </CustomRouter>
   </Provider>
   ,
   document.getElementById('root')
