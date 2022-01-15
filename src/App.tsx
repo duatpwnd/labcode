@@ -15,7 +15,7 @@ function App() {
   const [cookies, setCookie] = useCookies();
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('cookies', cookies);
+    console.log('쿠키정보:', cookies);
     if (cookies.user_info != null) {
       dispatch(signInSuccess(cookies.user_info))
     }
