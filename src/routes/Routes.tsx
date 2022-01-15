@@ -8,7 +8,7 @@ import Dashboard from "src/pages/admin/dashboard/Dashboard";
 import ProjectList from "src/pages/admin/project/ProjectList";
 import ProjectDetail from "src/pages/admin/project/ProjectDetail";
 import Product from "src/pages/admin/production/Product";
-import Help from "src/pages/help/Help";
+import Inquiryies from "src/pages/inquiries/Inquiryies";
 import Profile from "src/pages/profile/Profile";
 export default function CreateRoutes() {
     return (
@@ -19,7 +19,7 @@ export default function CreateRoutes() {
             <Route path="/project" element={<ProjectList />} />
             <Route path="/project/:id" element={<ProjectDetail />} />
             <Route path="/product" element={<Product />} />
-            <Route path="/help" element={<Help />}></Route>
+            <Route path="/inquiries" element={<Inquiryies />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
         </Routes>
     );
