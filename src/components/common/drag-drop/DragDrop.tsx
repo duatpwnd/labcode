@@ -3,7 +3,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { getBase64 } from "src/utils/common";
 import "./DragDrop.scoped.scss"
 const fileTypes = ["JPG", "PNG", "GIF", "SVG"];
-const DragDrop = () => {
+const DragDrop = ({ eventHandler }) => {
     const banner = useRef(null)
     const [file, setFile] = useState(null)
     const dragEnterHandler = () => {
@@ -17,6 +17,7 @@ const DragDrop = () => {
         current.style.border = "1px solid #e6e8eb"
     }
     const handleChange = (file) => {
+        eventHandler(file);
         getBase64(file).then((result: any) => {
             setFile(result);
         })

@@ -28,6 +28,17 @@ main {
         border-radius: 8px;
         width: calc(100% - 180px);
       }
+      .hompage-link {
+        vertical-align: middle;
+      }
+      input {
+        border-radius: 8px;
+        border: 1px solid #e6e8eb;
+        padding: 16px;
+        box-sizing: border-box;
+        width: calc(100% - 180px);
+        vertical-align: middle;
+      }
     }
   }
 }

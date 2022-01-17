@@ -14,7 +14,7 @@ const Navigator = () => {
                 </li>
                 <li>
                     <NavLink to="/team" className="team">
-                        팀
+                        팀 정보
                     </NavLink>
                 </li>
                 <li >
@@ -22,11 +22,11 @@ const Navigator = () => {
                         프로젝트
                     </NavLink>
                 </li>
-                <li >
+                {/* <li >
                     <NavLink to="/product" className="product">
                         제품
                     </NavLink>
-                </li>
+                </li> */}
             </ul>
         </nav>
     )

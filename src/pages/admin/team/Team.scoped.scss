@@ -1,18 +1,18 @@
 main {
   padding: 40px;
   margin-left: 320px;
+  .h2-title {
+    font-size: 32px;
+  }
+  .message {
+    color: #79828a;
+    margin-top: 10px;
+  }
   section {
-    position: relative;
     .h3-title {
+      font-size: 24px;
       padding-bottom: 15px;
       border-bottom: 2px solid #9ea7ad;
-    }
-    .message {
-      position: absolute;
-      top: 0;
-      right: 0;
-      color: #79828a;
-      font-size: 14px;
     }
     .row {
       margin-top: 30px;
@@ -56,7 +56,7 @@ main {
     }
   }
   .section1 {
-    margin: 62px 0;
+    margin: 60px 0;
   }
 }
 @media all and (max-width: 1199px) {

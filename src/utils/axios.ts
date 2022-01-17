@@ -1,8 +1,9 @@
 import axios from "axios";
 import history from "src/utils/history";
 import { Cookies } from "react-cookie";
+import { signInFail } from "src/actions/signIn";
+import store from "src/store";
 const cookies = new Cookies();
-
 const axiosSet = () => {
   console.log("process.env", process.env);
   axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -29,6 +30,8 @@ const axiosSet = () => {
       console.log("요청후에러:", err.response);
       if (err.response.data.statusCode == 401) {
         history.push("/");
+        store.dispatch(signInFail(false));
+        cookies.remove("user_info");
       }
       return Promise.reject(err.response);
     }

@@ -28,12 +28,12 @@ footer {
         color: #79828a;
         font-size: 13px;
         font-weight: 700;
-      }
-      .privacy {
-        &::after {
-          color: #b8bfc4;
-          content: "｜";
-          vertical-align: middle;
+        &:not(:last-child) {
+          &::after {
+            color: #b8bfc4;
+            content: " ｜ ";
+            vertical-align: 1px;
+          }
         }
       }
     }

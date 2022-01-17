@@ -225,8 +225,7 @@ const BounceBalls = ({ bg }) => {
             this.pq = new CustomPQ();
             window.addEventListener(
                 "resize",
-                this.windowResizeHandler.bind(this),
-                false
+                this.windowResizeHandler.bind(this)
             );
             this.windowResizeHandler();
 
@@ -234,21 +233,24 @@ const BounceBalls = ({ bg }) => {
 
         //todo: doesn't really belong to this class, but meh
         windowResizeHandler() {
-            console.log("resize")
-            this.SCREEN_WIDTH = window.innerWidth;
-            this.SCREEN_HEIGHT = bg.current.clientHeight;
-            this.c.width = this.SCREEN_WIDTH;
-            this.c.height = this.SCREEN_HEIGHT;
-            const grd = this.ctx.createRadialGradient(
-                0,
-                0,
-                this.SCREEN_WIDTH * 1.3,
-                0,
-                0,
-                0
-            );
-            grd.addColorStop(0, "#F2A268");
-            this.ctx.fillStyle = grd;
+            if (bgRef.current != null) {
+
+                console.log("windowResizeHandler resize")
+                this.SCREEN_WIDTH = window.innerWidth;
+                this.SCREEN_HEIGHT = bg.current.clientHeight;
+                this.c.width = this.SCREEN_WIDTH;
+                this.c.height = this.SCREEN_HEIGHT;
+                const grd = this.ctx.createRadialGradient(
+                    0,
+                    0,
+                    this.SCREEN_WIDTH * 1.3,
+                    0,
+                    0,
+                    0
+                );
+                grd.addColorStop(0, "#F2A268");
+                this.ctx.fillStyle = grd;
+            }
         }
 
         redraw() {
@@ -328,7 +330,9 @@ const BounceBalls = ({ bg }) => {
             window.addEventListener(
                 "resize",
                 debounce(() => {
-                    new CollisionSystem().init();
+                    if (bgRef.current != null) {
+                        new CollisionSystem().init();
+                    }
                 })
             );
         }

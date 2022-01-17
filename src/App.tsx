@@ -15,7 +15,6 @@ function App() {
   const [cookies, setCookie] = useCookies();
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('쿠키정보:', cookies);
     if (cookies.user_info != null) {
       dispatch(signInSuccess(cookies.user_info))
     }
@@ -23,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      {pathname != "/" &&
+      {pathname != "/" && pathname != "/inquiries" &&
         <Navigator />
       }
       {Routes()}

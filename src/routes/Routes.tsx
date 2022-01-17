@@ -3,13 +3,12 @@ import {
     Route,
 } from "react-router-dom";
 import Main from "src/pages/main/Main"
-import Team from "src/pages/admin/team/Team";
 import Dashboard from "src/pages/admin/dashboard/Dashboard";
 import ProjectList from "src/pages/admin/project/ProjectList";
 import ProjectDetail from "src/pages/admin/project/ProjectDetail";
 import Product from "src/pages/admin/product/Product";
-import Inquiryies from "src/pages/inquiries/Inquiryies";
-import Profile from "src/pages/profile/Profile";
+import Inquiries from "src/pages/inquiries/Inquiries";
+import Team from "src/pages/admin/team/Team";
 export default function CreateRoutes() {
     return (
         <Routes>
@@ -19,8 +18,7 @@ export default function CreateRoutes() {
             <Route path="/project" element={<ProjectList />} />
             <Route path="/project/:id" element={<ProjectDetail />} />
             <Route path="/product" element={<Product />} />
-            <Route path="/inquiries" element={<Inquiryies />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/inquiries" element={<Inquiries />}></Route>
         </Routes>
     );
 }

@@ -36,7 +36,11 @@ function* signIn(action) {
       path: "/",
       expires: date,
     });
-    history.push("/project");
+    history.push("/project", {
+      state: {
+        nav: false,
+      },
+    });
   } else {
     console.log("실패");
     yield put({
