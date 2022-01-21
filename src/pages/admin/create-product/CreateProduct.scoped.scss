@@ -1,0 +1,50 @@
+main {
+  padding: 35px;
+  margin-left: 320px;
+  .back-btn {
+    width: 13px;
+    height: 24px;
+    background: url("~images/back_btn.svg") no-repeat center / 13px 24px;
+  }
+  .wrap {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 20px 0;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 62px;
+      .h2-title {
+        font-size: 32px;
+      }
+      .lnb {
+        border-radius: 8px;
+        padding: 8px;
+        background: #f6f7f8;
+        max-width: 392px;
+        width: 100%;
+        ul {
+          li {
+            width: 33.333%;
+            display: inline-block;
+            a {
+              display: inline-block;
+              text-align: center;
+              padding: 12px 0;
+              width: 100%;
+              font-size: 14px;
+              color: #79828a;
+            }
+            .active {
+              background: white;
+              border-radius: 8px;
+              font-weight: 700;
+              color: black;
+            }
+          }
+        }
+      }
+    }
+  }
+}

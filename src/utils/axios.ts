@@ -10,7 +10,6 @@ const axiosSet = () => {
   axios.interceptors.request.use(
     (config: any) => {
       const userInfo = cookies.get("user_info");
-      console.log("요청전:", userInfo);
       if (userInfo != undefined) {
         config.headers.Authorization = "Bearer " + userInfo.jwt.accessToken;
         config.headers.common["Authorization"] =

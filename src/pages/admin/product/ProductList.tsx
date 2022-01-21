@@ -1,4 +1,4 @@
-import "./Product.scoped.scss"
+import "./ProductList.scoped.scss"
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import styled from "styled-components";

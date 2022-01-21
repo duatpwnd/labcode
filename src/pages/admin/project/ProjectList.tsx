@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -33,6 +34,7 @@ const CreateBtn = styled.button`
     }
 `
 const StatusText = styled.strong`
+    border: 1px solid #E6E8EB;
     font-size:14px;
     text-align:center;
     color:${(props) => props.color};
@@ -40,53 +42,84 @@ const StatusText = styled.strong`
     position: absolute;
     top: 20px;
     right: 20px;
+    z-index:2;
     padding:9px 8px;
     border-radius:4px;
 `
 const OrderMenu = () => {
     const [isActive, setOrderMenu] = useState(false);
-    const [orderIndex, setOrderIndex] = useState(0);
+    const [orderObj, setOrder] = useState({
+        index: 0,
+        arr: ['최신순', '오래된 순', '가나다 순']
+    })
     return (
         <div className="order-area">
-            {
-                isActive ? <button className="order-btn active" onClick={() => setOrderMenu(!isActive)}>최신순</button> : <button className="order-btn inactive" onClick={() => setOrderMenu(!isActive)}>최신순</button>
-            }
+            <button className={isActive ? "order-btn active" : "order-btn inactive"} onClick={() => setOrderMenu(!isActive)}>{orderObj.arr[orderObj.index]}</button>
             {
                 isActive && <ul className="order-select">
-                    <li className={orderIndex == 0 ? "selected" : ""} onClick={() => { setOrderIndex(0); setOrderMenu(false) }}>
-                        최신순
-                    </li>
-                    <li className={orderIndex == 1 ? "selected" : ""} onClick={() => { setOrderIndex(1); setOrderMenu(false) }}>
-                        오래된 순
-                    </li>
-                    <li className={orderIndex == 2 ? "selected" : ""} onClick={() => { setOrderIndex(2); setOrderMenu(false) }}>
-                        가나다 순
-                    </li>
+                    {orderObj.arr.map((el, index) => <li key={index} className={index == orderObj.index ? "selected" : ""} onClick={() => { setOrderMenu(false); setOrder({ ...orderObj, index: index }) }}>{el}</li>)}
                 </ul>
-
             }
         </div>
     )
 }
+const LnbMenu = ({ eventHandler }) => {
+    const [list, setList] = useState({
+        index: 0,
+        arr: [{ value: "전체 프로젝트", type: "" }, { value: "신청접수", type: false }, { value: "승인완료", type: true }]
+    })
+    return (
+        <ul className="nav">
+            {
+                list.arr.map((el, index) => <li key={index} className={index == list.index ? 'active' : ''} onClick={() => {
+                    setList({
+                        ...list, index: index
+                    });
+                    eventHandler("", 1, el.type)
+                }}>{el.value}</li>)
+            }
+        </ul>
+    )
+}
 const Project = () => {
     const [list, setupList] = useState<{ [key: string]: any }[]>([]);
-    const [index, indexUpdate] = useState(0);
     const [menuIndex, menuIndexUpdate] = useState(-1);
     const debounce = _.debounce;
+    const navigate = useNavigate()
     const searchDebounce = debounce((query) => {
-        getProjectList(query, 1)
+        getProjectList(query, 1, "")
     }, 500);
-    const getProjectList = (search, order) => {
+    const getProjectList = (search, order, isActive) => {
         axios
-            .get(apiUrl.project + `?search=${search}&ordering=${order}`)
+            .get(apiUrl.project + `?search=${search}&ordering=${order}&isActive=${isActive}`)
             .then((result: any) => {
-                console.log('프로젝트리스트:', result.data.data);
-                setupList(result.data.data);
+                console.log('프로젝트리스트:', result);
+                setupList(result.data.data.data);
             })
+    }
+    const createProject = () => {
+        const body = {
+            title: "",
+            description: "",
+            bannerImage: "",
+            hompage: "http://snaptag.co.kr/"
+        }
+        const formData = new FormData();
+        for (let key in body) {
+            formData.append(key, body[key as never]);
+        }
+        axios
+            .post(apiUrl.project, formData)
+            .then((result: any) => {
+                console.log("프로젝트생성결과:", result);
+                getProjectList("", 1, "");
+            }).catch((err: any) => {
+                console.log('프로젝트생성에러:', err);
+            });
     }
     useEffect(() => {
         console.log('프로젝트 리스트페이지 노출');
-        getProjectList("", 1);
+        getProjectList("", 1, "");
     }, [])
     return (
         <main>
@@ -95,28 +128,19 @@ const Project = () => {
                 <SearchInput placeholder="원하는 프로젝트를 검색해보세요."
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
-            <CreateBtn>프로젝트 생성</CreateBtn>
-            <ul className="nav">
-                <li className={index == 0 ? 'active' : ''} onClick={() => indexUpdate(0)}>
-                    전체 프로젝트<span>(14)</span>
-                </li>
-                <li className={index == 1 ? 'active' : ''} onClick={() => indexUpdate(1)}>
-                    신청접수<span>(14)</span>
-                </li>
-                <li className={index == 2 ? 'active' : ''} onClick={() => indexUpdate(2)}>
-                    승인완료<span>(14)</span>
-                </li>
-            </ul>
+            <CreateBtn onClick={createProject}>프로젝트 생성</CreateBtn>
+            <LnbMenu eventHandler={getProjectList} />
             <OrderMenu />
             <ul className="project-list">
                 {
                     list.map((list, index) => <li className="list" key={index}>
-                        <Link to={{ pathname: `/project/${list.teamId}` }}>
-                            <img src={list.bannerImage} alt="LABCODE" title="LABCODE" className="thumbnail" />
+                        <Link to={{ pathname: `/product/${list.id}` }} className="link" >
+                            <div className="mask"></div>
+                            <img src={require("images/logo.svg").default} title={list.title} className="thumbnail" />
                         </Link>
                         {
-                            list.isActive ? <StatusText color="#5138E5" background="#EEEBFC">승인완료</StatusText>
-                                : <StatusText color="#EA43CF" background="#FFF0F7">신청접수</StatusText>
+                            list.isActive ? <StatusText color="black" background="white;">승인완료</StatusText>
+                                : <StatusText color="white;" background="#79828A;">신청접수</StatusText>
                         }
                         <div className="bottom">
                             <dl>
@@ -129,7 +153,7 @@ const Project = () => {
                                 <div className="menu">
                                     <h3 className="h3-title">커피빈 패키지 프로젝트</h3>
                                     <ul >
-                                        <li className="manage">
+                                        <li className="manage" onClick={() => navigate(`/project/${list.id}`)}>
                                             프로젝트 관리
                                         </li>
                                         <li className="delete">

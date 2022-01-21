@@ -3,7 +3,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { getBase64 } from "src/utils/common";
 import "./DragDrop.scoped.scss"
 const fileTypes = ["JPG", "PNG", "GIF", "SVG"];
-const DragDrop = ({ eventHandler }) => {
+const DragDrop = (props) => {
     const banner = useRef(null)
     const [file, setFile] = useState(null)
     const dragEnterHandler = () => {
@@ -17,22 +17,26 @@ const DragDrop = ({ eventHandler }) => {
         current.style.border = "1px solid #e6e8eb"
     }
     const handleChange = (file) => {
-        eventHandler(file);
+        const current = banner.current as unknown as HTMLDivElement;
+        props.eventHandler(file);
         getBase64(file).then((result: any) => {
             setFile(result);
+            current.style.border = "1px solid #e6e8eb"
         })
     };
     useEffect(() => {
-
-    }, [])
+        console.log('ppppppppp', props.link);
+        if (props.link != "") {
+            setFile(props.link)
+        }
+    }, [props.link])
     return (
-        <div ref={banner} className="banner" onDragEnterCapture={dragEnterHandler} onDragLeaveCapture={dragLeaveHandler}>
-            <FileUploader hoverTitle={" "} handleChange={handleChange} name="file" types={fileTypes} children={<div className="outline" >
+        <div style={{ width: props.style.width }} ref={banner} className="banner" onDragEnterCapture={dragEnterHandler} onDragLeaveCapture={dragLeaveHandler}>
+            <FileUploader hoverTitle={" "} handleChange={handleChange} name="file" types={fileTypes} children={<div className="outline" style={{ height: props.style.height }} >
                 {file != null &&
                     <img src={file} alt="LABCODE" title="LABCODE" className="image" />
                 }
             </div>} />
-            <div></div>
         </div>
 
     );

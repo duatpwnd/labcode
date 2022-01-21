@@ -1,12 +1,19 @@
 main {
-  padding: 40px;
+  padding: 35px;
   margin-left: 320px;
   .form {
     max-width: 840px;
     margin: 0 auto;
     margin-top: 48px;
     .h2-title {
-      margin-top: 54px;
+      font-size: 32px;
+    }
+    .message {
+      margin-top: 10px;
+      color: #79828a;
+    }
+    .h3-title {
+      margin-top: 53px;
       margin-bottom: 40px;
       padding-bottom: 14px;
       border-bottom: 2px solid #79828a;
@@ -16,8 +23,11 @@ main {
       label {
         font-weight: 700;
         width: 180px;
-        vertical-align: top;
+        vertical-align: middle;
         display: inline-block;
+      }
+      .top {
+        vertical-align: top;
       }
       textarea {
         height: 220px;
@@ -28,9 +38,6 @@ main {
         border-radius: 8px;
         width: calc(100% - 180px);
       }
-      .hompage-link {
-        vertical-align: middle;
-      }
       input {
         border-radius: 8px;
         border: 1px solid #e6e8eb;
@@ -38,6 +45,10 @@ main {
         box-sizing: border-box;
         width: calc(100% - 180px);
         vertical-align: middle;
+        &::placeholder {
+          font-weight: 700;
+          color: black;
+        }
       }
     }
   }

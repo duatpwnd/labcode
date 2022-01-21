@@ -51,7 +51,7 @@ const Help = () => {
                     <input type="text" id="title" placeholder="제목을 입력해주세요." onChange={onChange} />
                 </div>
                 <div className="row3">
-                    <label htmlFor="description">제휴 내용</label>
+                    <label htmlFor="description">문의 내용</label>
                     <textarea id="description" onChange={onChange}></textarea>
                 </div>
                 <div className="row4">
