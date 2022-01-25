@@ -89,15 +89,26 @@ const Project = () => {
     const searchDebounce = debounce((query) => {
         getProjectList(query, 1, "")
     }, 500);
-    const getProjectList = (search, order, isActive) => {
+    const getProjectList = (search, page, isActive) => {
         axios
-            .get(apiUrl.project + `?search=${search}&ordering=${order}&isActive=${isActive}`)
+            .get(apiUrl.project + `?search=${search}&page=${page}&isActive=${isActive}&limit=8`)
             .then((result: any) => {
                 console.log('프로젝트리스트:', result);
-                setupList(result.data.data.data);
+                menuIndexUpdate(-1);
+                setupList(result.data.data);
             })
     }
-    const createProject = () => {
+    const deleteProject = (id) => {
+        axios
+            .delete(apiUrl.project + `/${id}`)
+            .then((result: any) => {
+                console.log("프로젝트삭제결과:", result);
+                getProjectList("", 1, "");
+            }).catch((err: any) => {
+                console.log('프로젝트삭제에러:', err);
+            });
+    }
+    const createProject = debounce(() => {
         const body = {
             title: "",
             description: "",
@@ -116,7 +127,7 @@ const Project = () => {
             }).catch((err: any) => {
                 console.log('프로젝트생성에러:', err);
             });
-    }
+    }, 500);
     useEffect(() => {
         console.log('프로젝트 리스트페이지 노출');
         getProjectList("", 1, "");
@@ -156,7 +167,7 @@ const Project = () => {
                                         <li className="manage" onClick={() => navigate(`/project/${list.id}`)}>
                                             프로젝트 관리
                                         </li>
-                                        <li className="delete">
+                                        <li className="delete" onClick={() => deleteProject(list.id)}>
                                             삭제
                                         </li>
                                     </ul>

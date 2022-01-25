@@ -43,28 +43,7 @@ main {
         display: inline-block;
         vertical-align: middle;
       }
-      input[type="file"] {
-        display: none;
-      }
-      .input-file {
-        width: calc(100% - 328px);
-        margin-right: 20px;
-        border-bottom: 1px solid #f2f4f5;
-        padding: 13px 0;
-        color: #9ea7ad;
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .file {
-        background: #dbdfe1;
-        border-radius: 8px;
-        text-align: center;
-        padding: 14px 0;
-        width: 128px;
-        height: 52px;
-        line-height: 24px;
-        box-sizing: border-box;
-      }
+
       input {
         width: calc(100% - 180px);
         border-bottom: 1px solid #f2f4f5;
@@ -72,6 +51,31 @@ main {
         vertical-align: middle;
         &::placeholder {
           color: #9ea7ad;
+        }
+      }
+      .business-image-area {
+        width: calc(100% - 180px);
+        display: inline-block;
+        vertical-align: middle;
+
+        input[type="file"] {
+          display: none;
+        }
+        .input-file {
+          width: calc(100% - 148px);
+          border-bottom: 1px solid #f2f4f5;
+          color: #9ea7ad;
+          margin-right: 20px;
+        }
+        .file {
+          background: #dbdfe1;
+          border-radius: 8px;
+          text-align: center;
+          padding: 14px 0;
+          width: 128px;
+          height: 52px;
+          line-height: 24px;
+          box-sizing: border-box;
         }
       }
       .warn-message {
