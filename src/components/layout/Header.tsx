@@ -6,8 +6,11 @@ import { resources, Languages } from "src/lang/i18n"
 import { useMediaQuery } from "react-responsive";
 import SignIn from 'src/container/signin/SignIn';
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/reducers";
+import { signOut } from "src/actions/signIn"
+import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 import "./Header.scoped.scss"
 const SignIndButton = styled.button`
     border-radius: 8px;
@@ -69,9 +72,13 @@ const LangIcon = styled.button`
 const Header = () => {
     const { i18n, t } = useTranslation();
     const [isModal, modalUpdate] = useState(false);
-    const [langModal, langModalUpdate] = useState(false)
+    const [langModal, langModalUpdate] = useState(false);
+    const [isActiveUserModal, setUserModal] = useState(false);
     const [lang, langUpdate] = useState("ko");
+    const navigate = useNavigate()
     const keys = Object.keys(resources);
+    const dispatch = useDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(["user_info"]);
     const handleChangeLanguage = (lang: Languages) => {
         langModalUpdate(false);
         langUpdate(lang);
@@ -83,8 +90,14 @@ const Header = () => {
     const isMobile = useMediaQuery({
         query: "(max-width: 479px)"
     });
-    const closeModal = (type: boolean): void => {
+    const closeModal = (type: boolean) => {
         modalUpdate(type)
+    }
+    const logout = () => {
+        dispatch(signOut());
+        removeCookie("user_info");
+        navigate("/");
+        setUserModal(false);
     }
     useEffect(() => {
         console.log("useeffect", userInfo);
@@ -92,7 +105,7 @@ const Header = () => {
     return (
         <header>
             {
-                isModal && userInfo == null && <SignIn setData={closeModal} />
+                isModal && <SignIn setData={closeModal} />
             }
             <div className="header-contents">
                 <h1 className="logo">
@@ -103,7 +116,15 @@ const Header = () => {
                 <VersionIcon>{t('version')}</VersionIcon>
                 <div className="right-buttons">
                     {
-                        userInfo == null ? <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton> : <img src={require("images/profile_image.svg").default} />
+                        userInfo == null ? <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton> : <img src={require("images/profile_image.svg").default} onClick={() => setUserModal(!isActiveUserModal)} />
+                    }
+                    {
+                        isActiveUserModal && <div className="user-modal">
+                            <b className="user-name">{userInfo?.user.name}</b>
+                            <span className="user-email">{userInfo?.user.email}</span>
+                            <button className="sign-out-btn" onClick={logout}>로그아웃</button>
+                        </div>
+
                     }
                     <LangIcon onClick={() => langModalUpdate(!langModal)} />
                     {langModal &&

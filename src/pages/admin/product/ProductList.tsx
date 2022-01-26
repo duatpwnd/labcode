@@ -2,70 +2,134 @@ import "./ProductList.scoped.scss"
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import styled from "styled-components";
-import { useEffect } from "react";
-const SelectBox = styled.select`
-    width: 58px;
-    border: 0;
-    font-size: 13px;
-    color: #333333;
-    background: url(${require('images/arrow_bottom.svg').default}) no-repeat right center /
-    16px 16px;
+import _ from 'lodash'
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+import Pagination from "components/common/pagination/Pagination";
+const SearchInput = styled.input`
+    padding-left:14px;
+    box-sizing:border-box;
+    font-size:18px;
+    width:calc(100% - 24px);
+    overflow:hidden;
+    text-overflow:ellipsis;
+`
+const SearchButton = styled.button`
+    width:24px;
+    height:24px;
+    vertical-align:middle;
+    background: url(${require('images/search_ico.svg').default}) no-repeat center center /
+    24px 24px;
+`
+const CreateBtn = styled.button`
+    background:#5138E5;
+    border-radius:8px;
+    font-size:18px;
+    width:160px;
+    padding:19px 0;
+    color:white;
+    @media all and (max-width: 767px) {
+        margin-top:20px;
+        width:100%;
+    }
 `
 const Product = () => {
+    const params = useParams();
+    const debounce = _.debounce;
+    const navigate = useNavigate();
+    const [{ data, meta }, setList] = useState<{ [key: string]: any }>({});
+    const getProdcutList = (page, search) => {
+        axios
+            .get(apiUrl.products + `?limit=10&search=${search}&page=${page}+&projectId=${params.id}`)
+            .then((result: any) => {
+                setList(result.data);
+                console.log('제품리스트:', result.data, params.id);
+            })
+    }
+    const searchDebounce = debounce((query) => {
+        console.log('검색어', query);
+        getProdcutList(1, query)
+    }, 500);
+    useEffect(() => {
+        getProdcutList(1, "")
+    }, [])
     return (
         <main>
-            <SelectBox>
-                <option>최신순</option>
-            </SelectBox>
-            <div style={{ width: "100%;", height: "200px;", overflow: "auto" }}><table>
-                <colgroup>
-                    <col width="70px" />
-                    <col width="110px" />
-                    <col width="180px" />
-                    <col width="110px" />
-                    <col width="110px" />
-                    <col width="150px" />
-                    <col width="110px" />
-                    <col width="110px" />
-                    <col width="110px" />
-                </colgroup>
-                <tr>
-                    <th>
-                        키
-                    </th>
-                    <th>
-                        제목
-                    </th>
-                    <th>
-                        설명
-                    </th>
-                    <th>
-                        원본 이미지
-                    </th>
-                    <th>
-                        변경 이미지
-                    </th>
-                    <th>
-                        적용기술
-                    </th>
-                    <th>
-                        코드 크기
-                    </th>
-                    <th>
-                        색상변화
-                    </th>
-                    <th>
-                        생성일
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>제제제제제ㅔ제제제제제제제</td>
-                </tr>
-            </table>
+            <div className="search-area">
+                <SearchButton />
+                <SearchInput placeholder="원하는 프로젝트를 검색해보세요."
+                    onChange={(e) => searchDebounce(e.target.value)} />
             </div>
+            <CreateBtn onClick={() => navigate(`/createProduct/defaultInfo/${params.id}`)}>제품 생성</CreateBtn>
+            <div style={{ width: "100%", height: "100%" }}>
+                <table>
+                    <colgroup>
+                        <col width="70px" />
+                        <col width="110px" />
+                        <col width="180px" />
+                        <col width="110px" />
+                        <col width="110px" />
+                        <col width="150px" />
+                        <col width="110px" />
+                        <col width="110px" />
+                        <col width="110px" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                키
+                            </th>
+                            <th>
+                                제품 명
+                            </th>
+                            <th>
+                                설명
+                            </th>
+                            <th>
+                                원본,변경된 이미지
+                            </th>
+                            <th>
+                                적용기술
+                            </th>
+                            <th>
+                                코드 크기
+                            </th>
+                            <th>
+                                적용 세기
+                            </th>
+                            <th>
+                                생성일
+                            </th>
+                            <th>
+                                링크
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            data != undefined &&
+                            data.map((rows, index) => <tr key={index}>
+                                <td>
+                                    {rows.key}
+                                </td>
+                                <td>{rows.title}</td>
+                                <td>블랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랼랴</td>
+                                <td><img src={rows.sourceImage} className="sourceImage" /><span className="convert-ico"></span><img src={rows.labcodeImage} className="labcodeImage" /></td>
+                                <td>{rows.typeChannel}</td>
+                                <td>{rows.scale}</td>
+                                <td>{rows.alpha}</td>
+                                <td>{rows.created.split("T")[0]}</td>
+                                <td>{rows.url}</td>
+                            </tr>)
+                        }
+                    </tbody>
+                </table>
+            </div>
+            {
+                meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getProdcutList} />
+            }
+
         </main>
     )
 }

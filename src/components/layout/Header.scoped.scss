@@ -1,6 +1,5 @@
 header {
   z-index: 4;
-  background: white;
   position: sticky;
   top: 0;
   background: white;
@@ -12,7 +11,7 @@ header {
   .header-contents {
     height: 80px;
     line-height: 80px;
-    padding: 0 35px;
+    padding: 0 40px;
     box-sizing: border-box;
     .logo {
       display: inline-block;
@@ -38,6 +37,41 @@ header {
         }
         .selected {
           background: rgba(81, 56, 229, 0.12);
+        }
+      }
+      .user-modal {
+        width: 300px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background: white;
+        border: 1px solid #dbdfe1;
+        padding-top: 16px;
+        overflow: hidden;
+        line-height: initial;
+        position: absolute;
+        top: 80px;
+        right: 0;
+        .user-name {
+          padding: 0 16px;
+        }
+        .user-email {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-top: 2px;
+          padding: 0 16px 16px 16px;
+          display: block;
+          font-size: 13px;
+          color: #9ea7ad;
+        }
+        .sign-out-btn {
+          font-weight: 700;
+          padding: 12px 16px;
+          text-align: left;
+          width: 100%;
+          border-top: 1px solid #dbdfe1;
+          font-size: 14px;
+          color: #79828a;
+          background: white;
         }
       }
     }

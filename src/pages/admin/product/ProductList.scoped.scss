@@ -1,6 +1,22 @@
 main {
   padding: 40px;
   margin-left: 320px;
+  background: #f6f7f8;
+  min-height: calc(100vh - 160px);
+  .search-area {
+    width: 100%;
+    margin-right: 40px;
+    padding: 0px 22px;
+    height: 60px;
+    line-height: 60px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background: white;
+    display: inline-block;
+    &::placeholder {
+      color: #9ea7ad;
+    }
+  }
   table {
     width: 100%;
     table-layout: fixed;
@@ -10,16 +26,31 @@ main {
       padding: 18px 0;
       color: #9ea7ad;
       font-size: 14px;
+      background: white;
+    }
+    tbody:before {
+      content: "@";
+      display: block;
+      line-height: 8px;
+      text-indent: -99999px;
     }
     tr {
-      border-bottom: 1px solid #e6e8eb;
-      th {
-        background: #f6f7f8;
-      }
       td {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        .labcodeImage,
+        .sourceImage {
+          width: 40px;
+          height: 40px;
+        }
+        .convert-ico {
+          width: 18px;
+          height: 6px;
+          margin: 0 32px;
+          background: url("~images/convert_ico.svg") no-repeat center center /
+            18px 6px;
+        }
       }
     }
   }

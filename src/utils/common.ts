@@ -18,14 +18,13 @@ export const getBase64 = (fileObj) => {
     };
   });
 };
-export const InputOnlyNumber = (value) => {
-  return value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
-};
 export const convertURLtoFile = async (url: string) => {
-  const response = await fetch(url + "?not-from-cache-please");
-  const data = await response.blob();
-  const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
-  const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-  const metadata = { type: `image/${ext}` };
-  return new File([data], filename!, metadata);
+  if (url != null) {
+    const response = await fetch(url + "?not-from-cache-please");
+    const data = await response.blob();
+    const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
+    const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename!, metadata);
+  }
 };

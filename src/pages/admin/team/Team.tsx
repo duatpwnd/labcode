@@ -1,14 +1,13 @@
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import { useEffect, useState, useMemo } from "react"
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import _ from 'lodash'
 import { convertURLtoFile } from "src/utils/common";
 import "./Team.scoped.scss"
 const InputComponent = ({ title, id, value, eventHandler }) => {
     const [a, b] = useState<{ [key: string]: any }>({});
     const emailRegExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; // 이메일
-    const phoneRegExp = /^01([0|1|6|7|8|9])?([0-9]{3,4})?([0-9]{4})$/; // 전화번호
+    const phoneRegExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/; // 전화번호
     const homePageRegExp = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/; //홈페이지
     const numberRegExp = /[0-9]/;  // 숫자만
     const [isActive, setActive] = useState(false)
@@ -29,31 +28,26 @@ const InputComponent = ({ title, id, value, eventHandler }) => {
             });
     }
     const inputDebounce = debounce((e) => {
-        eventHandler({ ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value });
+        const body = { ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
+        eventHandler(body);
         if (e.target.id == "managerEmail") {
-            console.log(e.target.value);
             if (emailRegExp.test(e.target.value)) {
-                console.log("메일정규식이다.");
-                modify({ ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value })
+                modify(body)
             }
         } else if (e.target.id == "managerPhone") {
             if (phoneRegExp.test(e.target.value)) {
-                console.log("폰정규식이다.");
-                modify({ ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value })
+                modify(body)
             }
         } else if (e.target.id == "homepage") {
             if (homePageRegExp.test(e.target.value)) {
-                console.log("홈피에지정규식이다.");
-                modify({ ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value })
+                modify(body)
             }
         } else if (e.target.id == "businessNumber") {
             if (numberRegExp.test(e.target.value)) {
-                console.log("사업자등록번호정규식이다.");
-                modify({ ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value })
+                modify(body)
             }
         } else {
-            console.log("기타정규식이다.", e.target.files[0]);
-            modify({ ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value })
+            modify(body)
         }
     }, 400);
     const emailCheck = useMemo(() => {
@@ -72,38 +66,25 @@ const InputComponent = ({ title, id, value, eventHandler }) => {
         const test = numberRegExp.test(a[id]);
         return test;
     }, [a.businessNumber])
-    function onDocumentLoadSuccess({ numPages }) {
-        setNumPages(numPages);
-    }
-    const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
     useEffect(() => {
         b(value);
-        console.log("value", value);
+        console.log("aaa", id);
     }, [value])
     return (
         <div className="row">
             {
-                isActive && <div className="link-modal" onClick={() => setActive(false)}>
-                    {
-                        a.businessImage?.type == "image/pdf" ?
-                            <Document
-                                file={a.link}
-                                onLoadSuccess={onDocumentLoadSuccess}
-                            >
-                                <Page pageNumber={pageNumber} />
-                            </Document>
-                            :
-                            <img src={a.link} />
-                    }
-                </div>
+                isActive && <img src={a.link} onClick={() => setActive(false)} className="modal-image" />
             }
             <label htmlFor={id}>{title}</label>
             {
+
                 id == "businessImage" ?
                     <div className="business-image-area">
-                        <input type="text" onClick={() => setActive(true)} className="input-file" defaultValue={a.businessImage?.name} placeholder="사업자등록증을 첨부해주세요." readOnly />
-                        <input type="file" id="businessImage" onChange={(e) => inputDebounce(e)} />
+                        <div className="attach">
+                            <a href={a.link} onClick={() => setActive(true)} className="input-file" download="newfilename">{a.businessImage == null ? "사업자등록증을 첨부해주세요." : a.businessImage?.name}</a>
+                            <input type="file" id="businessImage" onChange={(e) => inputDebounce(e)} />
+                            <button className="delete-btn"></button>
+                        </div>
                         <label htmlFor="businessImage" className="file">찾아보기</label>
                     </div> : <input type="text" defaultValue={a[id]} id={id} onChange={(e) => inputDebounce(e)} />
             }

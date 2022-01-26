@@ -1,42 +1,34 @@
 main {
   padding: 80px 35px;
   margin-left: 320px;
-  .link-modal {
-    position: fixed;
+
+  .modal-image {
+    position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 600px;
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1;
-    img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      max-width: 600px;
-      width: 100%;
-      padding: 35px;
-      box-sizing: border-box;
-    }
+    padding: 35px;
+    box-sizing: border-box;
   }
   .h2-title {
     font-size: 32px;
   }
   .message {
-    color: #79828a;
-    margin-top: 10px;
+    color: #9ea7ad;
+    margin-top: 14px;
   }
   section {
     .h3-title {
       font-size: 24px;
       padding-bottom: 15px;
-      border-bottom: 2px solid #9ea7ad;
+      border-bottom: 1px solid #f2f4f5;
     }
     .row {
-      margin-top: 30px;
+      margin-top: 24px;
       label {
         width: 180px;
         font-weight: 700;
@@ -45,35 +37,56 @@ main {
       }
 
       input {
+        background: #f6f7f8;
+        border-radius: 8px;
         width: calc(100% - 180px);
-        border-bottom: 1px solid #f2f4f5;
-        padding: 13px 0;
+        padding: 15px 16px;
+        box-sizing: border-box;
         vertical-align: middle;
         &::placeholder {
           color: #9ea7ad;
         }
       }
       .business-image-area {
-        width: calc(100% - 180px);
         display: inline-block;
-        vertical-align: middle;
-
-        input[type="file"] {
-          display: none;
-        }
-        .input-file {
-          width: calc(100% - 148px);
-          border-bottom: 1px solid #f2f4f5;
-          color: #9ea7ad;
-          margin-right: 20px;
+        width: calc(100% - 180px);
+        box-sizing: border-box;
+        .attach {
+          display: inline-block;
+          vertical-align: middle;
+          background: #f6f7f8;
+          border-radius: 8px;
+          width: calc(100% - 164px);
+          margin-right: 12px;
+          padding-left: 16px;
+          padding-right: 8px;
+          input[type="file"] {
+            display: none;
+          }
+          .input-file {
+            display: inline-block;
+            box-sizing: border-box;
+            width: calc(100% - 36px);
+            height: 51px;
+            line-height: 51px;
+            vertical-align: middle;
+          }
+          .delete-btn {
+            width: 36px;
+            height: 36px;
+            vertical-align: middle;
+            background: url("~images/delete_file_btn.svg") no-repeat center
+              center / 36px 36px;
+          }
         }
         .file {
-          background: #dbdfe1;
+          background: #79828a;
+          color: white;
           border-radius: 8px;
           text-align: center;
           padding: 14px 0;
           width: 128px;
-          height: 52px;
+          height: 51px;
           line-height: 24px;
           box-sizing: border-box;
         }
@@ -86,7 +99,7 @@ main {
     }
   }
   .section1 {
-    margin: 60px 0;
+    margin: 40px 0;
   }
 }
 @media all and (max-width: 1199px) {

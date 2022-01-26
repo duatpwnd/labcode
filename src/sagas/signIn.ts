@@ -52,6 +52,5 @@ function* signIn(action) {
 }
 
 export function* watchSignIn() {
-  console.log("watchSignIn");
   yield takeLatest(SIGN_IN_REQUEST, signIn);
 }

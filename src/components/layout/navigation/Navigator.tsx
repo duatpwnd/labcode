@@ -3,16 +3,17 @@ import { NavLink } from "react-router-dom";
 import "./Navigator.scoped.scss"
 const StyledNavLink = styled(NavLink)`
     width: 100%;
-    padding: 25px 35px 25px 80px;
+    padding: 25px 35px 25px 58px;
     box-sizing: border-box;
     display: block;
     color: #79828a;
     font-size: 18px;
-    background: url(${props => require("images/" + props.background).default}) no-repeat left 44px top 20px/ 24px 24px;
+    background: url(${props => require("images/" + props.background).default}) no-repeat left 19px top 20px/ 24px 24px;
     &.active{
         color: black;
+        border-radius: 12px;
         font-weight: 700;
-        background: url(${props => require("images/active_" + props.background).default}) #F6F7F8 no-repeat left 44px top 20px/ 24px 24px;
+        background: url(${props => require("images/active_" + props.background).default}) #F6F7F8 no-repeat left 19px top 20px/ 24px 24px;
     }
     @media all and (max-width: 1199px) {
         background: unset;

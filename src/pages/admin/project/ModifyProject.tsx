@@ -61,7 +61,10 @@ const ProjectDetail = (props) => {
         axios
             .get(apiUrl.project + `/${params.id}`)
             .then((result: any) => {
-                console.log(result);
+                console.log(result.data.data);
+                setInputs({
+                    ...result.data.data,
+                })
                 if (result.data.data.bannerImage == null) {
                     return;
                 }
@@ -86,6 +89,7 @@ const ProjectDetail = (props) => {
             .patch(apiUrl.project + `/${params.id}`, formData)
             .then((result: any) => {
                 console.log("프로젝트수정결과:", result);
+                getProject();
             }).catch((err: any) => {
                 console.log('프로젝트수정에러:', err);
             });
