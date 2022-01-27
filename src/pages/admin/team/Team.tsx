@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import "./Team.scoped.scss"
 import { phoneRegExp, emailRegExp, numberRegExp, homePageRegExp } from 'src/utils/common';
-export const InputComponent = ({ title, id, inputs, eventHandler }) => {
+export const InputComponent = ({ title, id, useStateProperty, stateHandler }) => {
     const [a, b] = useState<{ [key: string]: any }>({});
     const [isActive, setActive] = useState(false)
     const { pathname } = useLocation();
@@ -31,7 +31,7 @@ export const InputComponent = ({ title, id, inputs, eventHandler }) => {
     }
     const inputDebounce = debounce((e) => {
         const body = { ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
-        eventHandler(body);
+        stateHandler(body);
         // 수정하기 페이지일때만 
         if (pathname == "/team") {
             modify(body)
@@ -50,8 +50,8 @@ export const InputComponent = ({ title, id, inputs, eventHandler }) => {
         return numberRegExp(a[id]);
     }, [a.businessNumber])
     useEffect(() => {
-        b(inputs);
-    }, [inputs])
+        b(useStateProperty);
+    }, [useStateProperty])
     return (
         <div className="row">
             {
@@ -78,25 +78,25 @@ export const InputComponent = ({ title, id, inputs, eventHandler }) => {
     )
 }
 
-export const ManagerInfo = ({ inputs, eventHandler }) => {
+export const ManagerInfo = ({ useStateProperty, stateHandler }) => {
     const arr = [{ title: "담당자명", id: "managerName" }, { title: "메일 주소", id: "managerEmail" }, { title: "전화번호", id: "managerPhone" }]
     return (
         <section>
             <h3 className="h3-title">담당자 정보</ h3>
             {
-                arr.map((list, index) => <InputComponent key={index} title={list.title} id={list.id} inputs={inputs} eventHandler={eventHandler} />
+                arr.map((list, index) => <InputComponent key={index} title={list.title} id={list.id} useStateProperty={useStateProperty} stateHandler={stateHandler} />
                 )
             }
         </section>
     )
 }
-export const CompanyInfo = ({ inputs, eventHandler }) => {
+export const CompanyInfo = ({ useStateProperty, stateHandler }) => {
     const arr = [{ title: "회사명", id: "title" }, { title: "팀소개", id: "description" }, { title: "사업자등록번호", id: "businessNumber" }, { title: "사업자등록증", id: "businessImage" }, { title: "홈페이지 주소", id: "homepage" }]
     return (
         <section className="section1">
             <h3 className="h3-title">회사 정보</ h3>
             {
-                arr.map((list, index) => <InputComponent key={index} title={list.title} id={list.id} inputs={inputs} eventHandler={eventHandler} />
+                arr.map((list, index) => <InputComponent key={index} title={list.title} id={list.id} useStateProperty={useStateProperty} stateHandler={stateHandler} />
                 )
             }
         </section>
@@ -125,8 +125,8 @@ const Team = () => {
         <main>
             <h2 className="h2-title">정보 입력</h2>
             <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
-            <CompanyInfo inputs={inputs} eventHandler={setInputs} />
-            <ManagerInfo inputs={inputs} eventHandler={setInputs} />
+            <CompanyInfo useStateProperty={inputs} stateHandler={setInputs} />
+            <ManagerInfo useStateProperty={inputs} stateHandler={setInputs} />
         </main >
     )
 }

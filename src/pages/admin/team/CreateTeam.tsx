@@ -24,13 +24,13 @@ const CreateTeam = () => {
     return (
         <main>
             <h2 className="h2-title">신청하기</h2>
-            <CompanyInfo inputs={inputs} eventHandler={setInputs} />
+            <CompanyInfo useStateProperty={inputs} stateHandler={setInputs} />
             <section>
                 <h3 className="h3-title">로그인 정보</ h3>
-                <InputComponent title="아이디" id="managerId" inputs={inputs} eventHandler={setInputs} />
-                <InputComponent title="비밀번호" id="managerPassword" inputs={inputs} eventHandler={setInputs} />
+                <InputComponent title="아이디" id="managerId" useStateProperty={inputs} stateHandler={setInputs} />
+                <InputComponent title="비밀번호" id="managerPassword" useStateProperty={inputs} stateHandler={setInputs} />
             </section>
-            <ManagerInfo inputs={inputs} eventHandler={setInputs} />
+            <ManagerInfo useStateProperty={inputs} stateHandler={setInputs} />
             <div className="btn-wrap">
                 <button type="button" className="cancel-btn" >취소</button>
                 <button type="button" className="submit-btn" onClick={create}>신청</button>
