@@ -10,66 +10,44 @@ import "./Team.scoped.scss"
 import { phoneRegExp, emailRegExp, numberRegExp, homePageRegExp } from 'src/utils/common';
 export const InputComponent = ({ title, id, inputs, eventHandler }) => {
     const [a, b] = useState<{ [key: string]: any }>({});
-
     const [isActive, setActive] = useState(false)
     const { pathname } = useLocation();
     const debounce = _.debounce;
     const modify = (body) => {
         delete body['link'];
-        console.log('수정요청', body);
-        const formData = new FormData();
-        for (let key in body) {
-            formData.append(key, body[key as never]);
+        if (emailRegExp(body.managerEmail) && phoneRegExp(body.managerPhone) && homePageRegExp(body.homepage) && numberRegExp(body.businessNumber)) {
+            const formData = new FormData();
+            for (let key in body) {
+                formData.append(key, body[key as never]);
+            }
+            axios
+                .patch(apiUrl.team, formData)
+                .then((result: any) => {
+                    console.log("수정결과:", result);
+                }).catch((err: any) => {
+                    console.log('수정에러:', err);
+                });
         }
-        axios
-            .patch(apiUrl.team, formData)
-            .then((result: any) => {
-                console.log("수정결과:", result);
-            }).catch((err: any) => {
-                console.log('수정에러:', err);
-            });
     }
     const inputDebounce = debounce((e) => {
         const body = { ...a, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
         eventHandler(body);
         // 수정하기 페이지일때만 
         if (pathname == "/team") {
-            if (e.target.id == "managerEmail") {
-                if (emailRegExp(e.target.value)) {
-                    modify(body)
-                }
-            } else if (e.target.id == "managerPhone") {
-                if (phoneRegExp(e.target.value)) {
-                    modify(body)
-                }
-            } else if (e.target.id == "homepage") {
-                if (homePageRegExp(e.target.value)) {
-                    modify(body)
-                }
-            } else if (e.target.id == "businessNumber") {
-                if (numberRegExp(e.target.value)) {
-                    modify(body)
-                }
-            } else {
-                modify(body)
-            }
+            modify(body)
         }
     }, 400);
     const emailCheck = useMemo(() => {
-        const test = emailRegExp(a[id]);
-        return test;
+        return emailRegExp(a[id]);
     }, [a.managerEmail])
     const phoneCheck = useMemo(() => {
-        const test = phoneRegExp(a[id]);
-        return test;
+        return phoneRegExp(a[id]);
     }, [a.managerPhone])
     const urlCheck = useMemo(() => {
-        const test = homePageRegExp(a[id]);
-        return test;
+        return homePageRegExp(a[id]);
     }, [a.homepage])
     const businessNumberCheck = useMemo(() => {
-        const test = numberRegExp(a[id]);
-        return test;
+        return numberRegExp(a[id]);
     }, [a.businessNumber])
     useEffect(() => {
         b(inputs);
