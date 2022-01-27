@@ -1,33 +1,24 @@
 .wrap {
   max-width: 840px;
   margin: 0 auto;
-  padding: 80px 35px;
+  padding: 80px 40px;
   .h2-title {
-    font-size: 32px;
-  }
-  .guide-msg {
-    line-height: 23px;
-    color: #79828a;
-    margin: 18px 0 7.38vh 0;
+    font-size: 36px;
+    margin-bottom: 40px;
   }
   form {
     label {
       font-weight: 700;
       width: 110px;
+      color: #79828a;
       display: inline-block;
-      &:not(.except) {
-        &::after {
-          content: "*";
-          margin-left: 8px;
-          color: #5138e5;
-        }
-      }
     }
     input {
-      border-bottom: 1px solid #e6e8eb;
-      padding-bottom: 13px;
+      border-radius: 8px;
+      background: #f6f7f8;
+      padding: 10px 16px;
+      box-sizing: border-box;
       width: calc(100% - 110px);
-      font-weight: 700;
       &::placeholder {
         color: #9ea7ad;
       }
@@ -39,7 +30,7 @@
         clear: both;
       }
       .row-span {
-        width: 46%;
+        width: 48%;
       }
       .name-field {
         float: left;
@@ -51,9 +42,10 @@
     .row2 {
       margin: 32px 0;
     }
-    .row3 {
+    .row4 {
+      margin-top: 32px;
       textarea {
-        border: 1px solid #e6e8eb;
+        background: #f6f7f8;
         width: calc(100% - 110px);
         padding: 20px;
         box-sizing: border-box;
@@ -61,16 +53,15 @@
         border-radius: 8px;
         resize: none;
         height: 365px;
-        font-size: 14px;
         color: #555555;
         outline: none;
       }
     }
-    .btn-wrap {
-      width: calc(100% - 110px);
-      display: inline-flex;
-      justify-content: center;
-      margin-top: 40px;
+    .row5 {
+      width: 100%;
+      margin-top: 60px;
+      display: flex;
+      justify-content: flex-end;
       button {
         border-radius: 8px;
         font-size: 18px;
@@ -79,13 +70,15 @@
       .cancel-btn {
         background: #e6e8eb;
         color: black;
-        width: 27%;
+        max-width: 200px;
+        width: 100%;
       }
       .submit-btn {
         background: #5138e5;
         color: white;
         margin-left: 12px;
-        width: 47%;
+        max-width: 200px;
+        width: 100%;
       }
     }
   }
@@ -114,21 +107,9 @@
       input {
         width: 100%;
       }
-      .row3 {
+      .row4 {
         textarea {
           width: 100%;
-        }
-      }
-      .except {
-        display: none;
-      }
-      .btn-wrap {
-        width: 100%;
-        .cancel-btn {
-          width: 40%;
-        }
-        .submit-btn {
-          width: 60%;
         }
       }
     }

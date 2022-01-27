@@ -125,9 +125,14 @@ const Project = () => {
                 console.log('프로젝트생성에러:', err);
             });
     }, 500);
-    const test = (el) => {
-        console.log(el);
-        console.log("Y", window.scrollY, window.innerHeight, el.offsetHeight, el.getBoundingClientRect());
+    const setPosition = (el) => {
+        const scrollHeight = document.body.scrollHeight;
+        const windowScrollY = window.scrollY;
+        const getRectTop = Math.ceil(el.getBoundingClientRect().top);
+        const elHeight = el.offsetHeight;
+        if (scrollHeight <= windowScrollY + getRectTop + elHeight) {
+            el.style.top = "-75px";
+        }
     }
     useEffect(() => {
         console.log('프로젝트 리스트페이지 노출');
@@ -165,7 +170,7 @@ const Project = () => {
                             </div>
                             {
                                 menuIndex == index &&
-                                <div className="menu" ref={el => { console.log(el); test(el); (menu as any).current = el; }}>
+                                <div className="menu" ref={el => { if (el != null) { setPosition(el); (menu as { [key: string]: any }).current = el; } }}>
                                     <h3 className="h3-title">{list.title}</h3>
                                     <ul >
                                         <li className="manage" onClick={() => navigate(`/project/${list.id}`)}>

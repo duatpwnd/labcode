@@ -17,39 +17,59 @@ main {
       color: #9ea7ad;
     }
   }
-  table {
-    width: 100%;
-    table-layout: fixed;
-    th,
-    td {
-      text-align: left;
-      padding: 18px 0;
-      color: #9ea7ad;
-      font-size: 14px;
-      background: white;
-    }
-    tbody:before {
-      content: "@";
-      display: block;
-      line-height: 8px;
-      text-indent: -99999px;
-    }
-    tr {
+  .product-list {
+    overflow: auto;
+    table {
+      width: 100%;
+      table-layout: fixed;
+      th,
       td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        .labcodeImage,
-        .sourceImage {
-          width: 40px;
-          height: 40px;
+        text-align: left;
+        padding: 18px 24px;
+        color: #9ea7ad;
+        font-size: 14px;
+        background: white;
+      }
+      .created {
+        background: url("~images/arrow_bottom.svg") white no-repeat center right
+          24px / 16px 16px;
+      }
+      th {
+        position: relative;
+        &:not(:last-child) {
+          &::after {
+            color: #e6e8eb;
+            content: "｜";
+            position: absolute;
+            right: 0;
+            width: 6px;
+            z-index: 1;
+          }
         }
-        .convert-ico {
-          width: 18px;
-          height: 6px;
-          margin: 0 32px;
-          background: url("~images/convert_ico.svg") no-repeat center center /
-            18px 6px;
+      }
+      tbody:before {
+        content: "@";
+        display: block;
+        line-height: 8px;
+        text-indent: -99999px;
+      }
+      tr {
+        td {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          .labcodeImage,
+          .sourceImage {
+            width: 40px;
+            height: 40px;
+          }
+          .convert-ico {
+            width: 18px;
+            height: 6px;
+            margin: 0 32px;
+            background: url("~images/convert_ico.svg") no-repeat center center /
+              18px 6px;
+          }
         }
       }
     }

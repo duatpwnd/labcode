@@ -13,12 +13,14 @@ import PrintInfo from "src/pages/admin/create-product/print-info/PrintInfo";
 import AddInfo from "src/pages/admin/create-product/add-info/AddInfo";
 import Inquiries from "src/pages/inquiries/Inquiries";
 import Team from "src/pages/admin/team/Team";
+import CreateTeam from "src/pages/admin/team/CreateTeam";
 export default function CreateRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/createTeam" element={<CreateTeam />} />
             <Route path="/project" element={<ProjectList />} />
             <Route path="/project/:id" element={<ModifyProject />} />
             <Route path="/product/:id" element={<ProductList />} />

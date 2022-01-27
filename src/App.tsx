@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      {pathname != "/" && pathname != "/inquiries" &&
+      {pathname != "/" && pathname != "/inquiries" && pathname != "/createTeam" &&
         <Navigator />
       }
       {Routes()}

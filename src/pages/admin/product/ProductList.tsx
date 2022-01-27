@@ -58,22 +58,22 @@ const Product = () => {
         <main>
             <div className="search-area">
                 <SearchButton />
-                <SearchInput placeholder="원하는 프로젝트를 검색해보세요."
+                <SearchInput placeholder="제목 검색."
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
             <CreateBtn onClick={() => navigate(`/createProduct/defaultInfo/${params.id}`)}>제품 생성</CreateBtn>
-            <div style={{ width: "100%", height: "100%" }}>
+            <div className="product-list">
                 <table>
                     <colgroup>
-                        <col width="70px" />
-                        <col width="110px" />
-                        <col width="180px" />
-                        <col width="110px" />
-                        <col width="110px" />
-                        <col width="150px" />
-                        <col width="110px" />
-                        <col width="110px" />
-                        <col width="110px" />
+                        <col width="100px" />
+                        <col width="140px" />
+                        <col width="392px" />
+                        <col width="220px" />
+                        <col width="140px" />
+                        <col width="140px" />
+                        <col width="140px" />
+                        <col width="140px" />
+                        <col width="100px" />
                     </colgroup>
                     <thead>
                         <tr>
@@ -98,7 +98,7 @@ const Product = () => {
                             <th>
                                 적용 세기
                             </th>
-                            <th>
+                            <th className="created">
                                 생성일
                             </th>
                             <th>

@@ -32,34 +32,35 @@ const Help = () => {
     return (
         <div className="wrap">
             <h2 className="h2-title">문의하기</h2>
-            <p className="guide-msg">담당자가 정식으로 검토하여 빠른 시일 내 연락드리겠습니다.</p>
             <form>
                 <fieldset></fieldset>
                 <legend>문의하기</legend>
                 <div className="row1">
                     <span className="row-span name-field">
                         <label htmlFor="name">이름</label>
-                        <input type="text" id="name" placeholder="이름을 입력해주세요." onChange={onChange} />
+                        <input type="text" id="name" placeholder="이름 입력" onChange={onChange} />
                     </span>
                     <span className="row-span email-field">
-                        <label htmlFor="email">이메일</label>
-                        <input type="email" id="email" placeholder="이메일 주소를 입력해주세요." onChange={onChange} />
+                        <label htmlFor="phone">연락처</label>
+                        <input type="text" id="phone" placeholder="“-” 없이 전화번호 입력" onChange={onChange} />
                     </span>
                 </div>
                 <div className="row2">
-                    <label htmlFor="title">제목</label>
-                    <input type="text" id="title" placeholder="제목을 입력해주세요." onChange={onChange} />
+                    <label htmlFor="email">이메일</label>
+                    <input type="text" id="email" placeholder="이메일 입력" onChange={onChange} />
                 </div>
                 <div className="row3">
+                    <label htmlFor="title">제목</label>
+                    <input type="text" id="title" placeholder="제목 입력" onChange={onChange} />
+                </div>
+                <div className="row4">
                     <label htmlFor="description">문의 내용</label>
                     <textarea id="description" onChange={onChange}></textarea>
                 </div>
-                <div className="row4">
-                    <label className="except"></label>
-                    <div className="btn-wrap">
-                        <button className="cancel-btn">취소</button>
-                        <button type="button" className="submit-btn" onClick={send}>문의 보내기</button>
-                    </div>
+                <div className="row5">
+                    <button type="button" className="cancel-btn" onClick={() => navigate("/")
+                    }>취소</button>
+                    <button type="button" className="submit-btn" onClick={send}>문의하기</button>
                 </div>
             </form>
         </div>

@@ -98,8 +98,32 @@ main {
       }
     }
   }
-  .section1 {
-    margin: 40px 0;
+  section {
+    margin-top: 40px;
+  }
+  .btn-wrap {
+    width: 100%;
+    margin-top: 60px;
+    display: flex;
+    justify-content: flex-end;
+    button {
+      border-radius: 8px;
+      font-size: 18px;
+      padding: 22px 0;
+    }
+    .cancel-btn {
+      background: #e6e8eb;
+      color: black;
+      max-width: 200px;
+      width: 100%;
+    }
+    .submit-btn {
+      background: #5138e5;
+      color: white;
+      margin-left: 12px;
+      max-width: 200px;
+      width: 100%;
+    }
   }
 }
 @media all and (max-width: 1199px) {
