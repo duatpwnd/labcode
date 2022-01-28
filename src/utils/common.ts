@@ -24,21 +24,24 @@ export const getBase64 = (fileObj) => {
 export const emailRegExp = (value) => {
   const regExp =
     /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
   return regExp.test(value);
 };
 // 전화번호 정규식
 export const phoneRegExp = (value) => {
   const regExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+
   return regExp.test(value);
 };
 // 홈페이지 정규식
 export const homePageRegExp = (value) => {
   const regExp = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/;
+
   return regExp.test(value);
 };
 // 숫자만 정규식
 export const numberRegExp = (value) => {
-  const regExp = /[0-9]/;
+  const regExp = /^[0-9]+$/;
   return regExp.test(value);
 };
 export const convertURLtoFile = async (url: string) => {

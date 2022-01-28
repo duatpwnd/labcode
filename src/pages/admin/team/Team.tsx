@@ -9,7 +9,7 @@ import {
 import "./Team.scoped.scss"
 import { phoneRegExp, emailRegExp, numberRegExp, homePageRegExp } from 'src/utils/common';
 export const InputComponent = ({ title, id, useStateProperty, stateHandler }) => {
-    const [a, b] = useState<{ [key: string]: any }>({});
+    const [a, b] = useState<{ [key: string]: any }>({ managerName: "", managerEmail: "", managerPhone: "", title: "", businessNumber: "", businessImage: null, homepage: "", managerPassword: "", logoImage: null });
     const [isActive, setActive] = useState(false)
     const { pathname } = useLocation();
     const debounce = _.debounce;
@@ -36,7 +36,7 @@ export const InputComponent = ({ title, id, useStateProperty, stateHandler }) =>
         if (pathname == "/team") {
             modify(body)
         }
-    }, 400);
+    }, 200);
     const emailCheck = useMemo(() => {
         return emailRegExp(a[id]);
     }, [a.managerEmail])
@@ -78,20 +78,21 @@ export const InputComponent = ({ title, id, useStateProperty, stateHandler }) =>
     )
 }
 
-export const ManagerInfo = ({ useStateProperty, stateHandler }) => {
-    const arr = [{ title: "담당자명", id: "managerName" }, { title: "메일 주소", id: "managerEmail" }, { title: "전화번호", id: "managerPhone" }]
+export const ManagerInfo = (props) => {
+    const arr = [{ title: "담당자명", id: "managerName" }, { title: "연락처", id: "managerPhone" }, { title: "이메일", id: "managerEmail" }]
     return (
         <section>
             <h3 className="h3-title">담당자 정보</ h3>
             {
-                arr.map((list, index) => <InputComponent key={index} title={list.title} id={list.id} useStateProperty={useStateProperty} stateHandler={stateHandler} />
+                arr.map((list, index) => <InputComponent key={index} title={list.title} id={list.id} useStateProperty={props.useStateProperty} stateHandler={props.stateHandler} />
                 )
             }
+            {props.children}
         </section>
     )
 }
 export const CompanyInfo = ({ useStateProperty, stateHandler }) => {
-    const arr = [{ title: "회사명", id: "title" }, { title: "팀소개", id: "description" }, { title: "사업자등록번호", id: "businessNumber" }, { title: "사업자등록증", id: "businessImage" }, { title: "홈페이지 주소", id: "homepage" }]
+    const arr = [{ title: "회사명", id: "title" }, { title: "사업자등록번호", id: "businessNumber" }, { title: "사업자등록증", id: "businessImage" }, { title: "홈페이지 주소", id: "homepage" }]
     return (
         <section className="section1">
             <h3 className="h3-title">회사 정보</ h3>

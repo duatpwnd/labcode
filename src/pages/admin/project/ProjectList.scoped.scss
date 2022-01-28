@@ -4,8 +4,7 @@ main {
   margin-left: 320px;
   min-height: calc(100vh - 120px);
   .search-area {
-    width: calc(100% - 200px);
-    margin-right: 40px;
+    width: 100%;
     padding: 0px 22px;
     height: 60px;
     line-height: 60px;
@@ -15,21 +14,24 @@ main {
     border: 1px solid #dbdfe1;
     display: inline-block;
   }
-  .nav {
-    margin: 40px 0 20px 0;
-    border-bottom: 1px solid rgb(234, 234, 235);
-    display: flex;
-    li {
-      width: 140px;
+  .btn-wrap {
+    margin-top: 40px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    .category-btn {
+      line-height: 44px;
+      height: 44px;
+      border-radius: 100px;
+      padding: 0px 20px;
       text-align: center;
-      font-size: 18px;
-      padding-bottom: 14px;
-      color: #79828a;
+      color: black;
+      background: #dbdfe1;
     }
     .active {
-      font-weight: 700;
-      color: black;
-      border-bottom: 3px solid #5138e5;
+      background: black;
+      color: white;
     }
   }
   .order-area {
@@ -76,11 +78,11 @@ main {
     margin-top: 20px;
     display: grid;
     gap: 40px;
-    grid-template-columns: repeat(auto-fill, minmax(310px, auto));
+    grid-template-columns: repeat(auto-fill, minmax(240px, auto));
     .list {
       position: relative;
       height: 0;
-      padding-top: 117%;
+      padding-top: 130%;
       .link {
         .mask {
           position: absolute;
@@ -176,6 +178,7 @@ main {
           }
           dt {
             font-weight: 700;
+            font-size: 18px;
           }
           dd {
             font-size: 14px;
@@ -192,19 +195,12 @@ main {
     margin-left: 0;
   }
 }
-@media all and (max-width: 900px) {
-  main {
-    .create-btn {
-      margin-top: 20px;
-      width: 100%;
-    }
-  }
-}
-@media all and (max-width: 767px) {
-  main {
-    .search-area {
-      width: 100%;
-      margin-right: 0;
-    }
-  }
-}
+// @media all and (max-width: 479px) {
+//   main {
+//     .project-list {
+//       .list {
+//         padding-top: 133%;
+//       }
+//     }
+//   }
+// }

@@ -23,16 +23,13 @@ const SearchButton = styled.button`
     24px 24px;
 `
 const CreateBtn = styled.button`
-    background:#5138E5;
-    border-radius:8px;
-    font-size:18px;
-    width:160px;
-    padding:19px 0;
-    color:white;
-    @media all and (max-width: 767px) {
-        margin-top:20px;
-        width:100%;
-    }
+    background: #5138E5;
+    border-radius: 8px;
+    font-size: 18px;
+    width: 141px;
+    padding: 14px 0;
+    color: white;
+   
 `
 const StatusText = styled.strong`
     font-size:14px;
@@ -59,22 +56,23 @@ const StatusText = styled.strong`
 //         </div>
 //     )
 // }
-const LnbMenu = ({ eventHandler }) => {
+const LnbMenu = ({ eventHandler, child }) => {
     const [list, setList] = useState({
         index: 0,
-        arr: [{ value: "전체 프로젝트", type: "" }, { value: "신청접수", type: false }, { value: "승인완료", type: true }]
+        arr: [{ value: "전체", type: "" }, { value: "신청접수", type: false }, { value: "승인완료", type: true }]
     })
     return (
-        <ul className="nav">
+        <div className="btn-wrap">
             {
-                list.arr.map((el, index) => <li key={index} className={index == list.index ? 'active' : ''} onClick={() => {
+                list.arr.map((el, index) => <button key={index} className={index == list.index ? 'active category-btn' : 'category-btn'} onClick={() => {
                     setList({
                         ...list, index: index
                     });
                     eventHandler(1, "", el.type)
-                }}>{el.value}</li>)
+                }}>{el.value}</button>)
             }
-        </ul>
+            {child}
+        </div>
     )
 }
 const Project = () => {
@@ -145,9 +143,9 @@ const Project = () => {
                 <SearchInput placeholder="원하는 프로젝트를 검색해보세요."
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
-            <CreateBtn onClick={createProject}>프로젝트 생성</CreateBtn>
-            <LnbMenu eventHandler={getProjectList} />
+            <LnbMenu eventHandler={getProjectList} child={<CreateBtn onClick={createProject}>프로젝트 생성</CreateBtn>} />
             {/* <OrderMenu /> */}
+
             <ul className="project-list">
                 {
                     data != undefined &&
