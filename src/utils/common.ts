@@ -21,28 +21,53 @@ export const getBase64 = (fileObj) => {
   });
 };
 // 이메일 정규식
-export const emailRegExp = (value) => {
-  const regExp =
-    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-
-  return regExp.test(value);
+export const emailReg =
+  /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+export const emailRegExp = (data, property, stateHandler, validation) => {
+  stateHandler(data);
+  if (emailReg.test(data[property]) == false) {
+    validation("올바른 형식의 이메일 주소가 아닙니다.");
+    return false;
+  } else {
+    validation("");
+    return true;
+  }
 };
 // 전화번호 정규식
-export const phoneRegExp = (value) => {
-  const regExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
-
-  return regExp.test(value);
+export const phoneReg = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+export const phoneRegExp = (data, property, stateHandler, validation) => {
+  stateHandler(data);
+  if (phoneReg.test(data[property]) == false) {
+    validation("올바른 번호의 형식이 아닙니다.");
+    return false;
+  } else {
+    validation("");
+    return true;
+  }
 };
 // 홈페이지 정규식
-export const homePageRegExp = (value) => {
-  const regExp = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/;
-
-  return regExp.test(value);
+export const homePageReg = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/;
+export const homePageRegExp = (data, property, stateHandler, validation) => {
+  stateHandler(data);
+  if (homePageReg.test(data[property]) == false) {
+    validation("올바른 주소가 아닙니다.");
+    return false;
+  } else {
+    validation("");
+    return true;
+  }
 };
 // 숫자만 정규식
-export const numberRegExp = (value) => {
-  const regExp = /^[0-9]+$/;
-  return regExp.test(value);
+export const numberReg = /^[0-9]+$/;
+export const numberRegExp = (data, property, stateHandler, validation) => {
+  stateHandler(data);
+  if (numberReg.test(data[property]) == false) {
+    validation("올바른 번호의 형식이 아닙니다.");
+    return false;
+  } else {
+    validation("");
+    return true;
+  }
 };
 export const convertURLtoFile = async (url: string) => {
   if (url != null) {

@@ -23,6 +23,15 @@
         color: #9ea7ad;
       }
     }
+    .warn-message {
+      width: 100%;
+      margin-right: calc(100% - 110px);
+      color: red;
+      margin-top: 10px;
+    }
+    .email-warn-message {
+      @extend .warn-message;
+    }
     .row1 {
       &:after {
         display: block;

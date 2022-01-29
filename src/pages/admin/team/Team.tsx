@@ -6,12 +6,16 @@ import {
     useLocation
 } from "react-router-dom";
 import "./Team.scoped.scss"
-import { phoneRegExp, emailRegExp, numberRegExp, homePageRegExp } from 'src/utils/common';
+import { phoneRegExp, emailRegExp, numberRegExp, homePageRegExp, numberReg, homePageReg, phoneReg, emailReg } from 'src/utils/common';
 const debounce = _.debounce;
 const modify = (body) => {
     console.log(body);
+    const businessNumberCheck = numberReg.test(body.businessNumber);
+    const homepageCheck = homePageReg.test(body.homepage);
+    const phoneCheck = phoneReg.test(body.managerPhone);
+    const emailCheck = emailReg.test(body.managerEmail);
     const formData = new FormData();
-    if (phoneRegExp(body.managerPhone) && emailRegExp(body.managerEmail) && numberRegExp(body.businessNumber) && homePageRegExp(body.homepage) && body.businessImage != null) {
+    if (businessNumberCheck && homepageCheck && phoneCheck && emailCheck && body.businessImage != null) {
         for (let key in body) {
             formData.append(key, body[key as never]);
         }
@@ -26,29 +30,18 @@ const modify = (body) => {
 }
 export const ManagerInfo = ({ useStateProperty, stateHandler, validationCheck, children }: { [key: string]: any }) => {
     const { pathname } = useLocation();
-
     const phoneValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        stateHandler(data);
-        if (phoneRegExp(e.target.value) == false) {
-            validationCheck.setPhoneMsg("올바른 번호의 형식이 아닙니다.");
-        } else {
-            validationCheck.setPhoneMsg("");
-            if (pathname == "/team") {
-                modify(data)
-            }
+        const result = phoneRegExp(data, 'managerPhone', stateHandler, validationCheck.setPhoneMsg);
+        if (result && pathname == "/team") {
+            modify(data)
         }
     }
     const emailValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        stateHandler(data);
-        if (emailRegExp(e.target.value) == false) {
-            validationCheck.setEmailMsg("올바른 형식의 이메일 주소가 아닙니다.");
-        } else {
-            validationCheck.setEmailMsg("");
-            if (pathname == "/team") {
-                modify(data)
-            }
+        const result = emailRegExp(data, 'managerEmail', stateHandler, validationCheck.setEmailMsg);
+        if (result && pathname == "/team") {
+            modify(data)
         }
     };
     const notCheck = (e) => {
@@ -85,26 +78,16 @@ export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck })
     const { pathname } = useLocation();
     const businessNumberValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        stateHandler(data);
-        if (numberRegExp(e.target.value) == false) {
-            validationCheck.setNumberMsg("올바른 번호의 형식이 아닙니다.");
-        } else {
-            validationCheck.setNumberMsg("");
-            if (pathname == "/team") {
-                modify(data)
-            }
+        const result = numberRegExp(data, 'businessNumber', stateHandler, validationCheck.setNumberMsg);
+        if (result && pathname == "/team") {
+            modify(data)
         }
     }
     const homePageValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        stateHandler(data);
-        if (homePageRegExp(e.target.value) == false) {
-            validationCheck.setLinkMsg("올바른 주소의 형식이 아닙니다.");
-        } else {
-            validationCheck.setLinkMsg("");
-            if (pathname == "/team") {
-                modify(data)
-            }
+        const result = homePageRegExp(data, 'homepage', stateHandler, validationCheck.setLinkMsg);
+        if (result && pathname == "/team") {
+            modify(data)
         }
     }
     const notCheck = (e) => {

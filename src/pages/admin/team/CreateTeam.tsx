@@ -15,22 +15,14 @@ const CreateTeam = () => {
     const [link, setLinkMsg] = useState("");
     const [businessImage, setBusinessImage] = useState("");
     const create = () => {
-        if (numberRegExp(inputs.businessNumber) == false) {
-            setNumberMsg("올바른 번호의 형식이 아닙니다.")
-        }
-        if (homePageRegExp(inputs.homepage) == false) {
-            setLinkMsg("올바른 번호의 형식이 아닙니다.")
-        }
-        if (phoneRegExp(inputs.managerPhone) == false) {
-            setPhoneMsg("올바른 번호의 형식이 아닙니다.")
-        }
-        if (emailRegExp(inputs.managerEmail) == false) {
-            setEmailMsg("올바른 형식의 이메일 주소가 아닙니다.")
-        }
+        const businessNumberCheck = numberRegExp(inputs, 'businessNumber', setInputs, setNumberMsg);
+        const homepageCheck = homePageRegExp(inputs, 'homepage', setInputs, setLinkMsg);
+        const phoneCheck = phoneRegExp(inputs, 'managerPhone', setInputs, setPhoneMsg);
+        const emailCheck = emailRegExp(inputs, 'managerEmail', setInputs, setEmailMsg);
         if (inputs.businessImage == null) {
             setBusinessImage("사업자 등록증을 첨부해주세요.")
         }
-        if (numberRegExp(inputs.businessNumber) && homePageRegExp(inputs.homepage) && phoneRegExp(inputs.managerPhone) && emailRegExp(inputs.managerEmail) && inputs.businessImage != null) {
+        if (businessNumberCheck && homepageCheck && phoneCheck && emailCheck && inputs.businessImage != null) {
             console.log("생성요청", inputs);
             axios
                 .post(apiUrl.team, inputs)
