@@ -9,24 +9,23 @@ import _ from 'lodash'
 const CreateTeam = () => {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState<{ [key: string]: any }>({});
-    const [phoneMessage, setPhoneMessage] = useState("");
-    const [emailMessage, setEmailMessage] = useState("");
-    const [businessNumberMessage, setBusinessNumberMessage] = useState("");
-    const [homePageMessage, setHomePageMessage] = useState("");
+    const [phoneMsg, setPhoneMsg] = useState("");
+    const [emailMsg, setEmailMsg] = useState("");
+    const [numberMsg, setNumberMsg] = useState("");
+    const [link, setLinkMsg] = useState("");
     const [businessImage, setBusinessImage] = useState("");
     const create = () => {
-        console.log(inputs);
         if (numberRegExp(inputs.businessNumber) == false) {
-            setBusinessNumberMessage("올바른 번호의 형식이 아닙니다.")
+            setNumberMsg("올바른 번호의 형식이 아닙니다.")
         }
         if (homePageRegExp(inputs.homepage) == false) {
-            setHomePageMessage("올바른 번호의 형식이 아닙니다.")
+            setLinkMsg("올바른 번호의 형식이 아닙니다.")
         }
         if (phoneRegExp(inputs.managerPhone) == false) {
-            setPhoneMessage("올바른 번호의 형식이 아닙니다.")
+            setPhoneMsg("올바른 번호의 형식이 아닙니다.")
         }
         if (emailRegExp(inputs.managerEmail) == false) {
-            setEmailMessage("올바른 형식의 이메일 주소가 아닙니다.")
+            setEmailMsg("올바른 형식의 이메일 주소가 아닙니다.")
         }
         if (inputs.businessImage == null) {
             setBusinessImage("사업자 등록증을 첨부해주세요.")
@@ -46,8 +45,8 @@ const CreateTeam = () => {
     return (
         <main>
             <h2 className="h2-title">신청하기</h2>
-            <CompanyInfo useStateProperty={inputs} stateHandler={setInputs} validationCheck={{ homePageMessage: homePageMessage, setHomePageMessage: setHomePageMessage, businessNumberMessage: businessNumberMessage, setBusinessNumberMessage: setBusinessNumberMessage, businessImage: businessImage, setBusinessImage: setBusinessImage }} />
-            <ManagerInfo useStateProperty={inputs} stateHandler={setInputs} validationCheck={{ setEmailMessage: setEmailMessage, emailMessage: emailMessage, phoneMessage: phoneMessage, setPhoneMessage: setPhoneMessage }} children={<div className="row">
+            <CompanyInfo useStateProperty={inputs} stateHandler={setInputs} validationCheck={{ link: link, setLinkMsg: setLinkMsg, numberMsg: numberMsg, setNumberMsg: setNumberMsg, businessImage: businessImage, setBusinessImage: setBusinessImage }} />
+            <ManagerInfo useStateProperty={inputs} stateHandler={setInputs} validationCheck={{ setEmailMsg: setEmailMsg, emailMsg: emailMsg, phoneMsg: phoneMsg, setPhoneMsg: setPhoneMsg }} children={<div className="row">
                 <label htmlFor="managerPassword">비밀번호</label>
                 <input type="password" defaultValue={inputs.managerEmail} id="managerPassword" onChange={(e) => setInputs({ ...inputs, [e.target.id]: e.target.value })} />
             </div>} />
