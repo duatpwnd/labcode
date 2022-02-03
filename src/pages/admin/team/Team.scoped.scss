@@ -56,10 +56,11 @@ main {
           vertical-align: middle;
           background: #f6f7f8;
           border-radius: 8px;
-          width: calc(100% - 164px);
+          width: calc(100% - 140px);
           margin-right: 12px;
           padding-left: 16px;
           padding-right: 8px;
+          box-sizing: border-box;
           input[type="file"] {
             display: none;
           }
@@ -100,6 +101,9 @@ main {
   }
   section {
     margin-top: 40px;
+    &:last-of-type {
+      margin-top: 60px;
+    }
   }
   .btn-wrap {
     width: 100%;
@@ -135,8 +139,13 @@ main {
   main {
     section {
       .row {
-        input {
-          width: 100% !important;
+        input,
+        .business-image-area {
+          width: 100%;
+          margin-top: 10px;
+          .attach {
+            width: 100%;
+          }
         }
         .warn-message {
           margin-left: 0;

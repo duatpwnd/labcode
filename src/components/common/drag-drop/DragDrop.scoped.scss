@@ -17,3 +17,9 @@
     }
   }
 }
+@media all and (max-width: 767px) {
+  .banner {
+    width: 100% !important;
+    margin-top: 10px;
+  }
+}

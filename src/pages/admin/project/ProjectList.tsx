@@ -108,7 +108,7 @@ const Project = () => {
             title: "",
             description: "",
             bannerImage: "",
-            hompage: "http://snaptag.co.kr/"
+            homepage: "http://snaptag.co.kr/"
         }
         const formData = new FormData();
         for (let key in body) {

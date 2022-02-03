@@ -21,8 +21,9 @@ const CreateTeam = () => {
         const emailCheck = emailRegExp(inputs, 'managerEmail', setInputs, setEmailMsg);
         if (inputs.businessImage == null) {
             setBusinessImage("사업자 등록증을 첨부해주세요.")
+            return;
         }
-        if (businessNumberCheck && homepageCheck && phoneCheck && emailCheck && inputs.businessImage != null) {
+        if (businessNumberCheck && homepageCheck && phoneCheck && emailCheck) {
             console.log("생성요청", inputs);
             axios
                 .post(apiUrl.team, inputs)

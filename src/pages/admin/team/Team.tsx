@@ -47,6 +47,8 @@ export const ManagerInfo = ({ useStateProperty, stateHandler, validationCheck, c
     const notCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
         stateHandler(data);
+        console.log("data", data);
+
         if (pathname == "/team") {
             modify(data)
         }
@@ -91,8 +93,7 @@ export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck })
         }
     }
     const notCheck = (e) => {
-        const idType = e.target.id == "businessImage" ? e.target.files[0] : e.target.value;
-        const data = { ...useStateProperty, [e.target.id]: idType };
+        const data = { ...useStateProperty, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value };
         if (e.target.id == "businessImage") {
             validationCheck.setBusinessImage("");
             fileLink(URL.createObjectURL(e.target.files[0]))

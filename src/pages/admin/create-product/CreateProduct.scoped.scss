@@ -12,6 +12,7 @@ main {
     padding: 20px 0;
     .header {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 62px;
@@ -33,16 +34,34 @@ main {
               text-align: center;
               padding: 12px 0;
               width: 100%;
+              font-weight: 700;
               font-size: 14px;
-              color: #79828a;
+              color: #9ea7ad;
             }
             .active {
               background: white;
               border-radius: 8px;
-              font-weight: 700;
-              color: black;
+              color: #5138e5;
             }
           }
+        }
+      }
+    }
+  }
+}
+@media all and (max-width: 1199px) {
+  main {
+    margin-left: 0;
+  }
+}
+@media all and (max-width: 767px) {
+  main {
+    .wrap {
+      .header {
+        .lnb {
+          background: white;
+          max-width: unset;
+          margin-top: 24px;
         }
       }
     }

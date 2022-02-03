@@ -41,37 +41,27 @@ const ProjectDetail = (props) => {
         onChange(e);
     }, 500);
     const onChange = (e: { [key: string]: any }) => {
-        let body;
-        if (e.target == undefined) {
-            body = {
-                ...inputs,
-                bannerImage: e,
-
-            }
-        } else {
-            body = {
-                ...inputs,
-                [e.target.id]: e.target.value,
-
-            }
-        }
-        modify(body);
+        const data = { ...inputs, [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value }
+        setInputs({
+            ...data
+        })
+        modify({ ...data });
     };
     const getProject = () => {
         axios
             .get(apiUrl.project + `/${params.id}`)
-            .then((result: any) => {
-                console.log(result.data.data);
+            .then((result: { [key: string]: any }) => {
+                const res = result.data.data
                 setInputs({
-                    ...result.data.data,
+                    ...res,
                 })
-                if (result.data.data.bannerImage == null) {
+                if (res.bannerImage == null || res.bannerImage == "") {
                     return;
                 }
-                setBannerLink(result.data.data.bannerImage);
-                convertURLtoFile(result.data.data.bannerImage).then((fileObj) => {
+                setBannerLink(res.bannerImage);
+                convertURLtoFile(res.bannerImage).then((fileObj) => {
                     setInputs({
-                        ...result.data.data,
+                        ...res,
                         bannerImage: fileObj,
                     })
                 })

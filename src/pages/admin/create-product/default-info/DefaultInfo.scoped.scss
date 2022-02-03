@@ -34,20 +34,18 @@ section {
         vertical-align: middle;
       }
       .control {
-        display: inline-block;
+        display: inline-flex;
         width: calc(100% - 180px);
         background: #e6e8eb;
         border-radius: 50px;
-        text-align: center;
+        justify-content: center;
+        column-gap: 15px;
         button {
           box-sizing: border-box;
-          width: 100px;
+          flex: 0 1 100px;
           color: #79828a;
           background: transparent;
           padding: 14px 0;
-          &:nth-child(2) {
-            margin: 0 10%;
-          }
         }
         .selected {
           font-weight: 700;
@@ -81,6 +79,27 @@ section {
     }
     .btn-area {
       margin-top: 80px;
+    }
+  }
+}
+@media all and (max-width: 767px) {
+  section {
+    .form {
+      .row {
+        input,
+        textarea,
+        .control {
+          width: 100%;
+          margin-top: 10px;
+        }
+        .btn-wrap {
+          width: 100%;
+          .cancel-btn,
+          .submit-btn {
+            width: 50%;
+          }
+        }
+      }
     }
   }
 }
