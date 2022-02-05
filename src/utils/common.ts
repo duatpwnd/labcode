@@ -58,7 +58,7 @@ export const homePageRegExp = (data, property, stateHandler, validation) => {
   }
 };
 // 숫자만 정규식
-export const numberReg = /^[0-9]+$/;
+export const numberReg = /^[0-9-]{2,20}[0-9]$/;
 export const numberRegExp = (data, property, stateHandler, validation) => {
   stateHandler(data);
   if (numberReg.test(data[property]) == false) {

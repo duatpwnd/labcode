@@ -14,7 +14,7 @@ const CreateTeam = () => {
     const [numberMsg, setNumberMsg] = useState("");
     const [link, setLinkMsg] = useState("");
     const [businessImage, setBusinessImage] = useState("");
-    const create = () => {
+    const create = (body) => {
         const businessNumberCheck = numberRegExp(inputs, 'businessNumber', setInputs, setNumberMsg);
         const homepageCheck = homePageRegExp(inputs, 'homepage', setInputs, setLinkMsg);
         const phoneCheck = phoneRegExp(inputs, 'managerPhone', setInputs, setPhoneMsg);
@@ -24,9 +24,12 @@ const CreateTeam = () => {
             return;
         }
         if (businessNumberCheck && homepageCheck && phoneCheck && emailCheck) {
-            console.log("생성요청", inputs);
+            const formData = new FormData();
+            for (let key in body) {
+                formData.append(key, body[key as never]);
+            }
             axios
-                .post(apiUrl.team, inputs)
+                .post(apiUrl.team, formData)
                 .then((result: any) => {
                     console.log("팀생성결과:", result);
                     navigate("/");
@@ -45,7 +48,7 @@ const CreateTeam = () => {
             </div>} />
             <div className="btn-wrap">
                 <button type="button" className="cancel-btn" >취소</button>
-                <button type="button" className="submit-btn" onClick={create}>신청</button>
+                <button type="button" className="submit-btn" onClick={() => create(inputs)}>신청</button>
             </div>
         </main>
     )

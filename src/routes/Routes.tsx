@@ -25,7 +25,7 @@ export default function CreateRoutes() {
             <Route path="/project/:id" element={<ModifyProject />} />
             <Route path="/product/:id" element={<ProductList />} />
             <Route path="/createProduct" element={<CreateProduct />}>
-                <Route path="defaultInfo/:id" element={<DefaultInfo />} />
+                <Route path="defaultInfo/:type/:id" element={<DefaultInfo />} />
                 <Route path="printInfo" element={<PrintInfo />} />
                 <Route path="addInfo" element={<AddInfo />} />
             </Route>

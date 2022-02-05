@@ -25,15 +25,17 @@ const DragDrop = (props) => {
         })
     };
     useEffect(() => {
-        console.log('ppppppppp', props.link);
         if (props.link != "") {
             setFile(props.link)
+        } else {
+            setFile(null);
         }
     }, [props.link])
     return (
         <div style={{ width: props.style.width }} ref={banner} className="banner" onDragEnterCapture={dragEnterHandler} onDragLeaveCapture={dragLeaveHandler}>
             <FileUploader hoverTitle={" "} handleChange={handleChange} name="file" types={fileTypes} children={<div className="outline" style={{ height: props.style.height }} >
-                {file != null &&
+                {file == null ?
+                    <button className="add-btn"></button> :
                     <img src={file} alt="LABCODE" title="LABCODE" className="image" />
                 }
             </div>} />

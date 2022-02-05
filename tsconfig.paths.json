@@ -4,8 +4,8 @@
     "paths": { 
       "src/*": [ "src/*" ], 
       "components/*": [ "src/components/*" ],
-      "images/*":[ "src/assets/images/*" ]
-
+      "images/*":[ "src/assets/images/*" ],
+      "pages/*":["src/pages/*"]
     }
 
   }

@@ -54,12 +54,9 @@ const PrintInfo = () => {
                     }
 
                 </div>
-                <div className="row btn-area">
-                    <label className="except"></label>
-                    <div className="btn-wrap">
-                        <button className="cancel-btn">취소</button>
-                        <button type="button" className="submit-btn" >기술 적용하기</button>
-                    </div>
+                <div className="btn-wrap">
+                    <button className="cancel-btn">취소</button>
+                    <button type="button" className="submit-btn" >수정</button>
                 </div>
             </div>
         </section>

@@ -61,7 +61,7 @@ const Product = () => {
                 <SearchInput placeholder="제목 검색."
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
-            <CreateBtn onClick={() => navigate(`/createProduct/defaultInfo/${params.id}`)}>제품 생성</CreateBtn>
+            <CreateBtn onClick={() => navigate(`/createProduct/defaultInfo/1/${params.id}`)}>제품 생성</CreateBtn>
             <div className="product-list">
                 <table>
                     <colgroup>
@@ -109,18 +109,18 @@ const Product = () => {
                     <tbody>
                         {
                             data != undefined &&
-                            data.map((rows, index) => <tr key={index}>
+                            data.map((products, index) => <tr key={index} onClick={() => navigate(`/createProduct/defaultInfo/0/${products.id}`)}>
                                 <td>
-                                    {rows.key}
+                                    {products.key}
                                 </td>
-                                <td>{rows.title}</td>
-                                <td>블랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랴랼랴</td>
-                                <td><img src={rows.sourceImage} className="sourceImage" /><span className="convert-ico"></span><img src={rows.labcodeImage} className="labcodeImage" /></td>
-                                <td>{rows.typeChannel}</td>
-                                <td>{rows.scale}</td>
-                                <td>{rows.alpha}</td>
-                                <td>{rows.created.split("T")[0]}</td>
-                                <td>{rows.url}</td>
+                                <td>{products.title}</td>
+                                <td>{products.description}</td>
+                                <td><img src={products.sourceImage} className="sourceImage" /><span className="convert-ico"></span><img src={products.labcodeImage} className="labcodeImage" /></td>
+                                <td>{products.typeChannel}</td>
+                                <td>{products.scale}</td>
+                                <td>{products.alpha}</td>
+                                <td>{products.created.split("T")[0]}</td>
+                                <td>{products.url}</td>
                             </tr>)
                         }
                     </tbody>

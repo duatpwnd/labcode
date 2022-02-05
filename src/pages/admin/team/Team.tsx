@@ -108,7 +108,7 @@ export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck })
             return useStateProperty.businessImage.name
         } else {
             if (useStateProperty.businessImage != undefined) {
-                return useStateProperty.businessImage.replace(/^.*\//, '')
+                return useStateProperty.businessImageTitle + " (" + useStateProperty.businessImageSize + ")"
             }
         }
     }, [useStateProperty.businessImage])
@@ -132,7 +132,17 @@ export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck })
                 <label htmlFor="businessImage">사업자등록증</label>
                 <div className="business-image-area">
                     <div className="attach">
-                        <a href={link || useStateProperty.businessImage} onClick={() => useStateProperty.businessImage == null ? "" : setActive(true)} className="input-file" download="newfilename">{useStateProperty.businessImage == null ? "사업자등록증을 첨부해주세요." : getFileName}</a>
+                        {
+                            (() => {
+                                if (useStateProperty.businessImage?.type == "application/pdf") {
+                                    return <a href={link} download="newfilename" className="input-file">{getFileName}</a>
+                                } else if (useStateProperty.businessImage == null) {
+                                    return <span className="input-file" >사업자등록증을 첨부해주세요.</span>
+                                } else {
+                                    return <span onClick={() => setActive(true)} className="input-file" >{getFileName}</span>
+                                }
+                            })()
+                        }
                         <input type="file" defaultValue={useStateProperty.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
                         <button className="delete-btn"></button>
                     </div>

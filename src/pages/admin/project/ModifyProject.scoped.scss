@@ -1,53 +1,55 @@
 main {
-  padding: 35px;
   margin-left: 320px;
-  .form {
+
+  .wrap {
     max-width: 840px;
     margin: 0 auto;
-    margin-top: 48px;
+    padding: 40px;
     .h2-title {
-      font-size: 32px;
+      font-size: 36px;
     }
     .message {
       margin-top: 10px;
-      color: #79828a;
+      color: #9ea7ad;
     }
-    .h3-title {
-      margin-top: 53px;
-      margin-bottom: 40px;
-      padding-bottom: 14px;
-      border-bottom: 2px solid #79828a;
-    }
-    .row {
-      margin-top: 16px;
-      label {
-        font-weight: 700;
-        width: 180px;
-        vertical-align: middle;
-        display: inline-block;
+    section {
+      margin-top: 52px;
+      .h3-title {
+        margin-bottom: 40px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #e6e8eb;
       }
-      .top {
-        vertical-align: top;
-      }
-      textarea {
-        height: 220px;
-        padding: 20px;
-        resize: none;
-        box-sizing: border-box;
-        border: 1px solid #e6e8eb;
-        border-radius: 8px;
-        width: calc(100% - 180px);
-      }
-      input {
-        border-radius: 8px;
-        border: 1px solid #e6e8eb;
-        padding: 16px;
-        box-sizing: border-box;
-        width: calc(100% - 180px);
-        vertical-align: middle;
-        &::placeholder {
+      .row {
+        margin-top: 16px;
+        label {
           font-weight: 700;
-          color: black;
+          width: 180px;
+          vertical-align: middle;
+          display: inline-block;
+        }
+        .top {
+          vertical-align: top;
+        }
+        textarea {
+          height: 220px;
+          padding: 20px;
+          resize: none;
+          box-sizing: border-box;
+          border: 1px solid #e6e8eb;
+          border-radius: 8px;
+          width: calc(100% - 180px);
+        }
+        input {
+          border-radius: 8px;
+          border: 1px solid #e6e8eb;
+          padding: 16px;
+          box-sizing: border-box;
+          width: calc(100% - 180px);
+          vertical-align: middle;
+          &::placeholder {
+            font-weight: 700;
+            color: black;
+          }
         }
       }
     }
@@ -60,12 +62,14 @@ main {
 }
 @media all and (max-width: 767px) {
   main {
-    .form {
-      .row {
-        input,
-        textarea {
-          width: 100%;
-          margin-top: 10px;
+    .wrap {
+      section {
+        .row {
+          input,
+          textarea {
+            width: 100%;
+            margin-top: 10px;
+          }
         }
       }
     }
