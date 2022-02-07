@@ -16,7 +16,7 @@ const SelectBox = styled.select`
         margin-top: 10px;
     }
 `
-const Classification = () => {
+const Classification = ({ eventHandler }) => {
     const [classification, setClassification] = useState<{ [key: string]: { [key: string]: any }[] }>({
         versions: [{}],
         countries: [{}],
@@ -40,7 +40,7 @@ const Classification = () => {
             <h3 className="h3-title">프로젝트 분류</h3>
             <div className="row">
                 <label htmlFor="versions">버전</label>
-                <SelectBox id="versions">
+                <SelectBox id="versions" onChange={(e) => eventHandler(e)}>
                     {
                         classification.versions.map((options, index) => {
                             return <option key={index}>{options.title}</option>

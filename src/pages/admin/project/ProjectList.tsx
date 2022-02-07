@@ -150,7 +150,7 @@ const Project = () => {
                 {
                     data != undefined &&
                     data.map((list, index) => <li className="list" key={index}>
-                        <Link to={{ pathname: list.isActive ? `/product/${list.id}` : "" }} className="link" >
+                        <Link to={{ pathname: list.isActive ? `/projects/${list.id}/products` : "" }} className="link" >
                             <div className="mask"></div>
                             <img src={list.bannerImage} title={list.title} className="thumbnail" />
                         </Link>
@@ -171,7 +171,7 @@ const Project = () => {
                                 <div className="menu" ref={el => { if (el != null) { setPosition(el); (menu as { [key: string]: any }).current = el; } }}>
                                     <h3 className="h3-title">{list.title}</h3>
                                     <ul >
-                                        <li className="manage" onClick={() => navigate(`/project/${list.id}`)}>
+                                        <li className="manage" onClick={() => navigate(`/projects/${list.id}/edit`)}>
                                             프로젝트 관리
                                         </li>
                                         <li className="delete" onClick={() => list.isActive ? "" : deleteProject(list.id)}>

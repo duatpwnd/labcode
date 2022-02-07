@@ -41,10 +41,10 @@ const Product = () => {
     const [{ data, meta }, setList] = useState<{ [key: string]: any }>({});
     const getProdcutList = (page, search) => {
         axios
-            .get(apiUrl.products + `?limit=10&search=${search}&page=${page}+&projectId=${params.id}`)
+            .get(apiUrl.products + `?limit=10&search=${search}&page=${page}+&projectId=${params.projectId}`)
             .then((result: any) => {
                 setList(result.data);
-                console.log('제품리스트:', result.data, params.id);
+                console.log('제품리스트:', result.data);
             })
     }
     const searchDebounce = debounce((query) => {
@@ -61,7 +61,7 @@ const Product = () => {
                 <SearchInput placeholder="제목 검색."
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
-            <CreateBtn onClick={() => navigate(`/createProduct/defaultInfo/1/${params.id}`)}>제품 생성</CreateBtn>
+            <CreateBtn onClick={() => navigate(`add/defaultInfo`)}>제품 생성</CreateBtn>
             <div className="product-list">
                 <table>
                     <colgroup>
@@ -109,7 +109,7 @@ const Product = () => {
                     <tbody>
                         {
                             data != undefined &&
-                            data.map((products, index) => <tr key={index} onClick={() => navigate(`/createProduct/defaultInfo/0/${products.id}`)}>
+                            data.map((products, index) => <tr key={index} onClick={() => navigate(`${products.id}/defaultInfo`)}>
                                 <td>
                                     {products.key}
                                 </td>

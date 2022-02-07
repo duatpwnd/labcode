@@ -31,10 +31,10 @@ const Navigator = () => {
                     <StyledNavLink to="/dashboard" background="dashboard_ico.svg">대시보드</StyledNavLink>
                 </li>
                 <li>
-                    <StyledNavLink to="/team" background="team_ico.svg">팀 정보</StyledNavLink>
+                    <StyledNavLink to="/team/2" background="team_ico.svg">팀 정보</StyledNavLink>
                 </li>
                 <li >
-                    <StyledNavLink to="/project" background="project_ico.svg">프로젝트</StyledNavLink>
+                    <StyledNavLink to="/projects" background="project_ico.svg">프로젝트</StyledNavLink>
                 </li>
                 {/* <li >
                     <NavLink to="/product" className="product">

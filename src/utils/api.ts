@@ -7,5 +7,9 @@ const apiUrl = {
   versions: "/adm/v1/versions", // 버전리스트
   countries: "/adm/v1/countries", // 귝가리스트
   industries: "/adm/v1/industries", // 산업리스트
+  embeddingTypes: "/adm/v1/products/embedding-types", // 임베딩 타입
+  channelTypes: "/adm/v1/products/channel-types", // 채널리스트
+  scales: "/adm/v1/products/scales", // 코드크기 조회
+  alphas: "/adm/v1/products/alphas", // 적용세기 조회
 };
 export default apiUrl;

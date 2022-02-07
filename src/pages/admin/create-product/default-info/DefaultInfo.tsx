@@ -5,52 +5,92 @@ import apiUrl from "src/utils/api";
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
-const ControlButton = ({ arr, inputs, eventHandler, id }) => {
-    const [scale, setScale] = useState(0);
-    const [position, setPosition] = useState(-100);
+import styled from "styled-components";
+import InternalUse from "./internal/InternalUse";
+const SelectBox = styled.select`
+    width: calc(100% - 180px);
+    box-sizing: border-box; 
+    padding:16px;
+    border-radius: 8px;
+    color: #303538;
+    background: url(${require('images/arrow_bottom.svg').default}) #F6F7F8 no-repeat right 10px center /
+    16px 16px;
+    @media all and (max-width: 767px) {
+        width: 100%;
+        margin-top: 10px;
+    }
+`
+const SlideBar = ({ inputs, id, scales, eventHandler }) => {
+    const [message, setMessage] = useState("");
     const onChange = (e) => {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
-        const toNumber = Number(e.target.value);
-        if (toNumber >= 2 && toNumber <= 4) {
-            setPosition((toNumber - 2) * 10)
-        } else if (toNumber >= 5 && toNumber <= 12) {
-            setPosition(toNumber * 5)
-        } else if (toNumber >= 13 && toNumber <= 20) {
-            setPosition((((toNumber - 12) * 2.5) + 60));
+        if (Number(e.target.value) > scales.range.max || Number(e.target.value) < scales.range.min) {
+            setMessage(scales.range.min + " 이상 " + scales.range.max + " 이하의 숫자를 입력해주세요.")
         } else {
-            setPosition(-100);
+            setMessage("");
         }
-        setScale(toNumber);
-        eventHandler({ ...inputs, [id]: toNumber })
-
+        eventHandler({ ...inputs, [id]: e.target.value })
     }
     useEffect(() => {
+        console.log("scales", inputs[id], scales);
     }, [])
     return (
-        <div className="control-btn-wrap">
-            {arr.length == 5 && <input type="tel" className="numeric-input" value={inputs[id]} maxLength={2} onChange={(e) => onChange(e)} />}
-            <div className="control">
-                <span style={{ left: position + "%" }}>{scale}</span>
+        <div className="slide-bar-container">
+            <input type="tel" className="numeric-input" value={inputs[id]} maxLength={3} onChange={(e) => onChange(e)} />
+            <div className="slide-bar">
                 {
-                    arr.map((el, index) => <button style={{ width: arr.length == 5 ? "20%" : "33.333%" }} onClick={() => { eventHandler({ ...inputs, [id]: el.size }); setPosition(-100); }} key={index} className={el.size == inputs[id] ? "selected" : ""}>{el.text}{el.size}</button>)
+                    scales.options && scales.options.map((obj, index) => {
+                        return (
+                            (() => {
+                                if (index === 0)
+                                    return (
+                                        <button key={index}
+                                            onClick={() => { eventHandler({ ...inputs, [id]: obj.value }); }}
+                                            className={inputs[id] >= scales.range.min && inputs[id] <= obj.value ? "selected" : ""}>
+                                            {obj.label}{obj.value}
+                                        </button>
+                                    );
+                                else if (index > 0 && index < scales.options.length - 1)
+                                    return (
+                                        <button
+                                            key={index}
+                                            onClick={() => { eventHandler({ ...inputs, [id]: obj.value }); }}
+                                            className={inputs[id] >= ((scales.options[index - 1].value + obj.value) / 2) && inputs[id] < ((scales.options[index + 1].value + obj.value) / 2) ? "selected" : ""}>
+                                            {obj.label}{obj.value}
+                                        </button>
+                                    )
+                                else {
+                                    return (
+                                        <button key={index} onClick={() => { eventHandler({ ...inputs, [id]: obj.value }); }}
+                                            className={inputs[id] >= ((scales.options[index - 1].value + obj.value) / 2) && inputs[id] <= scales.range.max ? "selected" : ""}>
+                                            {obj.label}{obj.value}
+                                        </button>
+                                    )
+                                }
+                            })()
+                        )
+                    })
                 }
             </div>
+            <p className="message">{message}</p>
         </div>
     )
 }
 const DefaultInfo = () => {
     const params = useParams();
     const navigate = useNavigate();
-    const [scaleArr, setScaleArr] = useState<{ [key: string]: any }[]>([]);
-    const [alphaArr, setAlphaArr] = useState<{ [key: string]: any }[]>([]);
+    const [scales, setScales] = useState<{ [key: string]: any }[]>([]);
+    const [alphas, setAlphas] = useState<{ [key: string]: any }[]>([]);
+    const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
+    const [channelTypes, setChannelTypes] = useState<{ [key: string]: any }[]>([]);
     const [inputs, setInputs] = useState({
-        projectId: "",
+        projectId: params.productId,
         embedding: "2.5",
         channel: "lab_rgb",
         title: "",
         description: "",
         labcodeImage: "",
-        sourceImage: params.type == "1" ? null : {} as { [key: string]: any },
+        sourceImage: params.productId == "add" ? null : {} as { [key: string]: any },
         url: "",
         scale: 4,
         alpha: 8
@@ -85,7 +125,7 @@ const DefaultInfo = () => {
     }
     const getProductDetail = () => {
         axios
-            .get(apiUrl.products + `/${params.id}`)
+            .get(apiUrl.products + `/${params.productId}`)
             .then((result: any) => {
                 console.log('제품 상세 조회:', result.data.data);
 
@@ -97,14 +137,17 @@ const DefaultInfo = () => {
             })
     }
     useEffect(() => {
-        // 외부용일경우
-        const externalUseScale = [{ size: 4, text: "작게" }, { size: 8, text: "중간" }, { size: 12, text: "크게" }];
-        // 내부용일경우
-        const internalUseScale = [{ size: 2, text: '매우 작게' }, ...externalUseScale, { size: 20, text: "매우 크게" }];
-        setScaleArr(internalUseScale)
-
+        axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas), axios.get(apiUrl.channelTypes), axios.get(apiUrl.embeddingTypes)]).then(axios.spread((res1, res2, res3, res4) => {
+            setScales(res1.data.data);
+            setAlphas(res2.data.data);
+            setChannelTypes(res3.data.data);
+            setEmbeddingTypes(res4.data.data);
+        }))
+            .catch((err) => {
+                console.log("조회에러", err);
+            })
         // 수정페이지일때
-        if (params.type == "0") {
+        if (params.productId != "add") {
             getProductDetail();
         }
     }, [])
@@ -130,16 +173,37 @@ const DefaultInfo = () => {
                     <DragDrop link={inputs.sourceImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "459px" }} />
                 </div>
                 <div className="row">
+                    <label htmlFor="embedding">임베딩 버전</label>
+                    <SelectBox id="embedding" onChange={(e) => onChange(e)}>
+                        {
+                            embeddingTypes.map((options, index) => {
+                                return <option value={options.value} key={index}>{options.label}</option>
+                            })
+                        }
+                    </SelectBox>
+                </div>
+                <div className="row">
+                    <label htmlFor="channel">적용 기술</label>
+                    <SelectBox id="channel" onChange={(e) => onChange(e)}>
+                        {
+                            channelTypes.map((options, index) => {
+                                return <option value={options.value} key={index}>{options.label}</option>
+                            })
+                        }
+                    </SelectBox>
+                </div>
+                <div className="row">
                     <label htmlFor="scale" className="scale">코드 크기</label>
-                    <ControlButton inputs={inputs} id="scale" eventHandler={setInputs} arr={scaleArr} />
+                    <SlideBar id="scale" inputs={inputs} scales={scales} eventHandler={setInputs} />
                 </div>
                 <div className="row">
                     <label htmlFor="alpha" className="alpha">적용 세기</label>
-                    <ControlButton inputs={inputs} id="alpha" eventHandler={setInputs} arr={[{ size: 4, text: "약하게" }, { size: 8, text: "중간" }, { size: 12, text: "세게" }]} />
+                    <SlideBar id="alpha" inputs={inputs} scales={alphas} eventHandler={setInputs} />
                 </div>
                 {/* 수정페이지에만 존재 */}
+                <InternalUse />
                 {
-                    params.type == "0" &&
+                    params.productId != "add" &&
                     <div className="row">
                         <label>변경 이미지</label>
                         <img src={inputs.labcodeImage} alt="labcodeImage" title="labcodeImage" className="labcodeImage" />

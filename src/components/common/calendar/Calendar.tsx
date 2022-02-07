@@ -1,14 +1,14 @@
-import { useEffect } from 'react';
-import 'react-calendar/dist/Calendar.css';
-import Calendar from 'react-calendar';
-import { getFormatDate } from 'src/utils/common';
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { getFormatDate } from "src/utils/common";
 const CalendarComp = ({ eventHandler }) => {
+    const [startDate, setStartDate] = useState(new Date());
     return (
-        <div>
-            <Calendar
-                onChange={(value, event) => eventHandler(getFormatDate(value))}
-            />
-        </div>
+        <DatePicker selected={startDate}
+            dateFormat="yyyy.MM.dd"
+            onChange={(value, event) => { eventHandler(getFormatDate(value)); setStartDate(value); }}
+        />
     );
 }
 export default CalendarComp

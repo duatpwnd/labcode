@@ -55,8 +55,8 @@ export default function Footer() {
                 <div className="policy">
                     <Link to="" className="privacy">개인정보처리방침</Link>
                     <Link to="">이용약관</Link>
-                    <Link to="/inquiries" state={{ nav: false }}>문의하기</Link>
-                    <Link to="/createTeam">신청하기</Link>
+                    <Link to="/inquiries/create" state={{ nav: false }}>문의하기</Link>
+                    <Link to="/teams/create">신청하기</Link>
                 </div>
             </div>
             <div className="col2">

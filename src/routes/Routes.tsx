@@ -19,17 +19,17 @@ export default function CreateRoutes() {
         <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/createTeam" element={<CreateTeam />} />
-            <Route path="/project" element={<ProjectList />} />
-            <Route path="/project/:id" element={<ModifyProject />} />
-            <Route path="/product/:id" element={<ProductList />} />
-            <Route path="/createProduct" element={<CreateProduct />}>
-                <Route path="defaultInfo/:type/:id" element={<DefaultInfo />} />
+            <Route path="/team/:id" element={<Team />} />
+            <Route path="/teams/create" element={<CreateTeam />} />
+            <Route path="/projects" element={<ProjectList />} />
+            <Route path="/projects/:projectId/edit" element={<ModifyProject />} />
+            <Route path="/projects/:projectId/products" element={<ProductList />} />
+            <Route path="/projects/:projectId/products/:productId" element={<CreateProduct />}>
+                <Route path="defaultInfo" element={<DefaultInfo />} />
                 <Route path="printInfo" element={<PrintInfo />} />
                 <Route path="addInfo" element={<AddInfo />} />
             </Route>
-            <Route path="/inquiries" element={<Inquiries />}></Route>
+            <Route path="/inquiries/create" element={<Inquiries />}></Route>
         </Routes>
     );
 }

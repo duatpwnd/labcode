@@ -35,7 +35,7 @@ const ProjectDetail = (props) => {
     };
     const getProject = () => {
         axios
-            .get(apiUrl.project + `/${params.id}`)
+            .get(apiUrl.project + `/${params.projectId}`)
             .then((result: { [key: string]: any }) => {
                 console.log(result);
                 const { title, bannerImage, description, homepage } = result.data.data
@@ -56,7 +56,7 @@ const ProjectDetail = (props) => {
             formData.append(key, body[key as never]);
         }
         axios
-            .patch(apiUrl.project + `/${params.id}`, formData)
+            .patch(apiUrl.project + `/${params.projectId}`, formData)
             .then((result: any) => {
                 console.log("프로젝트수정결과:", result);
             }).catch((err: any) => {
@@ -73,7 +73,7 @@ const ProjectDetail = (props) => {
                 <h2 className="h2-title">프로젝트 관리</h2>
                 <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
                 {/* 내부용 프로젝트 분류 */}
-                <Classification />
+                <Classification eventHandler={onChange} />
                 {/* 외부용 프로젝트 분류 */}
                 <section className="section1">
                     <h2 className="h3-title">프로젝트 정보</h2>

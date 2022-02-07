@@ -36,7 +36,7 @@ function* signIn(action) {
       path: "/",
       expires: date,
     });
-    history.push("/project", {
+    history.push("/projects", {
       state: {
         nav: false,
       },

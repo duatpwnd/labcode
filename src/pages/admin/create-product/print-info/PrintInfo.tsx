@@ -48,11 +48,7 @@ const PrintInfo = () => {
                 </div>
                 <div className="row">
                     <label htmlFor="title" className="hompage-link">인쇄 날짜</label>
-                    <input type="text" onClick={() => setCalendar(!isCalendarActive)} value={inputs.date} id="date" readOnly />
-                    {
-                        isCalendarActive && <CalendarComp eventHandler={onChange} />
-                    }
-
+                    <CalendarComp eventHandler={onChange} />
                 </div>
                 <div className="btn-wrap">
                     <button className="cancel-btn">취소</button>

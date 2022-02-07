@@ -43,46 +43,41 @@ section {
         object-fit: cover;
         max-height: 459px;
       }
-      .control-btn-wrap {
+      .slide-bar-container {
         display: inline-block;
         width: calc(100% - 180px);
         vertical-align: middle;
         .numeric-input {
           background: #f6f7f8;
-          width: 50px;
+          width: 100px;
           border-radius: 8px;
           margin-bottom: 10px;
+          font-weight: 700;
         }
-        .control {
-          text-align: center;
-          background: #f0f1f2;
-          border-radius: 50px;
-          position: relative;
-          height: 52px;
+        .slide-bar {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
           button {
+            flex-basis: 124px;
             box-sizing: border-box;
             color: #79828a;
             background: transparent;
             padding: 15px 0;
-            max-width: 100px;
+            border-radius: 8px;
+            border: 1px solid #e6e8eb;
             height: 52px;
           }
-          span {
-            width: 20%;
-            height: 52px;
-            line-height: 52px;
-            background: #5138e5;
-            border-radius: 50px;
-            text-align: center;
-            color: white;
-            position: absolute;
-          }
+
           .selected {
             font-weight: 700;
-            border-radius: 26px;
-            background: #5138e5;
-            color: white;
+            border: 1px solid #5138e5;
+            color: #5138e5;
           }
+        }
+        .message {
+          margin-top: 10px;
+          color: red;
         }
       }
     }
@@ -116,7 +111,7 @@ section {
         input[type="text"],
         textarea,
         .labcodeImage,
-        .control-btn-wrap {
+        .slide-bar-container {
           width: 100%;
           margin-top: 10px;
         }
@@ -131,9 +126,11 @@ section {
   section {
     .form {
       .row {
-        .control {
-          button {
-            font-size: 12px;
+        .slide-bar-container {
+          .slide-bar {
+            button {
+              flex-basis: calc(50% - 5px);
+            }
           }
         }
       }
