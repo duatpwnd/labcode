@@ -24,6 +24,7 @@
     "craco-alias": "^3.0.1",
     "craco-plugin-scoped-css": "^1.1.1",
     "d3": "^7.2.1",
+    "env-cmd": "^10.1.0",
     "faker": "^5.5.3",
     "history": "^4.10.1",
     "i18next": "^21.6.0",
@@ -61,8 +62,10 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start:prod": "env-cmd -f .env.production craco start",
+    "start:dev": "env-cmd -f .env.development craco start",
+    "build:prod" : "REACT_APP_MODE=production craco build",
+    "build:dev" : "REACT_APP_MODE=development craco build",
     "test": "craco test",
     "eject": "craco eject"
   },
