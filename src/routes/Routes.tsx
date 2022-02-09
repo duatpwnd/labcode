@@ -2,28 +2,30 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Main from "src/pages/main/Main"
-import Dashboard from "src/pages/admin/dashboard/Dashboard";
-import ProjectList from "src/pages/admin/project/ProjectList";
-import ModifyProject from "src/pages/admin/project/ModifyProject";
-import ProductList from "src/pages/admin/product/ProductList";
-import CreateProduct from "src/pages/admin/create-product/CreateProduct";
-import DefaultInfo from "src/pages/admin/create-product/default-info/DefaultInfo";
-import PrintInfo from "src/pages/admin/create-product/print-info/PrintInfo";
-import AddInfo from "src/pages/admin/create-product/add-info/AddInfo";
-import Inquiries from "src/pages/inquiries/Inquiries";
-import Team from "src/pages/admin/team/Team";
-import CreateTeam from "src/pages/admin/team/CreateTeam";
+import Main from "pages/main/Main"
+import Dashboard from "pages/admin/dashboard/Dashboard";
+import ProjectList from "pages/admin/project/ProjectList";
+import ModifyProject from "pages/admin/project/ModifyProject";
+import ProductList from "pages/admin/product/ProductList";
+import CreateProduct from "pages/admin/create-product/CreateProduct";
+import DefaultInfo from "pages/admin/create-product/default-info/DefaultInfo";
+import PrintInfo from "pages/admin/create-product/print-info/PrintInfo";
+import AddInfo from "pages/admin/create-product/add-info/AddInfo";
+import Inquiries from "pages/inquiries/Inquiries";
+import Team from "pages/admin/team/Team";
+import CreateTeam from "pages/admin/team/CreateTeam";
+import CategoryManagement from "pages/admin/project/category-manage/CategoryManagement";
 export default function CreateRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/team/:id" element={<Team />} />
+            <Route path="/teams/:teamId" element={<Team />} />
             <Route path="/teams/create" element={<CreateTeam />} />
             <Route path="/projects" element={<ProjectList />} />
             <Route path="/projects/:projectId/edit" element={<ModifyProject />} />
             <Route path="/projects/:projectId/products" element={<ProductList />} />
+            <Route path="/projects/:projectId/manage" element={<CategoryManagement />} />
             <Route path="/projects/:projectId/products/:productId" element={<CreateProduct />}>
                 <Route path="defaultInfo" element={<DefaultInfo />} />
                 <Route path="printInfo" element={<PrintInfo />} />
