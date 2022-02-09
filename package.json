@@ -64,8 +64,8 @@
   "scripts": {
     "start:prod": "env-cmd -f .env.production craco start",
     "start:dev": "env-cmd -f .env.development craco start",
-    "build:prod" : "REACT_APP_MODE=production craco build",
-    "build:dev" : "REACT_APP_MODE=development craco build",
+    "build:prod" : "CI= REACT_APP_MODE=production craco build",
+    "build:dev" : "CI= REACT_APP_MODE=development craco build",
     "test": "craco test",
     "eject": "craco eject"
   },
