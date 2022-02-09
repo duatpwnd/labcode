@@ -5,7 +5,6 @@ import { signInFail } from "src/actions/signIn";
 import store from "src/store";
 const cookies = new Cookies();
 const axiosSet = () => {
-  console.log("process.env", process.env);
   axios.defaults.baseURL = process.env.REACT_APP_API_URL;
   axios.interceptors.request.use(
     (config: any) => {
