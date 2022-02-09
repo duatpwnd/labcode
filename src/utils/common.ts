@@ -57,16 +57,47 @@ export const homePageRegExp = (data, property, stateHandler, validation) => {
     return true;
   }
 };
-// 숫자만 정규식
-export const numberReg = /^[0-9-]{2,20}[0-9]$/;
-export const numberRegExp = (data, property, stateHandler, validation) => {
+// 사업자번호 정규식
+export const checkCorporateRegistrationNumber = (value) => {
+  console.log("value", value);
+  const valueMap = value
+    .replace(/-/gi, "")
+    .split("")
+    .map((item) => {
+      return parseInt(item, 10);
+    });
+
+  if (valueMap.length === 10) {
+    const multiply = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5);
+    let checkSum = 0;
+    for (let i = 0; i < multiply.length; ++i) {
+      checkSum += multiply[i] * valueMap[i];
+    }
+    checkSum += parseInt(String((multiply[8] * valueMap[8]) / 10), 10);
+    return Math.floor(valueMap[9]) === 10 - (checkSum % 10);
+  }
+
+  return false;
+};
+export const registerNumberRegExp = (
+  data,
+  property,
+  stateHandler,
+  validation
+) => {
+  const numberReg = /^[0-9-]{2,20}[0-9]$/;
   stateHandler(data);
   if (numberReg.test(data[property]) == false) {
     validation("올바른 번호의 형식이 아닙니다.");
     return false;
   } else {
-    validation("");
-    return true;
+    if (!checkCorporateRegistrationNumber(data[property].replaceAll("-", ""))) {
+      validation("올바른 번호의 형식이 아닙니다.");
+      return false;
+    } else {
+      validation("");
+      return true;
+    }
   }
 };
 export const convertURLtoFile = async (url: string) => {

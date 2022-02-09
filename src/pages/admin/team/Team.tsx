@@ -1,16 +1,17 @@
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import { useEffect, useState, useMemo } from "react"
+import { useParams } from 'react-router-dom';
 import _ from 'lodash'
 import {
     useLocation
 } from "react-router-dom";
 import "./Team.scoped.scss"
-import { phoneRegExp, emailRegExp, numberRegExp, homePageRegExp, numberReg, homePageReg, phoneReg, emailReg } from 'src/utils/common';
+import { phoneRegExp, emailRegExp, checkCorporateRegistrationNumber, registerNumberRegExp, homePageRegExp, homePageReg, phoneReg, emailReg } from 'src/utils/common';
 const debounce = _.debounce;
 const modify = (body) => {
     console.log(body);
-    const businessNumberCheck = numberReg.test(body.businessNumber);
+    const businessNumberCheck = checkCorporateRegistrationNumber(body.businessNumber.replaceAll("-", ""));
     const homepageCheck = homePageReg.test(body.homepage);
     const phoneCheck = phoneReg.test(body.managerPhone);
     const emailCheck = emailReg.test(body.managerEmail);
@@ -80,7 +81,7 @@ export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck })
     const { pathname } = useLocation();
     const businessNumberValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        const result = numberRegExp(data, 'businessNumber', stateHandler, validationCheck.setNumberMsg);
+        const result = registerNumberRegExp(data, 'businessNumber', stateHandler, validationCheck.setNumberMsg);
         if (result && pathname == "/team") {
             modify(data)
         }
@@ -166,9 +167,10 @@ const Team = () => {
     const [numberMsg, setNumberMsg] = useState("");
     const [link, setLinkMsg] = useState("");
     const [businessImage, setBusinessImage] = useState("");
-    const getTeamList = () => {
+    const params = useParams();
+    const getTeamList = (teamId) => {
         axios
-            .get(apiUrl.team)
+            .get(apiUrl.team + `/${teamId}`)
             .then((result: any) => {
                 console.log('조회결과:', result);
                 setInputs({
@@ -177,7 +179,9 @@ const Team = () => {
             });
     }
     useEffect(() => {
-        getTeamList();
+        if (params.teamId != undefined) {
+            getTeamList(params.teamId);
+        }
     }, [])
     return (
         <main>

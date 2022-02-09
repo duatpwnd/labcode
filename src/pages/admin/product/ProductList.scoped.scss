@@ -16,6 +16,23 @@ main {
       color: #9ea7ad;
     }
   }
+  .nav-area {
+    position: relative;
+    margin: 60px 0 24px 0;
+    height: 52px;
+    line-height: 52px;
+    .project-title {
+      font-size: 36px;
+    }
+    .btn-wrap {
+      position: absolute;
+      top: 0;
+      right: 0;
+      .add-sample-btn {
+        margin-right: 12px;
+      }
+    }
+  }
   .product-list {
     overflow: auto;
     table {
@@ -77,5 +94,18 @@ main {
 @media all and (max-width: 1199px) {
   main {
     margin-left: 0;
+  }
+}
+@media all and (max-width: 767px) {
+  main {
+    .nav-area {
+      height: auto;
+      line-height: unset;
+      .btn-wrap {
+        position: unset;
+        display: flex;
+        margin-top: 20px;
+      }
+    }
   }
 }

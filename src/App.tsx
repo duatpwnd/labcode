@@ -15,6 +15,7 @@ function App() {
   const [cookies, setCookie] = useCookies();
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log("ddd", process.env);
     if (cookies.user_info != null) {
       dispatch(signInSuccess(cookies.user_info))
     }

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "src/reducers";
 import "./Navigator.scoped.scss"
 const StyledNavLink = styled(NavLink)`
     width: 100%;
@@ -24,6 +26,10 @@ const StyledNavLink = styled(NavLink)`
     }
 `
 const Navigator = () => {
+    const teamId = useSelector((state: RootState) => {
+        return state.signIn.userInfo?.user.teamId
+    })
+
     return (
         <nav>
             <ul>
@@ -31,7 +37,7 @@ const Navigator = () => {
                     <StyledNavLink to="/dashboard" background="dashboard_ico.svg">대시보드</StyledNavLink>
                 </li>
                 <li>
-                    <StyledNavLink to="/team/2" background="team_ico.svg">팀 정보</StyledNavLink>
+                    <StyledNavLink to={`/teams/${teamId}`} background="team_ico.svg">팀 정보</StyledNavLink>
                 </li>
                 <li >
                     <StyledNavLink to="/projects" background="project_ico.svg">프로젝트</StyledNavLink>

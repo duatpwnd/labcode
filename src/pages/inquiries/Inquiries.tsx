@@ -77,8 +77,7 @@ const Help = () => {
                     <textarea id="description" onChange={onChange}></textarea>
                 </div>
                 <div className="row5">
-                    <button type="button" className="cancel-btn" onClick={() => navigate("/")
-                    }>취소</button>
+                    <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
                     <button type="button" className="submit-btn" onClick={send}>문의하기</button>
                 </div>
             </form>

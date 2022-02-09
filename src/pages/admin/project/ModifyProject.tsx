@@ -1,27 +1,20 @@
 import { useEffect, useState } from "react"
 import { useParams } from 'react-router-dom';
-import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { RootState } from "src/reducers";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import DragDrop from "components/common/drag-drop/DragDrop";
 import "./ModifyProject.scoped.scss"
-import history from "src/utils/history";
 import _ from 'lodash'
 import Classification from "pages/admin/project/project-classification/Classification";
-const BackButton = styled.button`
-    width:13px;
-    height:24px;
-    background: url(${require('images/back_btn.svg').default})  no-repeat center /
-    13px 24px
-`
 const ProjectDetail = (props) => {
+    const isAdmin = useSelector((state: RootState) => {
+        return state.signIn.userInfo?.user.isAdmin
+    })
     const params = useParams();
     const debounce = _.debounce;
-    const [inputs, setInputs] = useState({
-        title: "",
-        description: "",
-        bannerImage: "",
-        homepage: ""
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
@@ -73,7 +66,10 @@ const ProjectDetail = (props) => {
                 <h2 className="h2-title">프로젝트 관리</h2>
                 <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
                 {/* 내부용 프로젝트 분류 */}
-                <Classification eventHandler={onChange} />
+                {
+                    isAdmin && <Classification eventHandler={onChange} industryId={inputs.industryId} />
+
+                }
                 {/* 외부용 프로젝트 분류 */}
                 <section className="section1">
                     <h2 className="h3-title">프로젝트 정보</h2>
@@ -83,7 +79,7 @@ const ProjectDetail = (props) => {
                     </div>
                     <div className="row">
                         <label className="top">배너</label>
-                        <DragDrop link={inputs.bannerImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "220px" }} />
+                        <DragDrop link={inputs.bannerImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "495px" }} />
                     </div>
                     <div className="row">
                         <label className="top" htmlFor="description">설명</label>

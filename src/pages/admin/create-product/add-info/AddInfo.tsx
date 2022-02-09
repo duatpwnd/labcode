@@ -1,9 +1,7 @@
-import "./AddInfo.scoped.scc"
+import "./AddInfo.scoped.scss"
 const AddInfo = () => {
     return (
-        <div>
-            add
-        </div>
+        <main></main>
     )
 }
 export default AddInfo

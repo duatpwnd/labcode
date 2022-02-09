@@ -3,10 +3,12 @@ import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import InternalUse from "./internal/InternalUse";
+import { useSelector } from "react-redux";
+import { RootState } from "src/reducers";
+
 const SelectBox = styled.select`
     width: calc(100% - 180px);
     box-sizing: border-box; 
@@ -20,7 +22,7 @@ const SelectBox = styled.select`
         margin-top: 10px;
     }
 `
-const SlideBar = ({ inputs, id, scales, eventHandler }) => {
+const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
     const onChange = (e) => {
         e.target.value = e.target.value.replace(/[^0-9]/g, '');
@@ -36,7 +38,10 @@ const SlideBar = ({ inputs, id, scales, eventHandler }) => {
     }, [])
     return (
         <div className="slide-bar-container">
-            <input type="tel" className="numeric-input" value={inputs[id]} maxLength={3} onChange={(e) => onChange(e)} />
+            {
+                isAdmin &&
+                <input type="tel" className="numeric-input" value={inputs[id]} maxLength={3} onChange={(e) => onChange(e)} />
+            }
             <div className="slide-bar">
                 {
                     scales.options && scales.options.map((obj, index) => {
@@ -77,6 +82,9 @@ const SlideBar = ({ inputs, id, scales, eventHandler }) => {
     )
 }
 const DefaultInfo = () => {
+    const isAdmin = useSelector((state: RootState) => {
+        return state.signIn.userInfo?.user.isAdmin
+    })
     const params = useParams();
     const navigate = useNavigate();
     const [scales, setScales] = useState<{ [key: string]: any }[]>([]);
@@ -84,7 +92,7 @@ const DefaultInfo = () => {
     const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
     const [channelTypes, setChannelTypes] = useState<{ [key: string]: any }[]>([]);
     const [inputs, setInputs] = useState({
-        projectId: params.productId,
+        projectId: params.productId == "add" ? params.projectId : params.productId,
         embedding: "2.5",
         channel: "lab_rgb",
         title: "",
@@ -108,6 +116,22 @@ const DefaultInfo = () => {
             })
         }
     };
+    const modify = (body) => {
+        console.log("body", body);
+        const formData = new FormData();
+        for (let key in body) {
+            formData.append(key, body[key as never]);
+        }
+        axios
+            .patch(apiUrl.products + `/${params.productId}`, formData)
+            .then((result: any) => {
+                console.log("기본정보수정결과:", result);
+                getProductDetail();
+            }).catch((err: any) => {
+                console.log('기본정보수정에러:', err);
+            });
+
+    }
     const apply = (body) => {
         console.log("body", body);
         const formData = new FormData();
@@ -117,8 +141,9 @@ const DefaultInfo = () => {
         axios
             .post(apiUrl.products, formData)
             .then((result: any) => {
-                console.log("기본정보적용결과:", result);
-                getProductDetail();
+                if (params.productId == "add") {
+                    navigate(`/projects/${params.projectId}/products/${result.data.data.id}/defaultInfo`);
+                }
             }).catch((err: any) => {
                 console.log('기본정보적용에러:', err);
             });
@@ -172,33 +197,37 @@ const DefaultInfo = () => {
                     <label className="source-image">원본 이미지</label>
                     <DragDrop link={inputs.sourceImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "459px" }} />
                 </div>
-                <div className="row">
-                    <label htmlFor="embedding">임베딩 버전</label>
-                    <SelectBox id="embedding" onChange={(e) => onChange(e)}>
-                        {
-                            embeddingTypes.map((options, index) => {
-                                return <option value={options.value} key={index}>{options.label}</option>
-                            })
-                        }
-                    </SelectBox>
-                </div>
-                <div className="row">
-                    <label htmlFor="channel">적용 기술</label>
-                    <SelectBox id="channel" onChange={(e) => onChange(e)}>
-                        {
-                            channelTypes.map((options, index) => {
-                                return <option value={options.value} key={index}>{options.label}</option>
-                            })
-                        }
-                    </SelectBox>
-                </div>
+                {isAdmin &&
+                    <div className="row">
+                        <label htmlFor="embedding">임베딩 버전</label>
+                        <SelectBox value={inputs.embedding} id="embedding" onChange={(e) => onChange(e)}>
+                            {
+                                embeddingTypes.map((options, index) => {
+                                    return <option value={options.value} key={index}>{options.label}</option>
+                                })
+                            }
+                        </SelectBox>
+                    </div>
+                }
+                {isAdmin &&
+                    <div className="row">
+                        <label htmlFor="channel">적용 기술</label>
+                        <SelectBox value={inputs.channel} id="channel" onChange={(e) => onChange(e)}>
+                            {
+                                channelTypes.map((options, index) => {
+                                    return <option value={options.value} key={index}>{options.label}</option>
+                                })
+                            }
+                        </SelectBox>
+                    </div>
+                }
                 <div className="row">
                     <label htmlFor="scale" className="scale">코드 크기</label>
-                    <SlideBar id="scale" inputs={inputs} scales={scales} eventHandler={setInputs} />
+                    <SlideBar id="scale" isAdmin={isAdmin} inputs={inputs} scales={scales} eventHandler={setInputs} />
                 </div>
                 <div className="row">
                     <label htmlFor="alpha" className="alpha">적용 세기</label>
-                    <SlideBar id="alpha" inputs={inputs} scales={alphas} eventHandler={setInputs} />
+                    <SlideBar id="alpha" isAdmin={isAdmin} inputs={inputs} scales={alphas} eventHandler={setInputs} />
                 </div>
                 {/* 수정페이지에만 존재 */}
                 <InternalUse />
@@ -210,8 +239,8 @@ const DefaultInfo = () => {
                     </div>
                 }
                 <div className="btn-wrap">
-                    <button className="cancel-btn">취소</button>
-                    <button type="button" className="submit-btn" onClick={() => { apply({ ...inputs }) }}>기술 적용하기</button>
+                    <button className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
+                    <button className="submit-btn" onClick={() => { params.productId == "add" ? apply({ ...inputs }) : modify({ ...inputs }) }}>기술 적용하기</button>
                 </div>
             </div>
         </section>

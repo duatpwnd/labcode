@@ -22,15 +22,14 @@ const SearchButton = styled.button`
     background: url(${require('images/search_ico.svg').default}) no-repeat center center /
     24px 24px;
 `
-const CreateBtn = styled.button`
-    background:#5138E5;
+const Btn = styled.button`
+    background:${props => props.background};
     border-radius:8px;
-    font-size:18px;
     width:160px;
-    padding:19px 0;
-    color:white;
+    padding:14px 0;
+    font-weight:700;
+    color:${props => props.color};
     @media all and (max-width: 767px) {
-        margin-top:20px;
         width:100%;
     }
 `
@@ -61,7 +60,13 @@ const Product = () => {
                 <SearchInput placeholder="제목 검색."
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
-            <CreateBtn onClick={() => navigate(`add/defaultInfo`)}>제품 생성</CreateBtn>
+            <div className="nav-area">
+                <strong className="project-title">커피빈 패키지</strong>
+                <div className="btn-wrap">
+                    <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61">샘플 데이터 추가</Btn>
+                    <Btn background="#5138E5" color="#FFFFFF" onClick={() => navigate(`add/defaultInfo`)}>제품 생성</Btn>
+                </div>
+            </div>
             <div className="product-list">
                 <table>
                     <colgroup>

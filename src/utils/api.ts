@@ -2,7 +2,7 @@ const apiUrl = {
   signIn: "/adm/v1/users/login", // 로그인
   project: "/adm/v1/projects", // 프로젝트 리스트 조회, 생성, 수정
   team: "/adm/v1/teams", // 팀 리스트 조회, 수정
-  products: "/adm/v1/products", // 상품 조회, 리스트
+  products: "/adm/v1/products", // 제품 생성, 수정, 조회
   createInquiries: "/adm/v1/inquiries", // 문의 생성
   versions: "/adm/v1/versions", // 버전리스트
   countries: "/adm/v1/countries", // 귝가리스트
@@ -11,5 +11,7 @@ const apiUrl = {
   channelTypes: "/adm/v1/products/channel-types", // 채널리스트
   scales: "/adm/v1/products/scales", // 코드크기 조회
   alphas: "/adm/v1/products/alphas", // 적용세기 조회
+  categories: "/adm/v1/categories", // 대분류 & 소분류 리스트 조회 & 생성
+  subCategories: "/adm/v1/sub-categories", // 소분류 생성
 };
 export default apiUrl;

@@ -1,6 +1,5 @@
 main {
   margin-left: 320px;
-
   .wrap {
     max-width: 840px;
     margin: 0 auto;
@@ -26,22 +25,37 @@ main {
           width: 180px;
           vertical-align: middle;
           display: inline-block;
+          color: #79828a;
         }
         .top {
           vertical-align: top;
+        }
+        .select-box {
+          width: calc(100% - 180px);
+          box-sizing: border-box;
+          padding: 16px;
+          border-radius: 8px;
+          color: #303538;
+          background: url("~images/arrow_bottom.svg") #f6f7f8 no-repeat right
+            10px center / 16px 16px;
+        }
+        .classify-box {
+          width: calc(100% - 262px);
+          margin-right: 10px;
         }
         textarea {
           height: 220px;
           padding: 20px;
           resize: none;
           box-sizing: border-box;
-          border: 1px solid #e6e8eb;
+          background: #f6f7f8;
           border-radius: 8px;
           width: calc(100% - 180px);
+          outline: none;
         }
         input {
           border-radius: 8px;
-          border: 1px solid #e6e8eb;
+          background: #f6f7f8;
           padding: 16px;
           box-sizing: border-box;
           width: calc(100% - 180px);
@@ -50,6 +64,15 @@ main {
             font-weight: 700;
             color: black;
           }
+        }
+        .edit-btn {
+          width: 72px;
+          font-weight: 700;
+          height: 51px;
+          border: 1px solid #e6e8eb;
+          font-size: 14px;
+          background: white;
+          border-radius: 8px;
         }
       }
     }
@@ -66,8 +89,12 @@ main {
       section {
         .row {
           input,
-          textarea {
+          textarea,
+          .select-box {
             width: 100%;
+            margin-top: 10px;
+          }
+          .edit-btn {
             margin-top: 10px;
           }
         }
