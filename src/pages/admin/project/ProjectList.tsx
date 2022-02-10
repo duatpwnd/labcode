@@ -120,9 +120,11 @@ const Project = () => {
     }
     const createProject = debounce(() => {
         const body = {
-            title: "",
-            description: "",
+            title: "제목 미정",
+            description: "설명 미정",
             bannerImage: "",
+            versionId: 1,
+            countryId: 1,
             homepage: "http://snaptag.co.kr/"
         }
         const formData = new FormData();

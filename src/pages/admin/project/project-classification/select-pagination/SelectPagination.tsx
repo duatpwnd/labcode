@@ -5,7 +5,7 @@ import { AppContext } from "src/App";
 import apiUrl from "src/utils/api";
 import axios from "axios";
 import _ from 'lodash'
-const SelectPagination = ({ industryId }) => {
+const SelectPagination = ({ industryId, eventHandler }) => {
     const { teamId } = useContext(AppContext).user;
     const [mainCategoryId, setMainCategoryId] = useState(null); // 대분류 선택 여부
     const [mainCategoriesName, setMainCategoriesName] = useState("대분류를 선택해주세요.")
@@ -39,6 +39,7 @@ const SelectPagination = ({ industryId }) => {
     }
     // 대분류 선택 함수 
     const selectMainCategories = (id, title) => {
+        eventHandler({ target: { id: 'mainCategoryId', value: id } })
         setMainCategoriesMenu(false); // 탭닫기
         setMainCategoryId(id); // 대분류 아이디 설정
         setMainCategoriesName(title) // 이름설정
@@ -48,7 +49,8 @@ const SelectPagination = ({ industryId }) => {
         })
     }
     // 소분류 선택
-    const selectSubCategories = (title) => {
+    const selectSubCategories = (title, id) => {
+        eventHandler({ target: { id: 'subCategoryId', value: id } })
         setSubCategoriesMenu(false);
         setSubCategoriesName(title);
     }
@@ -112,11 +114,9 @@ const SelectPagination = ({ industryId }) => {
                 <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${industryId}?currentPage=1`)}>편집</button>
 
                 <div className="select-menu" style={{ visibility: mainCategoriesMenu ? 'visible' : 'hidden' }}>
+                    <input autoFocus type="text" onChange={debounce((e) => onChange(e), 500)} />
                     {
-                        mainCategoryList.length == 0 ? <p className="message">대분류가 존재하지 않습니다</p> : <input autoFocus type="text" onChange={debounce((e) => onChange(e), 500)} />
-                    }
-                    {
-                        mainCategoryList.length > 0 && <ul onScroll={mainCategoriesScroll}>
+                        mainCategoryList.length > 0 ? <ul onScroll={mainCategoriesScroll}>
                             {
                                 mainCategoryList.map((items, index) => {
                                     return (
@@ -124,7 +124,7 @@ const SelectPagination = ({ industryId }) => {
                                     )
                                 })
                             }
-                        </ul>
+                        </ul> : <p className="message">대분류가 존재하지 않습니다</p>
                     }
 
                 </div>
@@ -144,7 +144,7 @@ const SelectPagination = ({ industryId }) => {
                                 {
                                     subCategoryList.map((items, index) => {
                                         return (
-                                            <li key={index} onClick={() => selectSubCategories(items.title)}>{items.title}</li>
+                                            <li key={index} onClick={() => selectSubCategories(items.title, items.id)}>{items.title}</li>
                                         )
                                     })
                                 }
@@ -153,7 +153,6 @@ const SelectPagination = ({ industryId }) => {
                     </div>
                 </div>
             }
-
         </>
 
     )

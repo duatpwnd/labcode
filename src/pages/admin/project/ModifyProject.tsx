@@ -21,6 +21,7 @@ const ProjectDetail = (props) => {
         onChange(e);
     }, 500);
     const onChange = (e: { [key: string]: any }) => {
+        console.log("EEe", e);
         const data = { ...inputs, [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value }
         setInputs({
             ...data
@@ -83,6 +84,10 @@ const ProjectDetail = (props) => {
                     <div className="row">
                         <label htmlFor="homepage" className="homepage-link">홈페이지 주소</label>
                         <input type="text" defaultValue={inputs.homepage} id="homepage" onKeyUp={(e) => inputDebounce(e)} />
+                    </div>
+
+                    <div className="approve-btn-area">
+                        <button className="approve-btn">승인</button>
                     </div>
                     {/* <div className="row">
                     <label>Access Token</label>

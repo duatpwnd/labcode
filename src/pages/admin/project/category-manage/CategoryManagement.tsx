@@ -8,9 +8,8 @@ import apiUrl from "src/utils/api";
 import Pagination from "components/common/pagination/Pagination";
 
 // 소분류 생성
-const createSubCategories = ({ mainCategoryId, order }) => {
-    console.log(mainCategoryId, order);
-    return axios.post(apiUrl.subCategories, { mainCategoryId: mainCategoryId, title: "", order: order }).then((result) => {
+const createSubCategories = ({ mainCategoryId }) => {
+    return axios.post(apiUrl.subCategories, { mainCategoryId: mainCategoryId, title: "" }).then((result) => {
         console.log("소분류 생성결과", result.data);
         return result.data.data
     })
@@ -22,8 +21,8 @@ const ToggleList = ({ mainCategories, getCategories }) => {
     const currentPage = searchParams.get("currentPage");
     const debounce = _.debounce;
     // 소분류 추가
-    const addSubCategories = ({ mainCategoryId, order }) => {
-        createSubCategories({ mainCategoryId, order }).then((result) => {
+    const addSubCategories = ({ mainCategoryId }) => {
+        createSubCategories({ mainCategoryId }).then((result) => {
             getCategories(currentPage);
             setInput(result.id);
         })
@@ -66,7 +65,7 @@ const ToggleList = ({ mainCategories, getCategories }) => {
                 <span className="toggle-btn" style={{ backgroundImage: toggle ? `url(${require("images/arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }} onClick={() => setToggle(!toggle)}></span>
                 <span className="main-category-title">{mainCategories.title} <strong className="current-count">{mainCategories.subCategories.length}</strong>/8</span>
                 <button className="btn add-btn" onClick={() => {
-                    addSubCategories({ mainCategoryId: mainCategories.id, order: mainCategories.order });
+                    addSubCategories({ mainCategoryId: mainCategories.id });
                 }}>추가</button>
                 <button className="btn" onClick={() => deleteMainCategories(mainCategories.id)}>삭제</button>
             </div>
@@ -118,12 +117,12 @@ const CategoryManagement = () => {
             setTitle("");
             // isAddSubCategories == true 면 소분류 까지 같이 생성해주기
             if (isAddSubCategories) {
-                createSubCategories({ mainCategoryId: result.data.data.id, order: result.data.data.order }).then((result) => {
+                createSubCategories({ mainCategoryId: result.data.data.id }).then((result) => {
                     setCategoryInput(false);
-                    getCategories(1);
+                    getCategories(currentPage);
                 })
             } else {
-                getCategories(1);
+                getCategories(currentPage);
             }
         })
     }
@@ -158,7 +157,7 @@ const CategoryManagement = () => {
                     <span className="current-category">카테고리 관리</span>
                 </div>
                 <h2 className="h2-title">카테고리 관리</h2>
-                <p className="guide-message">정보를 변경하면 자동으로 저장됩니다..</p>
+                <p className="guide-message">정보를 변경하면 자동으로 저장됩니다.</p>
                 <section>
                     <div className="add-area">
                         <div className="title-area">
@@ -181,7 +180,7 @@ const CategoryManagement = () => {
                     {
                         addCategoryInput && <div className="main-category-input-area">
                             <span className="arrow-ico"></span>
-                            <input type="text" value={title} autoFocus className="main-category-input" onKeyPress={onKeyPress} onClick={() => createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }, false)} onChange={(e) => onChange(e)} />
+                            <input type="text" value={title} autoFocus className="main-category-input" onKeyPress={onKeyPress} onChange={(e) => onChange(e)} />
                             <button className="btn add-btn" onClick={() => createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }, true)}>추가</button>
                             <button className="btn" onClick={(e) => {
                                 setCategoryInput(false)
@@ -191,7 +190,7 @@ const CategoryManagement = () => {
                     }
                 </section>
                 {
-                    meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getCategories} />
+                    meta != undefined && meta.totalPages > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getCategories} />
                 }
             </div >
         </main >
