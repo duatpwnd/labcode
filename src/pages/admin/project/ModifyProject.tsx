@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, createContext } from "react"
 import { useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
@@ -8,6 +8,7 @@ import DragDrop from "components/common/drag-drop/DragDrop";
 import "./ModifyProject.scoped.scss"
 import _ from 'lodash'
 import Classification from "pages/admin/project/project-classification/Classification";
+export const ProjectContext = createContext<{ [key: string]: any }>({})
 const ProjectDetail = (props) => {
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
@@ -31,13 +32,7 @@ const ProjectDetail = (props) => {
             .get(apiUrl.project + `/${params.projectId}`)
             .then((result: { [key: string]: any }) => {
                 console.log(result);
-                const { title, bannerImage, description, homepage } = result.data.data
-                setInputs({
-                    title: title,
-                    description: description,
-                    homepage: homepage,
-                    bannerImage: bannerImage,
-                })
+                setInputs(result.data.data)
             }).catch((err: any) => {
                 console.log('프로젝트조회에러:', err);
             });
@@ -61,13 +56,12 @@ const ProjectDetail = (props) => {
     }, [])
     return (
         <main>
-            {/* <BackButton /> */}
             <div className="wrap">
                 <h2 className="h2-title">프로젝트 관리</h2>
                 <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
                 {/* 내부용 프로젝트 분류 */}
                 {
-                    isAdmin && <Classification eventHandler={onChange} industryId={inputs.industryId} />
+                    isAdmin && <Classification inputs={inputs} eventHandler={onChange} />
 
                 }
                 {/* 외부용 프로젝트 분류 */}

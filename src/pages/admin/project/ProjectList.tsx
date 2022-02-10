@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import _ from 'lodash'
-import Pagination from "components/common/pagination/Pagination";
+import history from "src/utils/history";
+import { ReactElement } from "react";
 import "./ProjectList.scoped.scss"
 const SearchInput = styled.input`
     padding-left:14px;
@@ -39,35 +40,41 @@ const StatusText = styled.strong`
     padding:9px 8px;
     border-radius:4px;
 `
-// const OrderMenu = () => {
-//     const [isActive, setOrderMenu] = useState(false);
-//     const [orderObj, setOrder] = useState({
-//         index: 0,
-//         arr: ['최신순', '오래된 순', '가나다 순']
-//     })
-//     return (
-//         <div className="order-area">
-//             <button className={isActive ? "order-btn active" : "order-btn inactive"} onClick={() => setOrderMenu(!isActive)}>{orderObj.arr[orderObj.index]}</button>
-//             {
-//                 isActive && <ul className="order-select">
-//                     {orderObj.arr.map((el, index) => <li key={index} className={index == orderObj.index ? "selected" : ""} onClick={() => { setOrderMenu(false); setOrder({ ...orderObj, index: index }) }}>{el}</li>)}
-//                 </ul>
-//             }
-//         </div>
-//     )
-// }
+const Pagination = ({ currentPage, totalPages }) => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const isActive = searchParams.get('isActive');
+    const search = searchParams.get('search');
+    const pageMove = (pageNumber) => {
+        history.push({
+            search: `?currentPage=${pageNumber}&search=${search}&isActive=${isActive}`,
+        });
+    }
+    const rendering = () => {
+        const result: ReactElement[] = [];
+        for (let i = 1; i <= totalPages; i++) {
+            result.push(<li className={currentPage == i ? "active" : ""} key={i} onClick={() => pageMove(i)}>{i}</li>);
+        }
+        return result;
+    };
+
+    return <ul className="pagination">{
+        currentPage != 1 && <li className="prev-page-btn paging-btn" onClick={() => pageMove(currentPage - 1)}></li>}{rendering()}{
+            currentPage != totalPages &&
+            <li className="next-page-btn paging-btn" onClick={() => pageMove(currentPage + 1)}></li>}
+    </ul>;
+}
 const LnbMenu = ({ eventHandler, child }) => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const isActive = searchParams.get('isActive');
     const [list, setList] = useState({
-        index: 0,
         arr: [{ value: "전체", type: "" }, { value: "신청접수", type: false }, { value: "승인완료", type: true }]
     })
     return (
         <div className="btn-wrap">
             {
-                list.arr.map((el, index) => <button key={index} className={index == list.index ? 'active category-btn' : 'category-btn'} onClick={() => {
-                    setList({
-                        ...list, index: index
-                    });
+                list.arr.map((el, index) => <button key={index} className={String(el.type) == String(isActive) ? 'active category-btn' : 'category-btn'} onClick={() => {
                     eventHandler(1, "", el.type)
                 }}>{el.value}</button>)
             }
@@ -81,10 +88,18 @@ const Project = () => {
     const menu = useRef(null);
     const debounce = _.debounce;
     const navigate = useNavigate()
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const currentPage = searchParams.get('currentPage');
+    const isActive = searchParams.get('isActive');
+    const search = searchParams.get('search');
     const searchDebounce = debounce((query) => {
-        getProjectList(1, query, "")
+        getProjectList(1, query, isActive);
     }, 500);
     const getProjectList = (page, search, isActive) => {
+        history.push({
+            search: `?currentPage=${page}&search=${search}&isActive=${isActive}`,
+        });
         axios
             .get(apiUrl.project + `?search=${search}&page=${page}&isActive=${isActive}&limit=16`)
             .then((result: any) => {
@@ -98,7 +113,7 @@ const Project = () => {
             .delete(apiUrl.project + `/${id}`)
             .then((result: any) => {
                 console.log("프로젝트삭제결과:", result);
-                getProjectList(1, "", "");
+                getProjectList(1, search, isActive);
             }).catch((err: any) => {
                 console.log('프로젝트삭제에러:', err);
             });
@@ -133,9 +148,8 @@ const Project = () => {
         }
     }
     useEffect(() => {
-        console.log('프로젝트 리스트페이지 노출');
-        getProjectList(1, "", "");
-    }, [])
+        getProjectList(currentPage, search, isActive);
+    }, [currentPage])
     return (
         <main>
             <div className="search-area">
@@ -186,7 +200,7 @@ const Project = () => {
                 }
             </ul>
             {
-                meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getProjectList} />
+                meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} />
             }
         </main>
     )

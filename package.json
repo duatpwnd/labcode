@@ -39,6 +39,7 @@
     "react-drag-drop-files": "^2.2.4",
     "react-dynamic-route": "^0.1.2",
     "react-i18next": "^11.14.3",
+    "react-infinite-scroll-hook": "^4.0.2",
     "react-inlinesvg": "^2.3.0",
     "react-innertext": "^1.1.5",
     "react-korea-map-visualization": "^1.1.3",
@@ -47,6 +48,8 @@
     "react-router": "^6.0.2",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
+    "react-select": "^5.2.2",
+    "react-select-async-paginate": "^0.6.1",
     "react-svg": "^14.1.5",
     "react-svg-map": "^2.2.0",
     "react-type-animation": "^1.1.2",
@@ -64,8 +67,8 @@
   "scripts": {
     "start:prod": "env-cmd -f .env.production craco start",
     "start:dev": "env-cmd -f .env.development craco start",
-    "build:prod" : "CI= REACT_APP_MODE=production craco build",
-    "build:dev" : "CI= REACT_APP_MODE=development craco build",
+    "build:prod": "CI= REACT_APP_MODE=production craco build",
+    "build:dev": "CI= REACT_APP_MODE=development craco build",
     "test": "craco test",
     "eject": "craco eject"
   },

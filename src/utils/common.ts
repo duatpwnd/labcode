@@ -110,3 +110,17 @@ export const convertURLtoFile = async (url: string) => {
     return new File([data], filename!, metadata);
   }
 };
+// 스크롤 바닥 감지 함수
+export const scrollDetect = (element: HTMLElement, callback: () => void) => {
+  if (element != null) {
+    element.addEventListener("scroll", () => {
+      if (
+        element.clientHeight + Math.ceil(element.scrollTop) >=
+        element.scrollHeight
+      ) {
+        console.log("t스크롤바닥감지됬따");
+        callback();
+      }
+    });
+  }
+};

@@ -1,84 +1,153 @@
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+import { useParams, useSearchParams } from "react-router-dom";
 import _ from 'lodash'
 import "./CategoryManagement.scoped.scss"
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "src/reducers";
+import { useEffect, useState, useContext } from "react";
+import { AppContext } from "src/App";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-const CategoryManagement = () => {
-    const navigate = useNavigate();
-    const [{ meta, data }, setCategories] = useState<{ [key: string]: any }>({});
-    const [addCategoryInput, setCategoryInput] = useState(false);
-    const [isActiveInput, setInput] = useState(-1);
-    const [addCategoryProperty, setCategoryProperty] = useState<{ [key: string]: any }>({});
-    const [title, setTitle] = useState("");
-    const debounce = _.debounce;
-    const teamId = useSelector((state: RootState) => {
-        return state.signIn.userInfo?.user.teamId
-    })
-    const params = useParams();
-    const save = () => {
-        console.log("save 함수 호출");
+import Pagination from "components/common/pagination/Pagination";
 
-    }
-    const onChange = (e) => {
-        setTitle(e.target.value);
-    }
-    // 소분류 생성
-    const createSubCategories = (mainCategoryId, title, order) => {
-        axios.post(apiUrl.subCategories, { mainCategoryId: mainCategoryId, title: title, order: order }).then((result) => {
-            console.log("소분류 생성결과", result.data);
-            getCategories();
+// 소분류 생성
+const createSubCategories = ({ mainCategoryId, order }) => {
+    console.log(mainCategoryId, order);
+    return axios.post(apiUrl.subCategories, { mainCategoryId: mainCategoryId, title: "", order: order }).then((result) => {
+        console.log("소분류 생성결과", result.data);
+        return result.data.data
+    })
+}
+const ToggleList = ({ mainCategories, getCategories }) => {
+    const [toggle, setToggle] = useState(true);
+    const [isActiveInput, setInput] = useState(-1);
+    const [searchParams] = useSearchParams();
+    const currentPage = searchParams.get("currentPage");
+    const debounce = _.debounce;
+    // 소분류 추가
+    const addSubCategories = ({ mainCategoryId, order }) => {
+        createSubCategories({ mainCategoryId, order }).then((result) => {
+            getCategories(currentPage);
+            setInput(result.id);
         })
     }
     // 소분류 삭제
     const deleteSubCategories = (id) => {
         axios.delete(apiUrl.subCategories + `/${id}`).then((result) => {
             console.log("소분류삭제결과:", result);
-            getCategories();
+            getCategories(currentPage);
         }).catch((err) => {
             console.log(err);
             alert("프로젝트가 존재하여 삭제가 불가능합니다.")
         })
     }
+    // 소분류 수정
     const modifySubCategories = (id, value) => {
         axios.patch(apiUrl.subCategories + `/${id}`, { title: value }).then((result) => {
             console.log("소분류수정결과:", result);
-            getCategories();
+            getCategories(currentPage);
         }).catch((err) => {
             console.log("소분류 수정 에러:", err);
         })
 
     }
-    // 대분류 생성
-    const createMainCategories = (body) => {
-        console.log("대분류생성", body);
-        axios.post(apiUrl.categories, body).then((result) => {
-            console.log("대분류생성결과:", result);
-            getCategories();
-        })
-    }
+
     // 대분류 삭제
     const deleteMainCategories = (id) => {
         axios.delete(apiUrl.categories + `/${id}`).then((result) => {
             console.log("대분류삭제결과:", result);
-            getCategories();
+            getCategories(currentPage);
         }).catch((err) => {
             console.log(err);
             alert("소분류가 존재하여 삭제가 불가능합니다.")
         })
     }
+    return (
+        <div className="categories" >
+            {/* 대분류 */}
+            <div className="main-category-list" >
+                <span className="toggle-btn" style={{ backgroundImage: toggle ? `url(${require("images/arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }} onClick={() => setToggle(!toggle)}></span>
+                <span className="main-category-title">{mainCategories.title} <strong className="current-count">{mainCategories.subCategories.length}</strong>/8</span>
+                <button className="btn add-btn" onClick={() => {
+                    addSubCategories({ mainCategoryId: mainCategories.id, order: mainCategories.order });
+                }}>추가</button>
+                <button className="btn" onClick={() => deleteMainCategories(mainCategories.id)}>삭제</button>
+            </div>
+            {
+                toggle &&
+                <div className="sub-categories-wrap">
+                    {
+
+                        mainCategories.subCategories.map((subCategories, index) => {
+                            return (
+                                //  소분류
+                                <div className="sub-category-list" key={subCategories.id}>
+                                    {
+                                        isActiveInput == subCategories.id ?
+                                            <input autoFocus
+                                                className="input edit-input"
+                                                onChange={debounce((e) => modifySubCategories(subCategories.id, e.target.value
+                                                ), 500)}
+                                                onBlur={() => setInput(-1)}
+                                            /> :
+                                            <input className="input readonly-input" readOnly defaultValue={subCategories.title} onDoubleClick={() => { setInput(subCategories.id) }} />
+                                    }
+                                    <button className="delete-btn" onClick={() => deleteSubCategories(subCategories.id)}></button>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            }
+
+        </div>
+    )
+}
+const CategoryManagement = () => {
+    const [{ meta, data }, setCategories] = useState<{ [key: string]: any }>({});
+    const [addCategoryInput, setCategoryInput] = useState(false);
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("")
+    const { teamId } = useContext(AppContext).user;
+    const [searchParams] = useSearchParams();
+    const currentPage = searchParams.get("currentPage");
+    const params = useParams();
+    // 대분류 생성
+    const createMainCategories = (body, isAddSubCategories) => {
+        console.log("대분류생성", body, isAddSubCategories);
+        setMessage("")
+        axios.post(apiUrl.categories, body).then((result) => {
+            console.log("대분류생성결과:", result);
+            setTitle("");
+            // isAddSubCategories == true 면 소분류 까지 같이 생성해주기
+            if (isAddSubCategories) {
+                createSubCategories({ mainCategoryId: result.data.data.id, order: result.data.data.order }).then((result) => {
+                    setCategoryInput(false);
+                    getCategories(1);
+                })
+            } else {
+                getCategories(1);
+            }
+        })
+    }
+    const onChange = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const onKeyPress = (e) => {
+        if (e.key == "Enter") {
+            createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }, false)
+        }
+    }
     // 대분류 & 소분류 조회
-    const getCategories = () => {
-        axios.get(apiUrl.categories).then((result) => {
+    const getCategories = (page) => {
+        axios.get(apiUrl.categories + `?industryId=${params.industryId}&teamId=${teamId}&limit=10&page=${page}`).then((result) => {
             console.log("대분류 & 소분류 조회:", result.data);
+            if (result.data.data.length == 0) {
+                setCategoryInput(true)
+            }
             setCategories(result.data);
         })
     }
     useEffect(() => {
-        getCategories()
+        getCategories(currentPage == null ? 1 : currentPage)
     }, [])
     return (
         <main>
@@ -102,39 +171,9 @@ const CategoryManagement = () => {
                     </div>
                     {
                         data &&
-                        data.map((mainCategories) => {
+                        data.map((mainCategories, index) => {
                             return (
-                                <div className="categories" key={mainCategories.id}>
-                                    {/* 대분류 */}
-                                    <div className="main-category-list" >
-                                        <span className="main-category-title">{mainCategories.title}</span>
-                                        <button className="btn add-btn" onClick={() => {
-                                            setCategoryInput(true);
-                                            setCategoryProperty({ mainCategoryId: mainCategories.id, order: mainCategories.order })
-                                        }}>추가</button>
-                                        <button className="btn" onClick={() => deleteMainCategories(mainCategories.id)}>삭제</button>
-                                    </div>
-                                    {
-                                        mainCategories.subCategories.map((subCategories, index) => {
-                                            return (
-                                                //  소분류
-                                                <div className="sub-category-list" key={subCategories.id}>
-                                                    {
-                                                        isActiveInput == subCategories.id ?
-                                                            <input autoFocus
-                                                                className="input edit-input"
-                                                                onChange={debounce((e) => modifySubCategories(subCategories.id, e.target.value
-                                                                ), 500)}
-                                                                onBlur={() => setInput(-1)}
-                                                            /> :
-                                                            <input className="input readonly-input" readOnly defaultValue={subCategories.title} onDoubleClick={() => { setInput(subCategories.id) }} />
-                                                    }
-                                                    <button className="delete-btn" onClick={() => deleteSubCategories(subCategories.id)}></button>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
+                                <ToggleList key={index} mainCategories={mainCategories} getCategories={getCategories} />
                             )
                         })
                     }
@@ -142,17 +181,20 @@ const CategoryManagement = () => {
                     {
                         addCategoryInput && <div className="main-category-input-area">
                             <span className="arrow-ico"></span>
-                            <input type="text" autoFocus className="main-category-input" onChange={(e) => onChange(e)} />
-                            <button className="btn add-btn" onClick={() => addCategoryProperty.mainCategoryId == undefined ? createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }) : createSubCategories(addCategoryProperty.mainCategoryId, title, addCategoryProperty.order)}>추가</button>
-                            <button className="btn">삭제</button>
-
+                            <input type="text" value={title} autoFocus className="main-category-input" onKeyPress={onKeyPress} onClick={() => createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }, false)} onChange={(e) => onChange(e)} />
+                            <button className="btn add-btn" onClick={() => createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }, true)}>추가</button>
+                            <button className="btn" onClick={(e) => {
+                                setCategoryInput(false)
+                            }}>삭제</button>
+                            <p>{message}</p>
                         </div>
-
                     }
                 </section>
-
-            </div>
-        </main>
+                {
+                    meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getCategories} />
+                }
+            </div >
+        </main >
     )
 }
 export default CategoryManagement

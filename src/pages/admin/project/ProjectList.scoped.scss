@@ -188,7 +188,36 @@ main {
       }
     }
   }
+
+  .pagination {
+    margin-top: 40px;
+    text-align: center;
+    li {
+      width: 40px;
+      display: inline-block;
+      color: #525a61;
+      vertical-align: middle;
+    }
+    .paging-btn {
+      height: 40px;
+    }
+    .prev-page-btn {
+      margin-right: 40px;
+      background: url("~images/prev_page_ico.svg") no-repeat center center /
+        40px 40px;
+    }
+    .next-page-btn {
+      background: url("~images/next_page_ico.svg") no-repeat center center /
+        40px 40px;
+    }
+    margin-left: 40px;
+  }
+  li.active {
+    font-weight: 700;
+    color: black;
+  }
 }
+
 @media all and (max-width: 1199px) {
   main {
     margin-left: 0;

@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import "./Navigator.scoped.scss"
+import history from "src/utils/history";
 const StyledNavLink = styled(NavLink)`
     width: 100%;
     padding: 25px 35px 25px 58px;
@@ -40,7 +41,7 @@ const Navigator = () => {
                     <StyledNavLink to={`/teams/${teamId}`} background="team_ico.svg">팀 정보</StyledNavLink>
                 </li>
                 <li >
-                    <StyledNavLink to="/projects" background="project_ico.svg">프로젝트</StyledNavLink>
+                    <StyledNavLink to={`/projects?currentPage=1&search=&isActive=false`} background="project_ico.svg">프로젝트</StyledNavLink>
                 </li>
                 {/* <li >
                     <NavLink to="/product" className="product">

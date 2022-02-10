@@ -19,6 +19,7 @@ main {
         border-bottom: 1px solid #e6e8eb;
       }
       .row {
+        position: relative;
         margin-top: 16px;
         label {
           font-weight: 700;
@@ -31,6 +32,7 @@ main {
           vertical-align: top;
         }
         .select-box {
+          display: inline-block;
           width: calc(100% - 180px);
           box-sizing: border-box;
           padding: 16px;
@@ -39,10 +41,7 @@ main {
           background: url("~images/arrow_bottom.svg") #f6f7f8 no-repeat right
             10px center / 16px 16px;
         }
-        .classify-box {
-          width: calc(100% - 262px);
-          margin-right: 10px;
-        }
+
         textarea {
           height: 220px;
           padding: 20px;
@@ -54,6 +53,7 @@ main {
           outline: none;
         }
         input {
+          display: inline-block;
           border-radius: 8px;
           background: #f6f7f8;
           padding: 16px;

@@ -12,6 +12,8 @@ const apiUrl = {
   scales: "/adm/v1/products/scales", // 코드크기 조회
   alphas: "/adm/v1/products/alphas", // 적용세기 조회
   categories: "/adm/v1/categories", // 대분류 & 소분류 리스트 조회 & 생성
+  mainCategories: "/adm/v1/main-categories", // 대분류 조회
   subCategories: "/adm/v1/sub-categories", // 소분류 생성
+  productInfos: "/adm/v1/product-infos", // 제품정보 조회, 수정, 삭제
 };
 export default apiUrl;

@@ -87,22 +87,17 @@ main {
           line-height: 32px;
           height: 32px;
           position: relative;
+          .toggle-btn {
+            vertical-align: middle;
+            width: 16px;
+            height: 16px;
+          }
           .main-category-title {
+            vertical-align: middle;
             font-family: "Poppins";
             width: calc(100% - 148px);
-            padding-left: 32px;
-            &::before {
-              content: "";
-              position: absolute;
-              left: 0;
-              top: 8px;
-              margin: auto;
-              width: 16px;
-              height: 16px;
-              background: url("~images/arrow_top.svg") no-repeat center center /
-                16px 16px;
-            }
-            .unique {
+            padding-left: 16px;
+            .current-count {
               color: #5138e5;
             }
           }

@@ -6,11 +6,10 @@ import { getFormatDate } from "src/utils/common";
 const CalendarComp = ({ eventHandler, defaultValue }) => {
     const [startDate, setStartDate] = useState<Date | null>(new Date())
     useEffect(() => {
-        console.log("default", defaultValue);
-        if (defaultValue != null) {
-            setStartDate(defaultValue);
+        if (defaultValue != undefined) {
+            setStartDate(new Date(defaultValue));
         }
-    }, [])
+    }, [defaultValue])
     return (
         <DatePicker selected={startDate}
             showPopperArrow={false}
