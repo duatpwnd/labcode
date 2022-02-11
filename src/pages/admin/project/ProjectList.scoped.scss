@@ -97,9 +97,12 @@ main {
         }
         .thumbnail {
           position: absolute;
+          border-top-right-radius: 8px;
+          border-top-left-radius: 8px;
           top: 0;
           left: 0;
           width: 100%;
+          object-fit: cover;
           height: calc(100% - 138px);
         }
       }

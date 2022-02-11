@@ -166,10 +166,13 @@ const Project = () => {
                 {
                     data != undefined &&
                     data.map((list, index) => <li className="list" key={index}>
-                        <Link to={{ pathname: list.isActive ? `/projects/${list.id}/products` : "" }} className="link" >
-                            <div className="mask"></div>
-                            <img src={list.bannerImage} title={list.title} className="thumbnail" />
-                        </Link>
+                        {
+                            list.isActive ? <Link to={{ pathname: `/projects/${list.id}/products` }} className="link" >
+                                <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" />
+                            </Link> : <div className="link"><div className="mask"></div>
+                                <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" /></div>
+
+                        }
                         <div className="bottom">
                             <dl>
                                 <dt>{list.title}</dt>
