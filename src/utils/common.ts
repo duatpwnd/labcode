@@ -24,9 +24,22 @@ export const getBase64 = (fileObj) => {
 export const emailReg =
   /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 export const emailRegExp = (data, property, stateHandler, validation) => {
+  console.log(data, property);
   stateHandler(data);
   if (emailReg.test(data[property]) == false) {
     validation("올바른 형식의 이메일 주소가 아닙니다.");
+    return false;
+  } else {
+    validation("");
+    return true;
+  }
+};
+// 비밀번호 정규식
+export const passwordReg = /^.*(?=.)(?=.*[0-9])(?=.*[a-zA-Z]).*$/;
+export const passwordRegExp = (data, property, stateHandler, validation) => {
+  stateHandler(data);
+  if (passwordReg.test(data[property]) == false) {
+    validation("비밀번호가 올바르지 않습니다.");
     return false;
   } else {
     validation("");

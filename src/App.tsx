@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import { useEffect, createContext } from 'react';
 export const AppContext = createContext<{ [key: string]: any }>({})
-function App() {
+export default function App() {
   const { pathname } = useLocation();
   const [cookies, setCookie] = useCookies();
   const dispatch = useDispatch();
@@ -27,19 +27,18 @@ function App() {
     }
   }, [])
   return (
-    <div className="App">
-      <AppContext.Provider value={userInfo as { [key: string]: any } || cookies.user_info}>
+    <AppContext.Provider value={userInfo as { [key: string]: any } || cookies.user_info}>
+      <div className="App">
         <Header />
-        {pathname != "/" && pathname != "/inquiries" && pathname != "/createTeam" &&
+        {pathname != "/" && pathname != "/inquiries/create" && pathname != "/teams/create" &&
           <Navigator />
         }
         {Routes()}
         {pathname == "/" &&
           <Footer />
         }
-      </AppContext.Provider>
-    </div>
+      </div>
+    </AppContext.Provider>
   );
 }
 
-export default App;

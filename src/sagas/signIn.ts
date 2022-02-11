@@ -44,10 +44,10 @@ function* signIn(action) {
       },
     });
   } else {
-    console.log("실패");
+    console.log("실패", result.data);
     yield put({
       type: SIGN_IN_FAILURE,
-      payload: result.data,
+      payload: result.data.message,
     });
   }
   return result;
