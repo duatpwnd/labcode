@@ -35,7 +35,8 @@ const SignIn = ({ setData }) => {
         setPassword("");
         dispatch(signInFail(false))
     }
-    const signIn = (email, password) => {
+    const signIn = () => {
+        console.log(email, password);
         if (emailReg.test(email) == false) {
             setEmail(".");
         } else if (passwordReg.test(password) == false) {
@@ -69,7 +70,7 @@ const SignIn = ({ setData }) => {
                                     onChange={debounce((e) => setEmail(e.target.value), 500)}
                                 />
                                 {
-                                    emailCheck == false && <p className="guide-message">이메일이 올바르지 않습니다.</p>
+                                    emailCheck == false && signinError == false && <p className="guide-message">이메일이 올바르지 않습니다.</p>
 
                                 }
                                 <input
@@ -80,12 +81,12 @@ const SignIn = ({ setData }) => {
                                     onChange={debounce((e) => setPassword(e.target.value), 500)}
                                 />
                                 {
-                                    passwordCheck == false && <p className="guide-message">비밀번호가 올바르지 않습니다.</p>
+                                    passwordCheck == false && signinError == false && <p className="guide-message">비밀번호가 올바르지 않습니다.</p>
                                 }
 
                                 {/* 서버검증 */}
                                 <p className="guide-message">{signinError}</p>
-                                <button type="button" onClick={() => signIn(email, password)}>로그인</button>
+                                <button type="button" onClick={() => signIn()}>로그인</button>
                             </fieldset>
                         </form>
                         <div className="sub-area">
