@@ -58,7 +58,7 @@ const Classification = ({ eventHandler, inputs }) => {
                     }
                 </select>
             </div>
-            <SelectPagination eventHandler={eventHandler} industryId={inputs.industryId} />
+            <SelectPagination eventHandler={eventHandler} inputs={inputs} />
         </section >
     )
 }

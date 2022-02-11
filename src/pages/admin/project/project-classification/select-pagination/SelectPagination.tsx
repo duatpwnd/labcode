@@ -5,7 +5,7 @@ import { AppContext } from "src/App";
 import apiUrl from "src/utils/api";
 import axios from "axios";
 import _ from 'lodash'
-const SelectPagination = ({ industryId, eventHandler }) => {
+const SelectPagination = ({ inputs, eventHandler }) => {
     const { teamId } = useContext(AppContext).user;
     const [mainCategoryId, setMainCategoryId] = useState(null); // 대분류 선택 여부
     const [mainCategoriesName, setMainCategoriesName] = useState("대분류를 선택해주세요.")
@@ -94,24 +94,24 @@ const SelectPagination = ({ industryId, eventHandler }) => {
     }
     // 대분류 조회
     const getMainCategories = (search, page) => {
-        return axios.get(apiUrl.mainCategories + `?industryId=${industryId}&teamId=${teamId}&page=${page}&limit=10&search=${search}`).then((result) => {
+        return axios.get(apiUrl.mainCategories + `?industryId=${inputs.industryId}&teamId=${teamId}&page=${page}&limit=10&search=${search}`).then((result) => {
             console.log('대분류조회:', result.data);
             return result.data
         })
     }
     useEffect(() => {
-        if (industryId != undefined) {
+        if (inputs.industryId != undefined) {
             getMainCategories("", 1).then((result) => {
                 setMainCategoryList(result.data);
             });
         }
-    }, [industryId])
+    }, [inputs.industryId])
     return (
         <>
             <div className="row">
                 <label htmlFor="mainCategories">대분류</label>
                 <div className="select-box classify-box" onClick={() => setMainCategoriesMenu(!mainCategoriesMenu)}>{mainCategoriesName}</div>
-                <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${industryId}?currentPage=1`)}>편집</button>
+                <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${inputs.industryId}?currentPage=1`)}>편집</button>
 
                 <div className="select-menu" style={{ visibility: mainCategoriesMenu ? 'visible' : 'hidden' }}>
                     <input autoFocus type="text" onChange={debounce((e) => onChange(e), 500)} />
@@ -133,7 +133,7 @@ const SelectPagination = ({ industryId, eventHandler }) => {
                 mainCategoryId != null && <div className="row">
                     <label htmlFor="mainCategories">소분류</label>
                     <div className="select-box classify-box" onClick={() => setSubCategoriesMenu(!subCategoriesMenu)}>{subCategoriesName}</div>
-                    <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${industryId}?currentPage=1`)}>편집</button>
+                    <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${inputs.industryId}?currentPage=1`)}>편집</button>
                     <div className="select-menu" style={{ visibility: subCategoriesMenu ? 'visible' : 'hidden' }}>
                         {
                             subCategoryList.length == 0 ? <p className="message">소분류가 존재하지 않습니다</p> : <input type="text" autoFocus onChange={debounce((e) => searchSubCategories(e), 500)} />

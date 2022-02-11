@@ -163,6 +163,7 @@ const DefaultInfo = () => {
     }
     useEffect(() => {
         axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas), axios.get(apiUrl.channelTypes), axios.get(apiUrl.embeddingTypes)]).then(axios.spread((res1, res2, res3, res4) => {
+            console.log("코드크기,적용세기,채널조회");
             setScales(res1.data.data);
             setAlphas(res2.data.data);
             setChannelTypes(res3.data.data);
@@ -175,7 +176,7 @@ const DefaultInfo = () => {
         if (params.productId != "add") {
             getProductDetail();
         }
-    }, [])
+    }, [params.productId])
     return (
         <section>
             <h3 className="h3-title">기본 정보</h3>
