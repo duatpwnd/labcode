@@ -9,8 +9,8 @@ const SignIn = ({ setData }) => {
     const dispatch = useDispatch();
     // snaptag_official@snaptag.co.kr
     // Snaptag0911!
-    const [email, setEmail] = useState("snaptag_official@snaptag.co.kr");
-    const [password, setPassword] = useState("Snaptag0911!");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const signinError = useSelector((state: RootState) => {
         return state.signIn.signinError
     })
