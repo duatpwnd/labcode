@@ -50,6 +50,7 @@ footer {
           16px 16px;
         .text {
           width: calc(100% - 97px);
+          padding: 1px 0;
           vertical-align: middle;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -66,6 +67,7 @@ footer {
           padding: 18px 0;
           .text {
             width: calc(100% - 94px);
+            padding: 1px 0;
             vertical-align: middle;
             text-overflow: ellipsis;
             white-space: nowrap;
