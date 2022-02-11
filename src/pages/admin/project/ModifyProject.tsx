@@ -87,7 +87,9 @@ const ProjectDetail = (props) => {
                     </div>
 
                     <div className="approve-btn-area">
-                        <button className="approve-btn">승인</button>
+                        {
+                            inputs.mainCategoryId != undefined && inputs.subCategoryId != undefined && <button className="approve-btn" onClick={() => onChange({ target: { id: "isActive", value: true } })}>승인</button>
+                        }
                     </div>
                     {/* <div className="row">
                     <label>Access Token</label>
