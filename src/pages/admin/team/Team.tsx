@@ -9,7 +9,7 @@ import {
 import "./Team.scoped.scss"
 import { phoneRegExp, emailRegExp, checkCorporateRegistrationNumber, registerNumberRegExp, homePageRegExp, homePageReg, phoneReg, emailReg } from 'src/utils/common';
 const debounce = _.debounce;
-const modify = (body) => {
+const modify = (body, teamId) => {
     console.log(body);
     const businessNumberCheck = checkCorporateRegistrationNumber(body.businessNumber.replaceAll("-", ""));
     const homepageCheck = homePageReg.test(body.homepage);
@@ -21,7 +21,7 @@ const modify = (body) => {
             formData.append(key, body[key as never]);
         }
         axios
-            .patch(apiUrl.team, formData)
+            .patch(apiUrl.team + `/${teamId}`, formData)
             .then((result: any) => {
                 console.log("수정결과:", result);
             }).catch((err: any) => {
@@ -31,18 +31,19 @@ const modify = (body) => {
 }
 export const ManagerInfo = ({ useStateProperty, stateHandler, validationCheck, children }: { [key: string]: any }) => {
     const { pathname } = useLocation();
+    const params = useParams();
     const phoneValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
         const result = phoneRegExp(data, 'managerPhone', stateHandler, validationCheck.setPhoneMsg);
-        if (result && pathname == "/team") {
-            modify(data)
+        if (result && pathname == `/teams/${params.teamId}`) {
+            modify(data, params.teamId)
         }
     }
     const emailValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
         const result = emailRegExp(data, 'managerEmail', stateHandler, validationCheck.setEmailMsg);
-        if (result && pathname == "/team") {
-            modify(data)
+        if (result && pathname == `/teams/${params.teamId}`) {
+            modify(data, params.teamId)
         }
     };
     const notCheck = (e) => {
@@ -50,8 +51,8 @@ export const ManagerInfo = ({ useStateProperty, stateHandler, validationCheck, c
         stateHandler(data);
         console.log("data", data);
 
-        if (pathname == "/team") {
-            modify(data)
+        if (pathname == `/teams/${params.teamId}`) {
+            modify(data, params.teamId)
         }
     }
     return (
@@ -79,18 +80,19 @@ export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck })
     const [isActive, setActive] = useState(false);
     const [link, fileLink] = useState("");
     const { pathname } = useLocation();
+    const params = useParams();
     const businessNumberValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
         const result = registerNumberRegExp(data, 'businessNumber', stateHandler, validationCheck.setNumberMsg);
-        if (result && pathname == "/team") {
-            modify(data)
+        if (result && pathname == `/teams/${params.teamId}`) {
+            modify(data, params.teamId)
         }
     }
     const homePageValueCheck = (e) => {
         const data = { ...useStateProperty, [e.target.id]: e.target.value }
         const result = homePageRegExp(data, 'homepage', stateHandler, validationCheck.setLinkMsg);
-        if (result && pathname == "/team") {
-            modify(data)
+        if (result && pathname == `/teams/${params.teamId}`) {
+            modify(data, params.teamId)
         }
     }
     const notCheck = (e) => {
@@ -100,8 +102,9 @@ export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck })
             fileLink(URL.createObjectURL(e.target.files[0]))
         }
         stateHandler(data);
-        if (pathname == "/team") {
-            modify(data)
+        if (pathname == `/teams/${params.teamId}`) {
+            console.log("data", data);
+            modify(data, params.teamId)
         }
     }
     const getFileName = useMemo(() => {
