@@ -2,175 +2,84 @@ import axios from "axios";
 import apiUrl from "src/utils/api";
 import { useEffect, useState, useMemo } from "react"
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import _ from 'lodash'
 import {
     useLocation
 } from "react-router-dom";
 import "./Team.scoped.scss"
-import { phoneRegExp, emailRegExp, checkCorporateRegistrationNumber, registerNumberRegExp, homePageRegExp, homePageReg, phoneReg, emailReg } from 'src/utils/common';
+import { checkCorporateRegistrationNumber, homePageReg, phoneReg, emailReg } from 'src/utils/common';
 const debounce = _.debounce;
-const modify = (body, teamId) => {
-    console.log(body);
-    const businessNumberCheck = checkCorporateRegistrationNumber(body.businessNumber.replaceAll("-", ""));
-    const homepageCheck = homePageReg.test(body.homepage);
-    const phoneCheck = phoneReg.test(body.managerPhone);
-    const emailCheck = emailReg.test(body.managerEmail);
-    const formData = new FormData();
-    if (businessNumberCheck && homepageCheck && phoneCheck && emailCheck && body.businessImage != null) {
-        for (let key in body) {
-            formData.append(key, body[key as never]);
-        }
-        axios
-            .patch(apiUrl.team + `/${teamId}`, formData)
-            .then((result: any) => {
-                console.log("수정결과:", result);
-            }).catch((err: any) => {
-                console.log('수정에러:', err);
-            });
-    }
-}
-export const ManagerInfo = ({ useStateProperty, stateHandler, validationCheck, children }: { [key: string]: any }) => {
-    const { pathname } = useLocation();
-    const params = useParams();
-    const phoneValueCheck = (e) => {
-        const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        const result = phoneRegExp(data, 'managerPhone', stateHandler, validationCheck.setPhoneMsg);
-        if (result && pathname == `/teams/${params.teamId}`) {
-            modify(data, params.teamId)
-        }
-    }
-    const emailValueCheck = (e) => {
-        const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        const result = emailRegExp(data, 'managerEmail', stateHandler, validationCheck.setEmailMsg);
-        if (result && pathname == `/teams/${params.teamId}`) {
-            modify(data, params.teamId)
-        }
-    };
-    const notCheck = (e) => {
-        const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        stateHandler(data);
-        console.log("data", data);
 
-        if (pathname == `/teams/${params.teamId}`) {
-            modify(data, params.teamId)
-        }
-    }
-    return (
-        <section>
-            <h3 className="h3-title">담당자 정보</ h3>
-            <div className="row">
-                <label htmlFor="managerName">담당자명</label>
-                <input type="text" defaultValue={useStateProperty.managerName} id="managerName" onChange={debounce((e) => notCheck(e), 500)} />
-            </div>
-            <div className="row">
-                <label htmlFor="managerPhone">연락처</label>
-                <input type="text" defaultValue={useStateProperty.managerPhone} id="managerPhone" onChange={debounce((e) => phoneValueCheck(e), 500)} />
-                <p className="warn-message">{validationCheck.phoneMsg}</p>
-            </div>
-            <div className="row">
-                <label htmlFor="managerEmail">이메일</label>
-                <input type="text" defaultValue={useStateProperty.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
-                <p className="warn-message">{validationCheck.emailMsg}</p>
-            </div>
-            {children}
-        </section>
-    )
-}
-export const CompanyInfo = ({ useStateProperty, stateHandler, validationCheck }) => {
-    const [isActive, setActive] = useState(false);
-    const [link, fileLink] = useState("");
-    const { pathname } = useLocation();
-    const params = useParams();
-    const businessNumberValueCheck = (e) => {
-        const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        const result = registerNumberRegExp(data, 'businessNumber', stateHandler, validationCheck.setNumberMsg);
-        if (result && pathname == `/teams/${params.teamId}`) {
-            modify(data, params.teamId)
-        }
-    }
-    const homePageValueCheck = (e) => {
-        const data = { ...useStateProperty, [e.target.id]: e.target.value }
-        const result = homePageRegExp(data, 'homepage', stateHandler, validationCheck.setLinkMsg);
-        if (result && pathname == `/teams/${params.teamId}`) {
-            modify(data, params.teamId)
-        }
-    }
-    const notCheck = (e) => {
-        const data = { ...useStateProperty, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value };
-        if (e.target.id == "businessImage") {
-            validationCheck.setBusinessImage("");
-            fileLink(URL.createObjectURL(e.target.files[0]))
-        }
-        stateHandler(data);
-        if (pathname == `/teams/${params.teamId}`) {
-            console.log("data", data);
-            modify(data, params.teamId)
-        }
-    }
-    const getFileName = useMemo(() => {
-        if (typeof useStateProperty.businessImage == "object") {
-            return useStateProperty.businessImage.name
-        } else {
-            if (useStateProperty.businessImage != undefined) {
-                return useStateProperty.businessImageTitle + " (" + useStateProperty.businessImageSize + ")"
-            }
-        }
-    }, [useStateProperty.businessImage])
-    return (
-        <section className="section1">
-            <h3 className="h3-title">회사 정보</ h3>
-            <div className="row">
-                <label htmlFor="title">회사명</label>
-                <input type="text" defaultValue={useStateProperty.title} id="title" onChange={debounce((e) => notCheck(e), 500)} />
-            </div>
-
-            <div className="row">
-                <label htmlFor="businessNumber">사업자등록번호</label>
-                <input type="text" defaultValue={useStateProperty.businessNumber} id="businessNumber" onChange={debounce((e) => businessNumberValueCheck(e), 500)} />
-                <p className="warn-message">{validationCheck.numberMsg}</p>
-            </div>
-            <div className="row">
-                {
-                    isActive && <img src={link || useStateProperty.businessImage} onClick={() => setActive(false)} className="modal-image" />
-                }
-                <label htmlFor="businessImage">사업자등록증</label>
-                <div className="business-image-area">
-                    <div className="attach">
-                        {
-                            (() => {
-                                if (useStateProperty.businessImage?.type == "application/pdf") {
-                                    return <a href={link} download="newfilename" className="input-file">{getFileName}</a>
-                                } else if (useStateProperty.businessImage == null) {
-                                    return <span className="input-file" >사업자등록증을 첨부해주세요.</span>
-                                } else {
-                                    return <span onClick={() => setActive(true)} className="input-file" >{getFileName}</span>
-                                }
-                            })()
-                        }
-                        <input type="file" defaultValue={useStateProperty.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
-                        <button className="delete-btn"></button>
-                    </div>
-                    <label htmlFor="businessImage" className="file">찾아보기</label>
-                </div>
-                <p className="warn-message">{validationCheck.businessImage}</p>
-            </div>
-
-            <div className="row">
-                <label htmlFor="homepage">홈페이지 주소</label>
-                <input type="text" defaultValue={useStateProperty.homepage} id="homepage" onChange={debounce((e) => homePageValueCheck(e), 500)} />
-                <p className="warn-message">{validationCheck.link}</p>
-            </div>
-        </section>
-    )
-}
 const Team = () => {
-    const [inputs, setInputs] = useState({});
-    const [phoneMsg, setPhoneMsg] = useState("");
-    const [emailMsg, setEmailMsg] = useState("");
-    const [numberMsg, setNumberMsg] = useState("");
-    const [link, setLinkMsg] = useState("");
-    const [businessImage, setBusinessImage] = useState("");
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({}); // 기본값
+    const [numberMsg, setNumberMsg] = useState(""); // 사업자 등록번호 유효성 메세지
+    const [link, setLinkMsg] = useState(""); // 홈페이지 주소 유효성 메세지
+    const [businessImage, setBusinessImage] = useState(""); // 사업자 등록증 유효성 메세지
+    const [isActiveImageModal, setActiveImageModal] = useState(false);
+    const [fileLink, setFileLink] = useState("");
+    const [phoneMsg, setPhoneMsg] = useState(""); // 연락처 유효성 메세지
+    const [emailMsg, setEmailMsg] = useState(""); // 이메일 유효성 메세지
+    const { pathname } = useLocation();
     const params = useParams();
+    const navigate = useNavigate();
+    // 팀수정
+    const modify = (body, teamId) => {
+        console.log(body);
+        const formData = new FormData();
+        if (body.businessImage != null) {
+            for (let key in body) {
+                formData.append(key, body[key as never]);
+            }
+            axios
+                .patch(apiUrl.team + `/${teamId}`, formData)
+                .then((result: any) => {
+                    console.log("수정결과:", result);
+                }).catch((err: any) => {
+                    console.log('수정에러:', err);
+                });
+        }
+    }
+    // 팀생성
+    const createTeam = (inputs) => {
+        console.log(inputs);
+        const phoneCheck = phoneReg.test(inputs.managerPhone)
+        const emailCheck = emailReg.test(inputs.managerEmail)
+        const numberCheck = checkCorporateRegistrationNumber((inputs.businessNumber || "").replaceAll("-", ""))
+        const homepageCheck = homePageReg.test(inputs.homepage);
+        const businessImageCheck = inputs.businessImage == null;
+        if (phoneCheck == false) {
+            setPhoneMsg("올바른 번호의 형식이 아닙니다.");
+        }
+        if (emailCheck == false) {
+            setEmailMsg("올바른 형식의 이메일 주소가 아닙니다.");
+        }
+        if (numberCheck == false) {
+            setNumberMsg("올바른 번호의 형식이 아닙니다.");
+        }
+        if (homepageCheck == false) {
+            setLinkMsg("올바른 주소가 아닙니다.")
+        }
+        if (businessImageCheck) {
+            setBusinessImage("사업자 등록증을 첨부해주세요.")
+        }
+        if (phoneCheck && emailCheck && numberCheck && homepageCheck && !businessImageCheck) {
+            const formData = new FormData();
+            for (let key in inputs) {
+                formData.append(key, inputs[key as never]);
+            }
+            console.log("팀생성:", inputs);
+            axios
+                .post(apiUrl.team, formData)
+                .then((result: any) => {
+                    console.log("팀생성결과:", result);
+                    navigate("/");
+                }).catch((err: any) => {
+                    console.log('팀생성에러:', err);
+                });
+        }
+    }
+    // 팀조회
     const getTeamList = (teamId) => {
         axios
             .get(apiUrl.team + `/${teamId}`)
@@ -181,8 +90,82 @@ const Team = () => {
                 })
             });
     }
+    const phoneValueCheck = (e) => {
+        const data = { ...inputs, [e.target.id]: e.target.value }
+        const result = phoneReg.test(e.target.value);
+        setInputs(data);
+        if (result && params.teamId != "create") {
+            setPhoneMsg("");
+            modify(data, params.teamId)
+        } else if (result == false) {
+            setPhoneMsg("올바른 번호의 형식이 아닙니다.");
+        } else {
+            setPhoneMsg("");
+        }
+    }
+    const emailValueCheck = (e) => {
+        const data = { ...inputs, [e.target.id]: e.target.value }
+        const result = emailReg.test(e.target.value);
+        setInputs(data);
+        if (result && params.teamId != "create") {
+            setEmailMsg("");
+            modify(data, params.teamId)
+        } else if (result == false) {
+            setEmailMsg("올바른 형식의 이메일 주소가 아닙니다.");
+        } else {
+            setEmailMsg("");
+        }
+    };
+    const businessNumberValueCheck = (e) => {
+        const data = { ...inputs, [e.target.id]: e.target.value }
+        const result = checkCorporateRegistrationNumber(e.target.value.replaceAll("-", ""))
+        setInputs(data);
+        if (result && params.teamId != "create") {
+            setNumberMsg("");
+            modify(data, params.teamId)
+        } else if (result == false) {
+            setNumberMsg("올바른 번호의 형식이 아닙니다.");
+        } else {
+            setNumberMsg("");
+        }
+    }
+    const homePageValueCheck = (e) => {
+        const data = { ...inputs, [e.target.id]: e.target.value }
+        const result = homePageReg.test(e.target.value);
+        setInputs(data);
+        if (result && params.teamId != "create") {
+            setLinkMsg("");
+            modify(data, params.teamId)
+        } else if (result == false) {
+            setLinkMsg("올바른 주소가 아닙니다.")
+        } else {
+            setLinkMsg("");
+        }
+    }
+    const notCheck = (e) => {
+        const data = { ...inputs, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
+        setInputs(data);
+        if (params.teamId != "create") {
+            modify(data, params.teamId)
+        }
+        if (e.target.id == "businessImage") {
+            setBusinessImage("");
+            setFileLink(URL.createObjectURL(e.target.files[0]))
+        }
+
+    }
+    const getFileName = useMemo(() => {
+        if (typeof inputs.businessImage == "object") {
+            return inputs.businessImage.name
+        } else {
+            if (inputs.businessImage != undefined) {
+                return inputs.businessImageTitle + " (" + inputs.businessImageSize + ")"
+            }
+        }
+    }, [inputs.businessImage])
     useEffect(() => {
-        if (params.teamId != undefined) {
+        // 수정페이지만 조회
+        if (params.teamId != "create") {
             getTeamList(params.teamId);
         }
     }, [])
@@ -190,8 +173,83 @@ const Team = () => {
         <main>
             <h2 className="h2-title">정보 입력</h2>
             <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
-            <CompanyInfo useStateProperty={inputs} stateHandler={setInputs} validationCheck={{ link: link, setLinkMsg: setLinkMsg, numberMsg: numberMsg, setNumberMsg: setNumberMsg, businessImage: businessImage, setBusinessImage: setBusinessImage }} />
-            <ManagerInfo useStateProperty={inputs} stateHandler={setInputs} validationCheck={{ setEmailMsg: setEmailMsg, emailMsg: emailMsg, phoneMsg: phoneMsg, setPhoneMsg: setPhoneMsg }} />
+            <section className="section1">
+                <h3 className="h3-title">회사 정보</ h3>
+                <div className="row">
+                    <label htmlFor="title">회사명</label>
+                    <input type="text" defaultValue={inputs.title} id="title" onChange={debounce((e) => notCheck(e), 500)} />
+                </div>
+
+                <div className="row">
+                    <label htmlFor="businessNumber">사업자등록번호</label>
+                    <input type="text" defaultValue={inputs.businessNumber} id="businessNumber" onChange={debounce((e) => businessNumberValueCheck(e), 500)} />
+                    <p className="warn-message">{numberMsg}</p>
+                </div>
+                <div className="row">
+                    {
+                        isActiveImageModal && <img src={fileLink || inputs.businessImage} onClick={() => setActiveImageModal(false)} className="modal-image" />
+                    }
+                    <label htmlFor="businessImage">사업자등록증</label>
+                    <div className="business-image-area">
+                        <div className="attach">
+                            {
+                                (() => {
+                                    if (inputs.businessImage?.type == "application/pdf") {
+                                        return <a href={fileLink} download="newfilename" className="input-file">{getFileName}</a>
+                                    } else if (inputs.businessImage == null) {
+                                        return <span className="input-file" >사업자등록증을 첨부해주세요.</span>
+                                    } else {
+                                        return <span onClick={() => setActiveImageModal(true)} className="input-file" >{getFileName}</span>
+                                    }
+                                })()
+                            }
+                            <input type="file" defaultValue={inputs.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
+                            <button className="delete-btn"></button>
+                        </div>
+                        <label htmlFor="businessImage" className="file">찾아보기</label>
+                    </div>
+                    <p className="warn-message">{businessImage}</p>
+                </div>
+
+                <div className="row">
+                    <label htmlFor="homepage">홈페이지 주소</label>
+                    <input type="text" defaultValue={inputs.homepage} id="homepage" onChange={debounce((e) => homePageValueCheck(e), 500)} />
+                    <p className="warn-message">{link}</p>
+                </div>
+            </section>
+            <section>
+                <h3 className="h3-title">담당자 정보</ h3>
+                <div className="row">
+                    <label htmlFor="managerName">담당자명</label>
+                    <input type="text" defaultValue={inputs.managerName} id="managerName" onChange={debounce((e) => notCheck(e), 500)} />
+                </div>
+                <div className="row">
+                    <label htmlFor="managerPhone">연락처</label>
+                    <input type="text" defaultValue={inputs.managerPhone} id="managerPhone" onChange={debounce((e) => phoneValueCheck(e), 500)} />
+                    <p className="warn-message">{phoneMsg}</p>
+                </div>
+                <div className="row">
+                    <label htmlFor="managerEmail">이메일</label>
+                    <input type="text" defaultValue={inputs.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
+                    <p className="warn-message">{emailMsg}</p>
+                </div>
+                {/* 팀생성일때만 존재 */}
+                {
+                    pathname == "/teams/create" &&
+                    <div className="row">
+                        <label htmlFor="managerPassword">비밀번호</label>
+                        <input type="password" id="managerPassword" onChange={debounce((e) => notCheck(e), 500)} />
+                    </div>
+                }
+            </section>
+            {/* 팀생성일때만 존재 */}
+            {
+                pathname == "/teams/create" && <div className="btn-wrap">
+                    <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
+                    <button type="button" className="submit-btn" onClick={() => createTeam(inputs)}>신청</button>
+                </div>
+            }
+
         </main >
     )
 }

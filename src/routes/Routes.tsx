@@ -13,7 +13,6 @@ import PrintInfo from "pages/admin/create-product/print-info/PrintInfo";
 import AddInfo from "pages/admin/create-product/add-info/AddInfo";
 import Inquiries from "pages/inquiries/Inquiries";
 import Team from "pages/admin/team/Team";
-import CreateTeam from "pages/admin/team/CreateTeam";
 import CategoryManagement from "pages/admin/project/category-manage/CategoryManagement";
 export default function CreateRoutes() {
     return (
@@ -21,7 +20,6 @@ export default function CreateRoutes() {
             <Route path="/" element={<Main />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/teams/:teamId" element={<Team />} />
-            <Route path="/teams/create" element={<CreateTeam />} />
             <Route path="/projects" element={<ProjectList />} />
             <Route path="/projects/:projectId/edit" element={<ModifyProject />} />
             <Route path="/projects/:projectId/products" element={<ProductList />} />
