@@ -1,34 +1,25 @@
 import "./SignIn.scoped.scss"
 import { Link } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInRequest, signInFail } from "src/actions/signIn"
 import { RootState } from "src/reducers";
 import _ from 'lodash'
 import { emailReg, passwordReg } from 'src/utils/common';
-const debounce = _.debounce;
 const SignIn = ({ setData }) => {
     const dispatch = useDispatch();
     // snaptag_official@snaptag.co.kr
     // Snaptag0911!
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [emailValid, setEmailValid] = useState("");
+    const [passwordValid, setPasswordValid] = useState("");
     const signinError = useSelector((state: RootState) => {
         return state.signIn.signinError
     })
     const userInfo = useSelector((state: RootState) => {
         return state.signIn.userInfo
     })
-    const emailCheck = useMemo(() => {
-        if (email.trim().length > 0) {
-            return emailReg.test(email);
-        }
-    }, [email])
-    const passwordCheck = useMemo(() => {
-        if (password.trim().length > 0) {
-            return passwordReg.test(password);
-        }
-    }, [password])
     const reset = () => {
         setData(false);
         setEmail("");
@@ -37,16 +28,25 @@ const SignIn = ({ setData }) => {
     }
     const signIn = () => {
         console.log(email, password);
-        if (emailReg.test(email) == false) {
-            setEmail(".");
-        } else if (passwordReg.test(password) == false) {
-            setPassword(".");
+        if (email.trim().length == 0) {
+            setEmailValid("아이디를 입력해주세요.");
+            return;
         } else {
-            if (emailCheck && passwordCheck) {
-                dispatch(signInRequest({ email: email, password: password }));
-            }
-
+            setEmailValid("");
         }
+        if (emailReg.test(email) == false) {
+            setEmailValid("아이디가 올바르지 않습니다.");
+            return;
+        } else {
+            setEmailValid("");
+        }
+        if (password.trim().length == 0) {
+            setPasswordValid("비밀번호를 입력해주세요.");
+            return;
+        } else {
+            setPasswordValid("");
+        }
+        dispatch(signInRequest({ email: email, password: password }));
     }
     return (
         <>
@@ -67,25 +67,21 @@ const SignIn = ({ setData }) => {
                                     id="email"
                                     className="user-id"
                                     placeholder="이메일"
-                                    onChange={debounce((e) => setEmail(e.target.value), 500)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
-                                {
-                                    emailCheck == false && signinError == false && <p className="guide-message">이메일이 올바르지 않습니다.</p>
+                                <p className="guide-message">{emailValid}</p>
 
-                                }
+
                                 <input
                                     type="password"
                                     id="password"
                                     className="user-pw"
                                     placeholder="비밀번호"
-                                    onChange={debounce((e) => setPassword(e.target.value), 500)}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
-                                {
-                                    passwordCheck == false && signinError == false && <p className="guide-message">비밀번호가 올바르지 않습니다.</p>
-                                }
-
+                                <p className="guide-message">{passwordValid}</p>
                                 {/* 서버검증 */}
-                                <p className="guide-message">{signinError}</p>
+                                {emailValid == "" && passwordValid == "" && <p className="guide-message">{signinError}</p>}
                                 <button type="button" onClick={() => signIn()}>로그인</button>
                             </fieldset>
                         </form>
