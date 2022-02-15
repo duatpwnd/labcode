@@ -123,17 +123,26 @@ export const convertURLtoFile = async (url: string) => {
     return new File([data], filename!, metadata);
   }
 };
-// 스크롤 바닥 감지 함수
-export const scrollDetect = (element: HTMLElement, callback: () => void) => {
-  if (element != null) {
-    element.addEventListener("scroll", () => {
-      if (
-        element.clientHeight + Math.ceil(element.scrollTop) >=
-        element.scrollHeight
-      ) {
-        console.log("t스크롤바닥감지됬따");
-        callback();
-      }
+// 윈도우 스크롤 바닥 감지 함수
+let isLastPage = false;
+// 엘리먼트 스크롤 바닥 감지 함수
+export const elementScrollDetect = (element, stateHandler, getList) => {
+  const { target } = element;
+  if (
+    target.clientHeight + Math.ceil(target.scrollTop) >= target.scrollHeight &&
+    isLastPage == false
+  ) {
+    console.log("t스크롤바닥감지됬따");
+    stateHandler((prev) => {
+      getList(prev + 1, "").then((result) => {
+        console.log("result", result);
+        if (result.length == 0) {
+          isLastPage = true;
+        } else {
+          isLastPage = false;
+        }
+      });
+      return prev + 1;
     });
   }
 };

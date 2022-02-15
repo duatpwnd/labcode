@@ -41,6 +41,7 @@ const PrintInfo = () => {
         getPrintInfos();
     }, [])
     return (
+
         <section>
             <h3 className="h3-title">인쇄 정보</h3>
             <div className="form">
@@ -90,6 +91,7 @@ const PrintInfo = () => {
                 </div>
             </div>
         </section>
+
     )
 }
 export default PrintInfo

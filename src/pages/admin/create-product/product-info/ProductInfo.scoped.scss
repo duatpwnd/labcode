@@ -1,0 +1,226 @@
+.select-box {
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+
+  .tab {
+    border: 1px solid #e6e8eb;
+    border-radius: 4px;
+    padding: 0px 16px;
+    background: url("~images/arrow_bottom.svg") no-repeat right 15px center /
+      16px 16px;
+    height: 41px;
+    line-height: 41px;
+    box-sizing: border-box;
+    .type {
+      vertical-align: middle;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+  .active-tab {
+    border: 1px solid #5138e5;
+  }
+  .list-wrap {
+    border: 1px solid #e6e8eb;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50px;
+    background: white;
+    z-index: 1;
+    .list {
+      padding: 0px 16px;
+      height: 41px;
+      line-height: 41px;
+      .text {
+        padding: 1px 0;
+        vertical-align: middle;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
+    .selected {
+      background: rgba(81, 56, 229, 0.08);
+    }
+  }
+
+  .ico {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-left: 28px;
+    margin-right: 14px;
+  }
+}
+.h3-title {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+.search-area {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  padding: 0px 20px;
+  height: 60px;
+  line-height: 60px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: white;
+  display: inline-block;
+  margin-bottom: 20px;
+  z-index: 1;
+}
+.product-info-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(13, 16, 26, 0.4);
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+}
+.table-wrap {
+  border-top-left-radius: 8px;
+  width: 100%;
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    tr {
+      input {
+        border: 1px solid #f6f7f8;
+        background: #f6f7f8;
+        border-radius: 4px;
+        padding: 9px 16px;
+        box-sizing: border-box;
+        width: 100%;
+        caret-color: #5138e5;
+        cursor: pointer;
+      }
+      input[type="checkbox"] {
+        display: none;
+      }
+      input[type="checkbox"] + label {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        position: relative;
+        background: #5138e5;
+        border-radius: 4px;
+        vertical-align: middle;
+      }
+      input[type="checkbox"]:checked + label {
+        background: url("~images/checkbox_ico_on.svg") no-repeat center center /
+          100%;
+      }
+      th {
+        background-color: white;
+        color: #9ea7ad;
+        font-size: 14px;
+        padding: 18px 24px;
+      }
+      td {
+        background-color: white;
+        padding: 8px 24px;
+        .delete-btn {
+          border: 1px solid #e6e8eb;
+          border-radius: 4px;
+          background: white;
+          width: 52px;
+          line-height: 28px;
+          height: 28px;
+          font-size: 12px;
+          cursor: pointer;
+        }
+        .boolean-area {
+          border: 1px solid #e6e8eb;
+          border-radius: 4px;
+          display: inline-block;
+          overflow: hidden;
+          vertical-align: middle;
+          button {
+            width: 44px;
+            font-size: 13px;
+            font-weight: 700;
+            background: white;
+            color: #9ea7ad;
+            height: 39px;
+            line-height: 39px;
+          }
+          .selected {
+            background: #5138e5;
+            color: white;
+          }
+        }
+      }
+      &:first-child {
+        th {
+          &:first-child {
+            border-top-left-radius: 8px;
+          }
+          &:last-child {
+            border-top-right-radius: 8px;
+          }
+        }
+      }
+      &:last-child {
+        td {
+          &:first-child {
+            border-bottom-left-radius: 8px;
+          }
+          &:last-child {
+            border-bottom-right-radius: 8px;
+          }
+        }
+      }
+    }
+  }
+}
+.add-info-btn {
+  cursor: pointer;
+  margin-top: 6px;
+  color: #303538;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 14px 24px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  border-radius: 8px;
+  background: url("~images/add_btn.svg") white no-repeat center right 24px /
+    20px 20px;
+}
+.btn-wrap {
+  display: flex;
+  margin-top: 60px;
+  justify-content: flex-end;
+  button {
+    border-radius: 8px;
+    font-size: 18px;
+    width: 50%;
+    max-width: 200px;
+    padding: 22px 0;
+  }
+  .import-group-btn {
+    background: #79828a;
+    color: white;
+  }
+  .add-group-btn {
+    background: #5138e5;
+    color: white;
+    margin-left: 12px;
+  }
+}

@@ -58,7 +58,7 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     const mainCategoriesScroll = (e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
         if (bottom && isMainLastPage == false) {
-            console.log("대분류 바닥감지인데 마지막페이지인가?", isMainLastPage);
+            console.log("대분류 바닥감지인데 마지막페이지인가?", mainCategoriesPage);
             setMainCategoriesPage(mainCategoriesPage + 1);
             getMainCategories("", mainCategoriesPage + 1).then((result) => {
                 if (result.data.length == 0) {

@@ -193,6 +193,9 @@ input {
   -webkit-border-radius: 0;
   outline: none;
 }
+input[type="checkbox"] {
+  -webkit-appearance: checkbox;
+}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

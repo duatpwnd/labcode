@@ -15,5 +15,6 @@ const apiUrl = {
   mainCategories: "/adm/v1/main-categories", // 대분류 조회
   subCategories: "/adm/v1/sub-categories", // 소분류 생성
   productInfos: "/adm/v1/product-infos", // 제품정보 조회, 수정, 삭제
+  productInfosGroups: "/adm/v1/product-info-groups", // 제품정보 그룹조회
 };
 export default apiUrl;

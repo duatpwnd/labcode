@@ -187,16 +187,16 @@ const Team = () => {
                 </div>
                 <div className="row">
                     {
-                        isActiveImageModal && <img src={fileLink || inputs.businessImage} onClick={() => setActiveImageModal(false)} className="modal-image" />
+                        isActiveImageModal && <div className="embed-container" onClick={() => setActiveImageModal(false)}>
+                            <embed src={fileLink || inputs.businessImage} width="90%" height="90%" />
+                        </div>
                     }
                     <label htmlFor="businessImage">사업자등록증</label>
                     <div className="business-image-area">
                         <div className="attach">
                             {
                                 (() => {
-                                    if (inputs.businessImage?.type == "application/pdf") {
-                                        return <a href={fileLink} download="newfilename" className="input-file">{getFileName}</a>
-                                    } else if (inputs.businessImage == null) {
+                                    if (inputs.businessImage == null) {
                                         return <span className="input-file" >사업자등록증을 첨부해주세요.</span>
                                     } else {
                                         return <span onClick={() => setActiveImageModal(true)} className="input-file" >{getFileName}</span>
