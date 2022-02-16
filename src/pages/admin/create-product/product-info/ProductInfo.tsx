@@ -103,9 +103,12 @@ const SelectBox = ({ type, id, modifyProductInfos }) => {
         </div >
     )
 }
-const ProductList = ({ getProductInfos, data, type }) => {
+export const ProductList = ({ getProductInfos, data, type, searchProductList, setPage }) => {
     const [checkedItems, setCheckedItems] = useState<number[]>([]);
-    const [page, setPage] = useState(1);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const keyword = searchParams.get('search');
+
     // 제품정보수정
     const modifyProductInfos = (e, id) => {
         let data;
@@ -154,11 +157,19 @@ const ProductList = ({ getProductInfos, data, type }) => {
             setCheckedItems(prev => [...prev, id]);
         }
     };
+
+    const elementScrollDetect = (element) => {
+        const { target } = element;
+        if (target.clientHeight + Math.ceil(target.scrollTop) >= target.scrollHeight) {
+            setPage(prevState => prevState + 1)
+        }
+    }
+
     return (
-        <div className="product-info-container" style={{ padding: type == "modal" ? "0px 40px 20px 40px" : "0" }} onScroll={(e) => elementScrollDetect(e, setPage, getProductInfos)}>
+        <div className="product-info-container" style={{ padding: type == "modal" ? "0px 40px 20px 40px" : "0" }} onScroll={elementScrollDetect}>
             <div className="search-area">
-                <SearchInput placeholder="새 그룹 제목 입력"
-                    onChange={debounce((e) => getProductInfos(1, e.target.value), 300)}
+                <SearchInput defaultValue={keyword} placeholder="새 그룹 제목 입력"
+                    onChange={debounce((e) => searchProductList(e.target.value), 300)}
                 />
                 <SearchButton />
             </div>
@@ -254,8 +265,6 @@ const ProductList = ({ getProductInfos, data, type }) => {
                                 )
                             })
                         }
-
-
                     </tbody>
                 </table>
             </div >
@@ -264,30 +273,65 @@ const ProductList = ({ getProductInfos, data, type }) => {
 }
 const ProductInfo = () => {
     const [productList, setProductList] = useState<{ [key: string]: any }[]>([]);
+    const [page, setPage] = useState(1)
+    const [meta, setMeta] = useState<{ [key: string]: any }>({ totalPages: 1 })
     const params = useParams();
     const [isActiveBringGroupModal, setBringGroupModal] = useState(false);
     const [isActiveAddNewGroupModal, setAddNewGroupModal] = useState(false);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
+    const keyword = searchParams.get('search');
+
     // 제품정보조회
-    const getProductInfos = (page, search) => {
-        return axios.get(apiUrl.productInfos + `?page=${page}&limit=20&search=${search}&productId=${params.productId}`, {}).then((result) => {
-            setProductList((prev) => [...prev, ...result.data.data]);
-            return result.data.data;
-        })
+    const getProductInfos = useCallback(() => {
+        console.log(meta.totalPages, page);
+        if (meta.totalPages >= page) {
+            axios.get(apiUrl.productInfos + `?page=${page}&limit=20&search=${keyword}&productId=${params.productId}`).then((result) => {
+                setMeta(result.data.meta);
+                setProductList((prev) => [...prev, ...result.data.data]);
+                console.log("제품조회결과:", result.data.data, result.data.meta, page);
+            });
+        }
+    }, [page])
+    useEffect(() => {
+        getProductInfos()
+    }, [getProductInfos])
+    // 제품 검색
+    const searchProductList = (search) => {
+        setProductList([]);
+        history.push({
+            search: `?search=${search}`
+        });
+        axios.get(apiUrl.productInfos + `?page=1&limit=20&search=${search}&productId=${params.productId}`).then((result) => {
+            console.log(result.data.meta);
+            setMeta(result.data.meta);
+            setProductList(result.data.data);
+            setPage(1);
+        });
     }
     // 제품정보추가
     const addProductInfos = () => {
         axios.post(apiUrl.productInfos, { productId: params.productId, type: "text", title: "" }).then((result) => {
             console.log('제품정보추가결과:', result);
-            getProductInfos(1, "");
+            getProductInfos();
         })
     }
+
+    const detectScrollBottom = () => {
+        const SCROLLED_HEIGHT = window.scrollY;
+        const WINDOW_HEIGHT = window.innerHeight;
+        const DOC_TOTAL_HEIGHT = document.body.offsetHeight;
+        const IS_BOTTOM = WINDOW_HEIGHT + SCROLLED_HEIGHT === DOC_TOTAL_HEIGHT;
+        if (IS_BOTTOM) {
+            console.log("바닥감지");
+            setPage(prevState => prevState + 1)
+        }
+    }
+
     useEffect(() => {
-        getProductInfos(1, "");
-
+        window.addEventListener('scroll', detectScrollBottom);
+        return () => { window.removeEventListener('scroll', detectScrollBottom) }
     }, [])
-
     return (
         <>
             {/* 그룹 불러오기 모달 */}
@@ -297,13 +341,17 @@ const ProductInfo = () => {
             }
             {/* 새 그룹 추가 모달 */}
             {
-                isActiveAddNewGroupModal && <AddNewGroupModal closeModal={setAddNewGroupModal}>
-                    <ProductList data={productList} getProductInfos={getProductInfos} type="modal" />
-                </AddNewGroupModal>
+                isActiveAddNewGroupModal && <AddNewGroupModal data={productList} closeModal={setAddNewGroupModal} />
             }
             <section>
                 <h3 className="h3-title">제품 정보</h3>
-                <ProductList data={productList} getProductInfos={getProductInfos} type="" />
+                <ProductList
+                    setPage={setPage}
+                    data={productList}
+                    getProductInfos={getProductInfos}
+                    searchProductList={searchProductList}
+                    type=""
+                />
             </section>
             <button className="add-info-btn" onClick={addProductInfos}>제품 정보 추가</button>
             <div className="btn-wrap">
