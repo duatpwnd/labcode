@@ -23,6 +23,7 @@ const SearchButton = styled.button`
 
 const BringGroupModal = () => {
     const params = useParams();
+    const [selectedValue, setSelect] = useState("");
     const [{ data, meta }, setGroupList] = useState<{ [key: string]: any }>({});
     // 제품 정보 그룹 조회
     const getProductInfoGroups = () => {
@@ -36,6 +37,11 @@ const BringGroupModal = () => {
         axios.delete(apiUrl.productInfosGroups + `/${id}`).then((result) => {
             console.log('제품 정보 그룹 삭제 결과', result);
             getProductInfoGroups();
+        })
+    }
+    const bringGroup = () => {
+        axios.post(apiUrl.productInfosGroups + `/${selectedValue}/transfer/${params.productId}`).then((result) => {
+            console.log("그룹불러오기결과", result);
         })
     }
     useEffect(() => {
@@ -62,7 +68,7 @@ const BringGroupModal = () => {
                             data.map((list, index) => {
                                 return (
                                     <div key={index} className="list">
-                                        <input type="radio" id={`radio${index}`} />
+                                        <input type="radio" id={`radio${index}`} value={list.id} name="group" onChange={(e) => setSelect(e.target.value)} />
                                         <label htmlFor={`radio${index}`}><span className="ball"></span><span className="title">{list.title}</span></label>
                                         <button className="delete-btn" onClick={() => deleteProductGroupInfos(list.id)}>삭제</button>
                                         <button className="slide-btn"></button>
@@ -73,7 +79,7 @@ const BringGroupModal = () => {
                     </div>
                 </div>
                 <div className="footer">
-                    <button className="import-group-btn">그룹 불러오기</button>
+                    <button className="import-group-btn" onClick={bringGroup}>그룹 불러오기</button>
                 </div>
             </div>
         </>

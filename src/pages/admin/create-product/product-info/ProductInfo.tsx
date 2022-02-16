@@ -1,15 +1,14 @@
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState, useRef, useCallback } from "react";
+import { createGlobalStyle } from 'styled-components';
 import styled from "styled-components";
 import apiUrl from "src/utils/api";
 import CalendarComp from "src/components/common/calendar/Calendar"
-import { createGlobalStyle } from 'styled-components';
 import BringGroupModal from "./modal/bring-group/BringGroupModal";
 import AddNewGroupModal from "./modal/add-new-group/AddNewGroupModal";
 import "./ProductInfo.scoped.scss"
 import _ from 'lodash';
-import { elementScrollDetect } from "src/utils/common";
 import history from "src/utils/history";
 const debounce = _.debounce;
 const DatePickerWrapperStyles = createGlobalStyle`
@@ -103,7 +102,7 @@ const SelectBox = ({ type, id, modifyProductInfos }) => {
         </div >
     )
 }
-export const ProductList = ({ getProductInfos, data, type, searchProductList, setPage }) => {
+export const ProductList = ({ getProductInfos, data, type, searchProductList, setPage, setChecked }: any) => {
     const [checkedItems, setCheckedItems] = useState<number[]>([]);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -144,27 +143,29 @@ export const ProductList = ({ getProductInfos, data, type, searchProductList, se
         if (e.target.checked) {
             data.map((list) => {
                 setCheckedItems(prev => [...prev, list.id])
+                setChecked(prev => [...prev, list.id])
             })
         } else {
             setCheckedItems([]);
+            setChecked([])
         }
     }
     const checkHandler = (e, id) => {
         const isSelected = checkedItems.includes(id);
         if (isSelected) {
             setCheckedItems([...checkedItems.filter(item => item != id)]);
+            setChecked([...checkedItems.filter(item => item != id)]);
         } else {
             setCheckedItems(prev => [...prev, id]);
+            setChecked(prev => [...prev, id]);
         }
     };
-
     const elementScrollDetect = (element) => {
         const { target } = element;
         if (target.clientHeight + Math.ceil(target.scrollTop) >= target.scrollHeight) {
             setPage(prevState => prevState + 1)
         }
     }
-
     return (
         <div className="product-info-container" style={{ padding: type == "modal" ? "0px 40px 20px 40px" : "0" }} onScroll={elementScrollDetect}>
             <div className="search-area">
@@ -281,7 +282,6 @@ const ProductInfo = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const keyword = searchParams.get('search');
-
     // 제품정보조회
     const getProductInfos = useCallback(() => {
         console.log(meta.totalPages, page);
@@ -293,9 +293,6 @@ const ProductInfo = () => {
             });
         }
     }, [page])
-    useEffect(() => {
-        getProductInfos()
-    }, [getProductInfos])
     // 제품 검색
     const searchProductList = (search) => {
         setProductList([]);
@@ -327,7 +324,15 @@ const ProductInfo = () => {
             setPage(prevState => prevState + 1)
         }
     }
-
+    const props = {
+        data: productList, // 제품리스트
+        setPage: setPage, // 페이징설정
+        getProductInfos: getProductInfos, // 조회함수
+        searchProductList: searchProductList, // 검색함수
+    }
+    useEffect(() => {
+        getProductInfos()
+    }, [getProductInfos])
     useEffect(() => {
         window.addEventListener('scroll', detectScrollBottom);
         return () => { window.removeEventListener('scroll', detectScrollBottom) }
@@ -341,16 +346,12 @@ const ProductInfo = () => {
             }
             {/* 새 그룹 추가 모달 */}
             {
-                isActiveAddNewGroupModal && <AddNewGroupModal data={productList} closeModal={setAddNewGroupModal} />
+                isActiveAddNewGroupModal &&
+                <AddNewGroupModal {...{ ...props, ...{ closeModal: setAddNewGroupModal } }} />
             }
             <section>
                 <h3 className="h3-title">제품 정보</h3>
-                <ProductList
-                    setPage={setPage}
-                    data={productList}
-                    getProductInfos={getProductInfos}
-                    searchProductList={searchProductList}
-                    type=""
+                <ProductList {...{ ...props, ...{ type: "" } }}
                 />
             </section>
             <button className="add-info-btn" onClick={addProductInfos}>제품 정보 추가</button>
