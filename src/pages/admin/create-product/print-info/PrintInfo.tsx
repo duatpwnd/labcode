@@ -5,6 +5,21 @@ import { getFormatDate } from 'src/utils/common';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "src/utils/api";
+import { createGlobalStyle } from 'styled-components';
+const DatePickerWrapperStyles = createGlobalStyle`
+    .react-datepicker-wrapper{
+        width:200px;
+        border-radius: 8px;    
+        .react-datepicker__input-container{
+            input{
+                background: url(${require('images/calender_ico.svg').default}) #f0f1f2 no-repeat center right 4px /
+                28px 28px;
+                padding: 15px 16px;
+                border: 1px solid #f6f7f8;
+            }
+        }
+    }
+`;
 const PrintInfo = () => {
     const navigate = useNavigate();
     const [printInfos, setPrintInfos] = useState<{ [key: string]: any }>({});
@@ -78,6 +93,7 @@ const PrintInfo = () => {
                 <div className="row">
                     <label htmlFor="printDate" className="print-date">인쇄 날짜</label>
                     <CalendarComp defaultValue={printInfos.printDate} eventHandler={onChange} />
+                    <DatePickerWrapperStyles />
                 </div>
                 <div className="row">
                     <label htmlFor="printOrder" className="print-order">인쇄 차수</label>

@@ -13,12 +13,11 @@ import history from "src/utils/history";
 const debounce = _.debounce;
 const DatePickerWrapperStyles = createGlobalStyle`
     .react-datepicker-wrapper{
-        width:150px;
-        background: #f6f7f8;
+        width:200px;
         border-radius: 4px;
         .react-datepicker__input-container{
             input{
-                background: url(${require('images/calender_ico.svg').default}) no-repeat center right 4px /
+                background: url(${require('images/calender_ico.svg').default}) #f6f7f8 no-repeat center right 4px /
                 28px 28px;
                 padding: 9px 16px;
                 border: 1px solid #f6f7f8;
@@ -80,7 +79,7 @@ const SelectBox = ({ type, id, modifyProductInfos }) => {
                 {
                     types.map((elements, index) => {
                         return (
-                            type == elements.value &&
+                            selectedIndex == elements.value &&
                             <span className="type" key={index}>{elements.text}</span>
                         )
                     })
@@ -102,26 +101,32 @@ const SelectBox = ({ type, id, modifyProductInfos }) => {
         </div >
     )
 }
-export const ProductList = ({ getProductInfos, data, type, searchProductList, setPage, setChecked }: any) => {
+export const ProductList = ({ data, type, searchProductList, setProductList, setChecked }: any) => {
     const [checkedItems, setCheckedItems] = useState<number[]>([]);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const keyword = searchParams.get('search');
-
     // 제품정보수정
     const modifyProductInfos = (e, id) => {
-        let data;
+        console.log(e.target.id, e.target.value);
+        let body;
         // e가 string이면 날짜임
         if (typeof e === "string") {
-            data = {
+            body = {
                 "date": e
             }
         } else {
-            data = { [e.target.id]: e.target.value }
+            body = { [e.target.id]: e.target.value }
         }
-        axios.patch(apiUrl.productInfos + `/${id}`, data).then((result) => {
+        axios.patch(apiUrl.productInfos + `/${id}`, body).then((result) => {
             console.log("제품정보수정결과:", result);
-            getProductInfos();
+            const filter = data.filter((el) => {
+                return el.id == id
+            })
+            const getIndex = data.indexOf(filter[0]);
+            data.splice(getIndex, 1);
+            data.splice(getIndex, 0, result.data.data);
+            setProductList([...data]);
         });
     }
     // 인풋활성
@@ -135,8 +140,11 @@ export const ProductList = ({ getProductInfos, data, type, searchProductList, se
     // 제품정보삭제
     const deleteProductInfos = (id) => {
         axios.delete(apiUrl.productInfos + `/${id}`).then((result) => {
-            console.log('제품삭제결과', result);
-            getProductInfos();
+            const filter = data.filter((el) => {
+                return el.id != id
+            })
+            setProductList([]);
+            setProductList(filter);
         })
     }
     const allCheck = (e) => {
@@ -160,14 +168,9 @@ export const ProductList = ({ getProductInfos, data, type, searchProductList, se
             setChecked(prev => [...prev, id]);
         }
     };
-    const elementScrollDetect = (element) => {
-        const { target } = element;
-        if (target.clientHeight + Math.ceil(target.scrollTop) >= target.scrollHeight) {
-            setPage(prevState => prevState + 1)
-        }
-    }
+
     return (
-        <div className="product-info-container" style={{ padding: type == "modal" ? "0px 40px 20px 40px" : "0" }} onScroll={elementScrollDetect}>
+        <>
             <div className="search-area">
                 <SearchInput defaultValue={keyword} placeholder="새 그룹 제목 입력"
                     onChange={debounce((e) => searchProductList(e.target.value), 300)}
@@ -268,8 +271,8 @@ export const ProductList = ({ getProductInfos, data, type, searchProductList, se
                         }
                     </tbody>
                 </table>
-            </div >
-        </div>
+            </div>
+        </>
     )
 }
 const ProductInfo = () => {
@@ -283,9 +286,12 @@ const ProductInfo = () => {
     const searchParams = new URLSearchParams(location.search);
     const keyword = searchParams.get('search');
     // 제품정보조회
-    const getProductInfos = useCallback(() => {
-        console.log(meta.totalPages, page);
+    const getInfiniteProductInfos = useCallback(() => {
+
         if (meta.totalPages >= page) {
+            history.push({
+                search: `?page=${page}&search=${keyword}`
+            });
             axios.get(apiUrl.productInfos + `?page=${page}&limit=20&search=${keyword}&productId=${params.productId}`).then((result) => {
                 setMeta(result.data.meta);
                 setProductList((prev) => [...prev, ...result.data.data]);
@@ -310,7 +316,7 @@ const ProductInfo = () => {
     const addProductInfos = () => {
         axios.post(apiUrl.productInfos, { productId: params.productId, type: "text", title: "" }).then((result) => {
             console.log('제품정보추가결과:', result);
-            getProductInfos();
+            setProductList((prev) => [...prev, result.data.data]);
         })
     }
 
@@ -326,13 +332,13 @@ const ProductInfo = () => {
     }
     const props = {
         data: productList, // 제품리스트
+        setProductList: setProductList,
         setPage: setPage, // 페이징설정
-        getProductInfos: getProductInfos, // 조회함수
         searchProductList: searchProductList, // 검색함수
     }
     useEffect(() => {
-        getProductInfos()
-    }, [getProductInfos])
+        getInfiniteProductInfos()
+    }, [getInfiniteProductInfos])
     useEffect(() => {
         window.addEventListener('scroll', detectScrollBottom);
         return () => { window.removeEventListener('scroll', detectScrollBottom) }
