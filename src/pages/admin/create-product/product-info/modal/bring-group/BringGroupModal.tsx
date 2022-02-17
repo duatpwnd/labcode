@@ -53,7 +53,7 @@ const SlideMenu = ({ list, index, getProductInfoGroups, setSelect }) => {
                 isActiveSlideMenu && <ProductList colgroup={<colgroup>
                     <col width="172px" />
                     <col width="148px" />
-                    <col width="337px" />
+                    <col width="330px" />
                 </colgroup>} type="modal" data={list.productInfos} />
 
             }
@@ -74,14 +74,14 @@ const BringGroupModal = ({ setBringGroupModal, setProductList }) => {
         })
     }
     // 제품 정보 그룹 조회
-    const getProductInfoGroups = () => {
-        axios.get(apiUrl.productInfosGroups + `?productId=${params.productId}`).then((result) => {
+    const getProductInfoGroups = (search) => {
+        axios.get(apiUrl.productInfosGroups + `?page=1&search=${search}&productId=${params.productId}`).then((result) => {
             console.log("제품정보그룹리스트:", result);
             setGroupList(result.data);
         })
     }
     useEffect(() => {
-        getProductInfoGroups();
+        getProductInfoGroups("");
     }, [])
     return (
         <>
@@ -100,7 +100,7 @@ const BringGroupModal = ({ setBringGroupModal, setProductList }) => {
                             e.currentTarget.style.border = "1px solid #5138e5";
                         }}>
                         <SearchInput placeholder="그룹 제목 검색"
-                            onChange={(e) => ""} />
+                            onChange={debounce((e) => getProductInfoGroups(e.target.value), 200)} />
                         <SearchButton />
                     </div>
                     <div className="group-list-container">

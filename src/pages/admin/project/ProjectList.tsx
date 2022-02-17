@@ -135,7 +135,7 @@ const Project = () => {
             .post(apiUrl.project, formData)
             .then((result: any) => {
                 console.log("프로젝트생성결과:", result);
-                getProjectList(1, "", "");
+                navigate(`/projects/${result.data.data.id}/edit`)
             }).catch((err: any) => {
                 console.log('프로젝트생성에러:', err);
             });
@@ -147,6 +147,21 @@ const Project = () => {
         const elHeight = el.offsetHeight;
         if (scrollHeight <= windowScrollY + getRectTop + elHeight) {
             el.style.top = "-75px";
+        }
+    }
+    const isPossibleDelete = (isActive, id) => {
+        if (isActive) {
+            alert("관리자에게 문의해주세요");
+            menuIndexUpdate(-1)
+        } else {
+            deleteProject(id)
+        }
+    }
+    const menuModal = (e, id) => {
+        if (id == menuIndex) {
+            menuIndexUpdate(-1)
+        } else {
+            menuIndexUpdate(id);
         }
     }
     useEffect(() => {
@@ -183,17 +198,17 @@ const Project = () => {
                                     list.isActive ? <StatusText color="black" background="white;">승인완료</StatusText>
                                         : <StatusText color="white;" background="#79828A;">신청접수</StatusText>
                                 }
-                                <button className="menu-btn" onClick={() => { menuIndexUpdate(index); }}></button>
+                                <button id={`menu${list.id}`} className="menu-btn" onClick={(e) => { menuModal(e, list.id) }}></button>
                             </div>
                             {
-                                menuIndex == index &&
+                                menuIndex == list.id &&
                                 <div className="menu" ref={el => { if (el != null) { setPosition(el); (menu as { [key: string]: any }).current = el; } }}>
                                     <h3 className="h3-title">{list.title}</h3>
                                     <ul >
                                         <li className="manage" onClick={() => navigate(`/projects/${list.id}/edit`)}>
                                             프로젝트 관리
                                         </li>
-                                        <li className="delete" onClick={() => list.isActive ? "" : deleteProject(list.id)}>
+                                        <li className="delete" onClick={() => isPossibleDelete(list.isActive, list.id)}>
                                             삭제
                                         </li>
                                     </ul>

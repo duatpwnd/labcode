@@ -21,12 +21,11 @@ const ProjectDetail = (props) => {
         onChange(e);
     }, 500);
     const onChange = (e: { [key: string]: any }) => {
-        console.log("EEe", e);
-        const data = { ...inputs, [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value }
-        setInputs({
-            ...data
-        })
-        modify({ ...data });
+        // const data = { ...inputs, [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value }
+        // setInputs({
+        //     ...data
+        // })
+        modify({ [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value });
     };
     const getProject = () => {
         axios
@@ -48,6 +47,7 @@ const ProjectDetail = (props) => {
             .patch(apiUrl.project + `/${params.projectId}`, formData)
             .then((result: any) => {
                 console.log("프로젝트수정결과:", result);
+                getProject();
             }).catch((err: any) => {
                 console.log('프로젝트수정에러:', err);
             });

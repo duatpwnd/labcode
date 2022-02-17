@@ -5,8 +5,8 @@ const apiUrl = {
   products: "/adm/v1/products", // 제품 생성, 수정, 조회
   createInquiries: "/adm/v1/inquiries", // 문의 생성
   versions: "/adm/v1/versions", // 버전리스트
-  countries: "/adm/v1/countries", // 귝가리스트
-  industries: "/adm/v1/industries", // 산업리스트
+  countries: "/adm/v1/countries/all", // 귝가리스트
+  industries: "/adm/v1/industries/all", // 산업리스트
   embeddingTypes: "/adm/v1/products/embedding-types", // 임베딩 타입
   channelTypes: "/adm/v1/products/channel-types", // 채널리스트
   scales: "/adm/v1/products/scales", // 코드크기 조회
@@ -16,5 +16,6 @@ const apiUrl = {
   subCategories: "/adm/v1/sub-categories", // 소분류 생성
   productInfos: "/adm/v1/product-infos", // 제품정보 조회, 수정, 삭제
   productInfosGroups: "/adm/v1/product-info-groups", // 제품정보 그룹조회
+  addSamples: "/adm/v1/products/samples", // 샘플 추가
 };
 export default apiUrl;

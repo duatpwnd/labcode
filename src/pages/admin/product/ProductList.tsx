@@ -38,7 +38,7 @@ const Product = () => {
     const debounce = _.debounce;
     const navigate = useNavigate();
     const [{ data, meta }, setList] = useState<{ [key: string]: any }>({});
-    const getProdcutList = (page, search) => {
+    const getProductList = (page, search) => {
         axios
             .get(apiUrl.products + `?limit=10&search=${search}&page=${page}+&projectId=${params.projectId}`)
             .then((result: any) => {
@@ -46,12 +46,18 @@ const Product = () => {
                 console.log('제품리스트:', result.data);
             })
     }
+    const addSamples = () => {
+        axios.post(apiUrl.addSamples + `?projectId=${params.projectId}`).then((result) => {
+            console.log("샘플데이터추가결과:", result);
+            getProductList(1, "");
+        })
+    }
     const searchDebounce = debounce((query) => {
         console.log('검색어', query);
-        getProdcutList(1, query)
+        getProductList(1, query)
     }, 500);
     useEffect(() => {
-        getProdcutList(1, "")
+        getProductList(1, "")
     }, [])
     return (
         <main>
@@ -63,7 +69,7 @@ const Product = () => {
             <div className="nav-area">
                 <strong className="project-title">커피빈 패키지</strong>
                 <div className="btn-wrap">
-                    <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61">샘플 데이터 추가</Btn>
+                    <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61" onClick={addSamples}>샘플 데이터 추가</Btn>
                     <Btn background="#5138E5" color="#FFFFFF" onClick={() => navigate(`add/defaultInfo`)}>제품 생성</Btn>
                 </div>
             </div>
@@ -120,7 +126,7 @@ const Product = () => {
                                 </td>
                                 <td>{products.title}</td>
                                 <td>{products.description}</td>
-                                <td><img src={products.sourceImage} className="sourceImage" /><span className="convert-ico"></span><img src={products.labcodeImage} className="labcodeImage" /></td>
+                                <td><a href={products.sourceImage} download><img src={products.sourceImage} className="sourceImage" /></a><span className="convert-ico"></span><img src={products.labcodeImage} className="labcodeImage" /></td>
                                 <td>{products.typeChannel}</td>
                                 <td>{products.scale}</td>
                                 <td>{products.alpha}</td>
@@ -132,7 +138,7 @@ const Product = () => {
                 </table>
             </div>
             {
-                meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getProdcutList} />
+                meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getProductList} />
             }
 
         </main>

@@ -100,7 +100,6 @@ const Header = () => {
         setUserModal(false);
     }
     useEffect(() => {
-        console.log("useeffect", userInfo);
     }, [userInfo])
     return (
         <header>
