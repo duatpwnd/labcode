@@ -36,75 +36,88 @@
     }
   }
   .body {
+    overflow: auto;
     background: #f0f1f2;
     padding: 20px 40px;
     flex: 1;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(13, 16, 26, 0.4);
+      border-radius: 10px;
+      background-clip: padding-box;
+      border: 2px solid transparent;
+    }
     .search-area {
+      overflow: hidden;
+      position: sticky;
+      top: 0;
       width: 100%;
-      padding: 0px 20px;
-      height: 60px;
-      line-height: 60px;
       box-sizing: border-box;
+      border: 1px solid #f6f7f8;
       border-radius: 8px;
       background: white;
       display: inline-block;
+      z-index: 1;
     }
-    .group-list {
+    .group-list-container {
       margin-top: 20px;
-      .list {
-        background: white;
-        padding: 17px 24px;
-        border-radius: 8px;
+      .group-list {
         &:not(:first-child) {
           margin-top: 8px;
         }
-        input[type="radio"] {
-          display: none;
-        }
-
-        input[type="radio"] + label {
-          color: #303538;
-          font-weight: 700;
-          font-size: 18px;
-          vertical-align: middle;
-          width: calc(100% - 90px);
-          display: inline-block;
-        }
-
-        input[type="radio"] + label .ball {
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          margin: -2px 12px 0 0;
-          vertical-align: middle;
-          background: url("~images/radio_check_off_ico.svg") no-repeat center /
-            20px 20px;
-        }
-
-        input[type="radio"]:checked + label .ball {
-          background: url("~images/radio_check_on_ico.svg") no-repeat center /
-            20px 20px;
-        }
-        .title {
-          vertical-align: middle;
-          display: inline-block;
-        }
-        .delete-btn {
-          border: 1px solid #e6e8eb;
-          border-radius: 4px;
+        .dt-list {
           background: white;
-          width: 52px;
-          line-height: 28px;
-          height: 28px;
-          font-size: 12px;
-          cursor: pointer;
-        }
-        .slide-btn {
-          width: 28px;
-          height: 28px;
-          margin-left: 10px;
-          vertical-align: middle;
-          background: url("~images/slide_ico.svg") no-repeat center / 28px 28px;
+          padding: 17px 24px;
+          border-radius: 8px;
+          input[type="radio"] {
+            display: none;
+          }
+
+          input[type="radio"] + label {
+            color: #303538;
+            font-weight: 700;
+            font-size: 18px;
+            vertical-align: middle;
+            width: calc(100% - 90px);
+            display: inline-block;
+          }
+
+          input[type="radio"] + label .ball {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: -2px 12px 0 0;
+            vertical-align: middle;
+            background: url("~images/radio_check_off_ico.svg") no-repeat center /
+              20px 20px;
+          }
+
+          input[type="radio"]:checked + label .ball {
+            background: url("~images/radio_check_on_ico.svg") no-repeat center /
+              20px 20px;
+          }
+          .title {
+            vertical-align: middle;
+            display: inline-block;
+          }
+          .delete-btn {
+            border: 1px solid #e6e8eb;
+            border-radius: 4px;
+            background: white;
+            width: 52px;
+            line-height: 28px;
+            height: 28px;
+            font-size: 12px;
+            cursor: pointer;
+          }
+          .slide-btn {
+            width: 28px;
+            height: 28px;
+            margin-left: 10px;
+            vertical-align: middle;
+          }
         }
       }
     }

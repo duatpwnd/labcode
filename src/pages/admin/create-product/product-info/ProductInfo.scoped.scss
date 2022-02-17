@@ -61,13 +61,12 @@
   margin-bottom: 24px;
 }
 .search-area {
+  overflow: hidden;
   position: sticky;
   top: 0;
   width: 100%;
-  padding: 0px 20px;
-  height: 60px;
-  line-height: 60px;
   box-sizing: border-box;
+  border: 1px solid #f6f7f8;
   border-radius: 8px;
   background: white;
   display: inline-block;
@@ -75,13 +74,18 @@
   z-index: 1;
 }
 .table-wrap {
-  border-top-left-radius: 8px;
   width: 100%;
+  overflow-x: auto;
   table {
     width: 100%;
     table-layout: fixed;
     border-collapse: separate;
-    border-spacing: 0 10px;
+    tbody:before {
+      content: "@";
+      display: block;
+      line-height: 8px;
+      text-indent: -99999px;
+    }
     tr {
       input {
         border: 1px solid #f6f7f8;
@@ -100,22 +104,7 @@
         background: #f6f7f8;
         color: #9ea7ad;
       }
-      input[type="checkbox"] {
-        display: none;
-      }
-      input[type="checkbox"] + label {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        position: relative;
-        background: #5138e5;
-        border-radius: 4px;
-        vertical-align: middle;
-      }
-      input[type="checkbox"]:checked + label {
-        background: url("~images/checkbox_ico_on.svg") no-repeat center center /
-          100%;
-      }
+
       th {
         background-color: white;
         color: #9ea7ad;
@@ -125,6 +114,7 @@
       td {
         background-color: white;
         padding: 8px 24px;
+        border-bottom: 1px solid #f6f7f8;
         .delete-btn {
           border: 1px solid #e6e8eb;
           border-radius: 4px;
@@ -194,6 +184,8 @@
     20px 20px;
 }
 .btn-wrap {
+  position: sticky;
+  bottom: 60px;
   display: flex;
   margin-top: 60px;
   justify-content: flex-end;

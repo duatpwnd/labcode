@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { createGlobalStyle } from 'styled-components';
 import styled from "styled-components";
 import apiUrl from "src/utils/api";
@@ -29,10 +29,14 @@ const DatePickerWrapperStyles = createGlobalStyle`
 const SearchInput = styled.input`
     box-sizing:border-box;
     font-size:18px;
-    width:calc(100% - 24px);
+    width:calc(100% - 44px);
     overflow:hidden;
     text-overflow:ellipsis;
     font-weight:700;
+    height: 60px;
+    padding:0 20px;
+    line-height: 60px;  
+    caret-color: #5138e5;
     &::placeholder{
         color:#9EA7AD;
     }
@@ -41,7 +45,7 @@ const SearchButton = styled.button`
     width:24px;
     height:24px;
     vertical-align:middle;
-    background: url(${require('images/search_ico.svg').default}) no-repeat center center /
+    background: url(${require('images/search_ico.svg').default}) no-repeat center right/
     24px 24px;
 `
 const SelectBox = ({ type, id, modifyProductInfos }) => {
@@ -101,11 +105,8 @@ const SelectBox = ({ type, id, modifyProductInfos }) => {
         </div >
     )
 }
-export const ProductList = ({ data, type, searchProductList, setProductList, setChecked }: any) => {
-    const [checkedItems, setCheckedItems] = useState<number[]>([]);
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const keyword = searchParams.get('search');
+
+export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, InputTitle, Checkbox, AllCheckbox }: any) => {
     // 제품정보수정
     const modifyProductInfos = (e, id) => {
         let body;
@@ -128,13 +129,13 @@ export const ProductList = ({ data, type, searchProductList, setProductList, set
             setProductList([...data]);
         });
     }
-    // 인풋활성
+    // 인풋 비활성
     const inActiveInput = (e) => {
         e.target.style.border = "1px solid #f6f7f8";
     }
-    // 인풋 비활성
+    // 인풋 활성
     const activeInput = (e) => {
-        e.target.style.border = "1px solid #5138e5"
+        e.target.style.border = "1px solid #5138e5";
     }
     // 제품정보삭제
     const deleteProductInfos = (id) => {
@@ -146,59 +147,21 @@ export const ProductList = ({ data, type, searchProductList, setProductList, set
             setProductList(filter);
         })
     }
-    const allCheck = (e) => {
-        if (e.target.checked) {
-            data.map((list) => {
-                setCheckedItems(prev => [...prev, list.id])
-                setChecked(prev => [...prev, list.id])
-            })
-        } else {
-            setCheckedItems([]);
-            setChecked([])
-        }
-    }
-    const checkHandler = (e, id) => {
-        const isSelected = checkedItems.includes(id);
-        if (isSelected) {
-            setCheckedItems([...checkedItems.filter(item => item != id)]);
-            setChecked([...checkedItems.filter(item => item != id)]);
-        } else {
-            setCheckedItems(prev => [...prev, id]);
-            setChecked(prev => [...prev, id]);
-        }
-    };
-
     return (
         <>
-            <div className="search-area">
-                <SearchInput defaultValue={keyword} placeholder="새 그룹 제목 입력"
-                    onChange={debounce((e) => searchProductList(e.target.value), 300)}
-                />
-                <SearchButton />
-            </div>
+            {/* 검색창 */}
+            {SearchBar}
+            {/* 새그룹 추가 제목  */}
+            {InputTitle}
             <div className="table-wrap" >
                 <table>
                     {
-                        type == "modal" ? <colgroup>
-                            <col width="68px" />
-                            <col width="172px" />
-                            <col width="148px" />
-                            <col width="268px" />
-                        </colgroup> : <colgroup>
-                            <col width="172px" />
-                            <col width="148px" />
-                            <col width="417px" />
-                            <col width="100px" />
-                        </colgroup>
+                        colgroup
                     }
                     <thead>
                         <tr>
                             {
-                                type == "modal" &&
-                                <th>
-                                    <input type="checkbox" id="allCheck" checked={data && data.length == checkedItems.length ? true : false} onChange={(e) => allCheck(e)} />
-                                    <label htmlFor="allCheck"></label>
-                                </th>
+                                AllCheckbox && React.cloneElement(AllCheckbox)
                             }
                             <th>
                                 제목
@@ -209,8 +172,11 @@ export const ProductList = ({ data, type, searchProductList, setProductList, set
                             <th>
                                 값
                             </th>
-                            <th>
-                            </th>
+                            {
+                                type != "modal" && <th>
+                                </th>
+
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -220,11 +186,7 @@ export const ProductList = ({ data, type, searchProductList, setProductList, set
                                 return (
                                     <tr key={index}>
                                         {
-                                            type == "modal" &&
-                                            <td>
-                                                <input id={`checkbox${index}`} type="checkbox" checked={checkedItems.includes(list.id) ? true : false} onChange={(e) => checkHandler(e, list.id)} />
-                                                <label htmlFor={`checkbox${index}`}></label>
-                                            </td>
+                                            Checkbox && React.cloneElement(Checkbox, { id: list.id, index: index })
                                         }
                                         <td>
                                             <input type="text" disabled={type == "modal"} placeholder="제목 입력" id="title" defaultValue={list.title} onBlur={(e) => inActiveInput(e)} onClick={(e) => activeInput(e)} onChange={debounce((e) => modifyProductInfos(e, list.id
@@ -272,6 +234,25 @@ export const ProductList = ({ data, type, searchProductList, setProductList, set
                 </table>
             </div>
         </>
+    )
+}
+const SearchBar = ({ searchProductList }) => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const keyword = searchParams.get('search');
+    return (
+        <div className="search-area" onBlur={(e) => {
+            e.currentTarget.style.border = "1px solid #f6f7f8";
+        }}
+            onClick={(e) => {
+                e.currentTarget.style.border = "1px solid #5138e5";
+            }}>
+            <SearchInput defaultValue={keyword} placeholder="제품 검색"
+
+                onChange={debounce((e) => searchProductList(e.target.value), 300)}
+            />
+            <SearchButton />
+        </div>
     )
 }
 const ProductInfo = () => {
@@ -333,7 +314,7 @@ const ProductInfo = () => {
         data: productList, // 제품리스트
         setProductList: setProductList,
         setPage: setPage, // 페이징설정
-        searchProductList: searchProductList, // 검색함수
+        SearchBar: <SearchBar searchProductList={searchProductList} />
     }
     useEffect(() => {
         getInfiniteProductInfos()
@@ -356,7 +337,16 @@ const ProductInfo = () => {
             }
             <section>
                 <h3 className="h3-title">제품 정보</h3>
-                <ProductList {...{ ...props, ...{ type: "" } }}
+                <ProductList {...{
+                    ...props, ...{
+                        type: "", colgroup: <colgroup>
+                            <col width="172px" />
+                            <col width="148px" />
+                            <col width="417px" />
+                            <col width="100px" />
+                        </colgroup>
+                    }
+                }}
                 />
             </section>
             <button className="add-info-btn" onClick={addProductInfos}>제품 정보 추가</button>

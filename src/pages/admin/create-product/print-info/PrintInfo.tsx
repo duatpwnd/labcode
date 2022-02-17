@@ -19,6 +19,11 @@ const DatePickerWrapperStyles = createGlobalStyle`
             }
         }
     }
+    @media (max-width: 767px) {
+        .react-datepicker-wrapper {
+            width: 100%;
+        }
+    }
 `;
 const PrintInfo = () => {
     const navigate = useNavigate();
