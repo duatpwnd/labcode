@@ -68,8 +68,10 @@
   "scripts": {
     "start:prod": "env-cmd -f .env.production craco start",
     "start:dev": "env-cmd -f .env.development craco start",
+    "start:deploy": "env-cmd -f .env.deploy craco start",
     "build:prod": "CI= REACT_APP_MODE=production craco build",
     "build:dev": "CI= REACT_APP_MODE=development craco build",
+    "build:deploy": "CI= REACT_APP_MODE=deploy craco build",
     "test": "craco test",
     "eject": "craco eject"
   },

@@ -1,13 +1,16 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import "./CreateProduct.scoped.scss"
 const CreateProduct = () => {
+    const location = useLocation();
+    const params = useParams();
+    const split = location.pathname.split(`/projects/${params.projectId}/products/${params.productId}/`)
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })
     return (
-        <main>
+        <main style={{ background: split[1] == "productInfo" ? "#F0F1F2" : "white" }}>
             <div className="wrap">
                 <header className="header">
                     <h2 className="h2-title">제품 생성</h2>
