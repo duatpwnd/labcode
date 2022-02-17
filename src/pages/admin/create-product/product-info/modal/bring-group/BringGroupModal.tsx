@@ -21,7 +21,7 @@ const SearchButton = styled.button`
     24px 24px;
 `
 
-const BringGroupModal = () => {
+const BringGroupModal = ({ setBringGroupModal, setProductList }) => {
     const params = useParams();
     const [selectedValue, setSelect] = useState("");
     const [{ data, meta }, setGroupList] = useState<{ [key: string]: any }>({});
@@ -42,6 +42,8 @@ const BringGroupModal = () => {
     const bringGroup = () => {
         axios.post(apiUrl.productInfosGroups + `/${selectedValue}/transfer/${params.productId}`).then((result) => {
             console.log("그룹불러오기결과", result);
+            setBringGroupModal(false);
+            setProductList((prev) => [...prev, ...result.data.data])
         })
     }
     useEffect(() => {

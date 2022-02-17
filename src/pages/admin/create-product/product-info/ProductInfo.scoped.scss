@@ -92,6 +92,13 @@
         width: 100%;
         caret-color: #5138e5;
         cursor: pointer;
+        &::placeholder {
+          color: #9ea7ad;
+        }
+      }
+      input:disabled {
+        background: #f6f7f8;
+        color: #9ea7ad;
       }
       input[type="checkbox"] {
         display: none;

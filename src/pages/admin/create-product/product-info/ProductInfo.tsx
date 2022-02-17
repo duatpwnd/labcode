@@ -108,7 +108,6 @@ export const ProductList = ({ data, type, searchProductList, setProductList, set
     const keyword = searchParams.get('search');
     // 제품정보수정
     const modifyProductInfos = (e, id) => {
-        console.log(e.target.id, e.target.value);
         let body;
         // e가 string이면 날짜임
         if (typeof e === "string") {
@@ -231,7 +230,7 @@ export const ProductList = ({ data, type, searchProductList, setProductList, set
                                             <input type="text" disabled={type == "modal"} placeholder="제목 입력" id="title" defaultValue={list.title} onBlur={(e) => inActiveInput(e)} onClick={(e) => activeInput(e)} onChange={debounce((e) => modifyProductInfos(e, list.id
                                             ), 200)} />
                                         </td>
-                                        <td style={{ pointerEvents: type == "modal" ? "none" : "auto" }}>
+                                        <td style={type == "modal" ? { pointerEvents: "none", color: "#9ea7ad" } : { pointerEvents: "auto" }}>
                                             <SelectBox id={list.id} type={list.type} modifyProductInfos={modifyProductInfos} />
                                         </td>
                                         <td >
@@ -347,7 +346,7 @@ const ProductInfo = () => {
         <>
             {/* 그룹 불러오기 모달 */}
             {
-                isActiveBringGroupModal && <BringGroupModal />
+                isActiveBringGroupModal && <BringGroupModal setProductList={setProductList} setBringGroupModal={setBringGroupModal} />
 
             }
             {/* 새 그룹 추가 모달 */}
