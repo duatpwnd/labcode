@@ -25,9 +25,9 @@
     }
     .warn-message {
       width: 100%;
-      margin-right: calc(100% - 110px);
-      color: red;
       margin-top: 10px;
+      margin-left: 110px;
+      color: red;
     }
     .email-warn-message {
       @extend .warn-message;
@@ -115,6 +115,9 @@
       }
       input {
         width: 100%;
+      }
+      .warn-message {
+        margin-left: 0;
       }
       .row4 {
         textarea {
