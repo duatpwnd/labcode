@@ -5,7 +5,7 @@ import { useState } from "react"
 import { resources, Languages } from "src/lang/i18n"
 import { useMediaQuery } from "react-responsive";
 import SignIn from 'src/container/signin/SignIn';
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/reducers";
 import { signOut } from "src/actions/signIn"
@@ -78,6 +78,8 @@ const Header = () => {
     const navigate = useNavigate()
     const keys = Object.keys(resources);
     const dispatch = useDispatch();
+    const userModal = useRef<HTMLDivElement>(null);
+    const langsModal = useRef<HTMLUListElement>(null);
     const [cookies, setCookie, removeCookie] = useCookies(["user_info"]);
     const handleChangeLanguage = (lang: Languages) => {
         langModalUpdate(false);
@@ -99,6 +101,18 @@ const Header = () => {
         navigate("/");
         setUserModal(false);
     }
+    const handleCloseModal = (e) => {
+        if (langModal && (!userModal.current?.contains(e.target))) langModalUpdate(false);
+
+        if (isActiveUserModal && (!userModal.current?.contains(e.target))) setUserModal(false);
+
+    }
+    useEffect(() => {
+        window.addEventListener("click", handleCloseModal)
+        return () => {
+            window.removeEventListener("click", handleCloseModal);
+        }
+    }, [isActiveUserModal, langModal])
     useEffect(() => {
     }, [userInfo])
     return (
@@ -113,12 +127,12 @@ const Header = () => {
                     </Link>
                 </h1>
                 <VersionIcon>{t('version')}</VersionIcon>
-                <div className="right-buttons">
+                <div className="right-buttons" >
                     {
                         userInfo == null ? <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton> : <img src={require("images/profile_image.svg").default} onClick={() => setUserModal(!isActiveUserModal)} />
                     }
                     {
-                        isActiveUserModal && <div className="user-modal">
+                        isActiveUserModal && <div className="user-modal" ref={userModal}>
                             <b className="user-name">{userInfo?.user.name}</b>
                             <span className="user-email">{userInfo?.user.email}</span>
                             <button className="sign-out-btn" onClick={logout}>로그아웃</button>
@@ -127,7 +141,7 @@ const Header = () => {
                     }
                     <LangIcon onClick={() => langModalUpdate(!langModal)} />
                     {langModal &&
-                        <ul className="lang-select">
+                        <ul className="lang-select" ref={langsModal}>
                             {
                                 Object.values(resources).map((langs, index) => <li key={index} className={keys[index] == lang ? "selected" : ""} onClick={() => handleChangeLanguage(keys[index])}>{langs.value}</li>)
                             }
