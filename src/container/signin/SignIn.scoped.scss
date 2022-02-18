@@ -67,11 +67,19 @@
     }
     .sub-area {
       text-align: center;
-      margin-top: 60px;
+      margin-top: 52px;
       a {
-        font-size: 12px;
+        font-size: 14px;
         color: #79828a;
-        text-decoration: underline;
+      }
+      .create-team-link {
+        font-weight: 700;
+        color: #5138e5;
+        &::before {
+          content: "|";
+          color: #b8bfc4;
+          margin: 0 8px;
+        }
       }
     }
   }

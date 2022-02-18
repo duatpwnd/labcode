@@ -79,7 +79,7 @@ export const checkCorporateRegistrationNumber = (value) => {
     .map((item) => {
       return parseInt(item, 10);
     });
-
+  console.log(valueMap.length);
   if (valueMap.length === 10) {
     const multiply = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5);
     let checkSum = 0;

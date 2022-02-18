@@ -86,7 +86,8 @@ const SignIn = ({ setData }) => {
                             </fieldset>
                         </form>
                         <div className="sub-area">
-                            <Link to="">관리자 서비스 신청하기</Link>
+                            <Link to="/inquiries/create" state={{ nav: false }} onClick={reset}>문의하기</Link>
+                            <Link to="/teams/create" className="create-team-link" onClick={reset}>신청하기</Link>
                         </div>
                     </div>
                 </div>

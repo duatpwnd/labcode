@@ -95,7 +95,7 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     // 대분류 조회
     const getMainCategories = (search, page) => {
         return axios.get(apiUrl.mainCategories + `?industryId=${inputs.industryId}&teamId=${teamId}&page=${page}&limit=10&search=${search}`).then((result) => {
-            console.log('대분류조회:', result.data);
+            console.log('대분류조회:', result.data, "maincategor", inputs.mainCategoryId);
             return result.data
         })
     }

@@ -16,7 +16,8 @@ section {
         display: inline-block;
         vertical-align: middle;
       }
-      .source-image {
+      .source-image,
+      label[for="description"] {
         vertical-align: top;
       }
       textarea {

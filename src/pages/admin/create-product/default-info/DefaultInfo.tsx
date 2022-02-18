@@ -234,15 +234,15 @@ const DefaultInfo = () => {
                 {/* 수정페이지에만 존재 */}
                 <InternalUse />
                 {
-                    params.productId != "add" &&
-                    <div className="row">
+                    inputs.labcodeImage !== null && <div className="row">
                         <label>변경 이미지</label>
                         <img src={inputs.labcodeImage} alt="labcodeImage" title="labcodeImage" className="labcodeImage" />
                     </div>
+
                 }
                 <div className="btn-wrap">
                     <button className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
-                    <button className="submit-btn" onClick={() => { params.productId == "add" ? apply({ ...inputs }) : modify({ ...inputs }) }}>기술 적용하기</button>
+                    <button className="submit-btn" onClick={() => modify({ ...inputs })}>기본 정보 수정</button>
                 </div>
             </div>
         </section>
