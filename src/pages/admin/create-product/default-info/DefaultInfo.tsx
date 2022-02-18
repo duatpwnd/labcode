@@ -119,18 +119,22 @@ const DefaultInfo = () => {
     };
     const modify = (body) => {
         console.log("body", body);
-        const formData = new FormData();
-        for (let key in body) {
-            formData.append(key, body[key as never]);
+        if (body.sourceImage == null) {
+            alert("이미지를 첨부해주세요.")
+        } else {
+            const formData = new FormData();
+            for (let key in body) {
+                formData.append(key, body[key as never]);
+            }
+            axios
+                .patch(apiUrl.products + `/${params.productId}`, formData)
+                .then((result: any) => {
+                    console.log("기본정보수정결과:", result);
+                    getProductDetail();
+                }).catch((err: any) => {
+                    console.log('기본정보수정에러:', err);
+                });
         }
-        axios
-            .patch(apiUrl.products + `/${params.productId}`, formData)
-            .then((result: any) => {
-                console.log("기본정보수정결과:", result);
-                getProductDetail();
-            }).catch((err: any) => {
-                console.log('기본정보수정에러:', err);
-            });
 
     }
     const apply = (body) => {
@@ -153,7 +157,7 @@ const DefaultInfo = () => {
         axios
             .get(apiUrl.products + `/${params.productId}`)
             .then((result: any) => {
-                console.log('제품 상세 조회:', result.data.data);
+                console.log('제품 상세 조회:', result);
 
                 setInputs({
                     ...result.data.data

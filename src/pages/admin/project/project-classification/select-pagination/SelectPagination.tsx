@@ -1,5 +1,5 @@
 import "./SelectPagination.scoped.scss"
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext, useRef } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "src/App";
 import apiUrl from "src/utils/api";
@@ -16,6 +16,8 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     const [isSubLastPage, setSubLastPage] = useState(false); //  소분류 마지막 페이지 유무
     const [mainCategoryList, setMainCategoryList] = useState<{ [key: string]: any }[]>([]); // 대분류 카테고리 리스트
     const [subCategoryList, setSubCategoryList] = useState<{ [key: string]: any }[]>([]); // 소분류 카테고리 리스트
+    const subModal = useRef<HTMLUListElement>(null);
+    const mainModal = useRef<HTMLUListElement>(null);
     const debounce = _.debounce;
     const params = useParams();
     const navigate = useNavigate();
@@ -95,6 +97,18 @@ const SelectPagination = ({ inputs, eventHandler }) => {
             return result.data
         })
     }
+    const handleCloseModal = (e) => {
+        if (mainCategoriesMenu && (!mainModal.current?.contains(e.target))) setMainCategoriesMenu(false);
+
+        if (subCategoriesMenu && (!subModal.current?.contains(e.target))) setSubCategoriesMenu(false);
+
+    }
+    useEffect(() => {
+        window.addEventListener("click", handleCloseModal)
+        return () => {
+            window.removeEventListener("click", handleCloseModal);
+        }
+    }, [mainCategoriesMenu, subCategoriesMenu])
     useEffect(() => {
         if (inputs.industryId != undefined) {
             getMainCategories("", 1).then((result) => {
@@ -112,7 +126,7 @@ const SelectPagination = ({ inputs, eventHandler }) => {
                 <div className="select-menu" style={{ visibility: mainCategoriesMenu ? 'visible' : 'hidden' }}>
                     <input autoFocus type="text" onChange={debounce((e) => onChange(e), 500)} />
                     {
-                        mainCategoryList.length > 0 ? <ul onScroll={mainCategoriesScroll}>
+                        mainCategoryList.length > 0 ? <ul onScroll={mainCategoriesScroll} ref={mainModal}>
                             {
                                 mainCategoryList.map((items, index) => {
                                     return (
@@ -131,21 +145,19 @@ const SelectPagination = ({ inputs, eventHandler }) => {
                     <div className="select-box classify-box" onClick={() => setSubCategoriesMenu(!subCategoriesMenu)}>{inputs.subCategory?.title || "소분류를 선택해주세요."}</div>
                     <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${inputs.industryId}?currentPage=1`)}>편집</button>
                     <div className="select-menu" style={{ visibility: subCategoriesMenu ? 'visible' : 'hidden' }}>
+                        <input type="text" autoFocus onChange={debounce((e) => searchSubCategories(e), 500)} />
                         {
-                            subCategoryList.length == 0 ? <p className="message">소분류가 존재하지 않습니다</p> : <input type="text" autoFocus onChange={debounce((e) => searchSubCategories(e), 500)} />
-                        }
-                        {
-                            subCategoryList.length > 0 &&
-                            <ul onScroll={subCategoriesScroll}>
+                            subCategoryList.length > 0 ? <ul onScroll={subCategoriesScroll} ref={subModal}>
                                 {
                                     subCategoryList.map((items, index) => {
                                         return (
-                                            <li key={index} onClick={() => selectSubCategories(items.title, items.id)}>{items.title}</li>
+                                            <li key={index} onClick={() => selectSubCategories(items.title, items.id)}>{items.title == "" ? "제목 미지정" : items.title}</li>
                                         )
                                     })
                                 }
-                            </ul>
+                            </ul> : <p className="message">소분류가 존재하지 않습니다</p>
                         }
+
                     </div>
                 </div>
             }
