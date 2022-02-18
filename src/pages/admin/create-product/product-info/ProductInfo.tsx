@@ -337,17 +337,20 @@ const ProductInfo = () => {
             }
             <section>
                 <h3 className="h3-title">제품 정보</h3>
-                <ProductList {...{
-                    ...props, ...{
-                        type: "", colgroup: <colgroup>
-                            <col width="172px" />
-                            <col width="148px" />
-                            <col width="417px" />
-                            <col width="100px" />
-                        </colgroup>
-                    }
-                }}
-                />
+                {
+                    productList.length == 0 ? <p className="message">제품 정보가 없습니다. 제품을 추가해주세요.</p> : <ProductList {...{
+                        ...props, ...{
+                            type: "", colgroup: <colgroup>
+                                <col width="172px" />
+                                <col width="148px" />
+                                <col width="417px" />
+                                <col width="100px" />
+                            </colgroup>
+                        }
+                    }}
+                    />
+
+                }
             </section>
             <button className="add-info-btn" onClick={addProductInfos}>제품 정보 추가</button>
             <div className="btn-wrap">

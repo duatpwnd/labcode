@@ -68,6 +68,7 @@ const LnbMenu = ({ eventHandler, child }) => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const isActive = searchParams.get('isActive');
+    const search = searchParams.get('search');
     const [list, setList] = useState({
         arr: [{ value: "전체", type: "" }, { value: "신청접수", type: false }, { value: "승인완료", type: true }]
     })
@@ -75,7 +76,7 @@ const LnbMenu = ({ eventHandler, child }) => {
         <div className="btn-wrap">
             {
                 list.arr.map((el, index) => <button key={index} className={String(el.type) == String(isActive) ? 'active category-btn' : 'category-btn'} onClick={() => {
-                    eventHandler(1, "", el.type)
+                    eventHandler(1, search, el.type)
                 }}>{el.value}</button>)
             }
             {child}
@@ -85,6 +86,7 @@ const LnbMenu = ({ eventHandler, child }) => {
 const Project = () => {
     const [{ data, meta }, setupList] = useState<{ [key: string]: any }>({});
     const [menuIndex, menuIndexUpdate] = useState(-1);
+    const [message, setMessage] = useState("");
     const menu = useRef(null);
     const debounce = _.debounce;
     const navigate = useNavigate()
@@ -104,6 +106,16 @@ const Project = () => {
             .get(apiUrl.project + `?search=${search}&page=${page}&isActive=${isActive}&limit=16`)
             .then((result: any) => {
                 console.log('프로젝트리스트:', result);
+                if (result.data.data.length == 0 && search != "") {
+                    setMessage('검색결과가 없습니다.')
+                } else {
+                    setMessage("")
+                }
+                if (result.data.data.length == 0 && search == "") {
+                    setMessage('프로젝트를 생성해주세요.')
+                } else {
+                    setMessage('')
+                }
                 menuIndexUpdate(-1);
                 setupList(result.data);
             })
@@ -176,49 +188,52 @@ const Project = () => {
             </div>
             <LnbMenu eventHandler={getProjectList} child={<CreateBtn onClick={createProject}>프로젝트 생성</CreateBtn>} />
             {/* <OrderMenu /> */}
-
-            <ul className="project-list">
-                {
-                    data != undefined &&
-                    data.map((list, index) => <li className="list" key={index}>
-                        {
-                            list.isActive ? <Link to={`/projects/${list.id}/products?currentPage=1&search=`} className="link" >
-                                <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" />
-                            </Link> : <div className="link"><div className="mask"></div>
-                                <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" /></div>
-
-                        }
-                        <div className="bottom">
-                            <dl>
-                                <dt>{list.title}</dt>
-                                <dd>{list.description}</dd>
-                            </dl>
-                            <div className="status-area">
-                                {
-                                    list.isActive ? <StatusText color="black" background="white;">승인완료</StatusText>
-                                        : <StatusText color="white;" background="#79828A;">신청접수</StatusText>
-                                }
-                                <button id={`menu${list.id}`} className="menu-btn" onClick={(e) => { menuModal(e, list.id) }}></button>
-                            </div>
+            {
+                data &&
+                    data.length == 0 ? <p className="message">{message}</p> : <ul className="project-list">
+                    {
+                        data &&
+                        data.map((list, index) => <li className="list" key={index}>
                             {
-                                menuIndex == list.id &&
-                                <div className="menu" ref={el => { if (el != null) { setPosition(el); (menu as { [key: string]: any }).current = el; } }}>
-                                    <h3 className="h3-title">{list.title}</h3>
-                                    <ul >
-                                        <li className="manage" onClick={() => navigate(`/projects/${list.id}/edit`)}>
-                                            프로젝트 관리
-                                        </li>
-                                        <li className="delete" onClick={() => isPossibleDelete(list.isActive, list.id)}>
-                                            삭제
-                                        </li>
-                                    </ul>
-                                </div>
-                            }
-                        </div>
+                                list.isActive ? <Link to={`/projects/${list.id}/products?currentPage=1&search=`} className="link" >
+                                    <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" />
+                                </Link> : <div className="link"><div className="mask"></div>
+                                    <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" /></div>
 
-                    </li>)
-                }
-            </ul>
+                            }
+                            <div className="bottom">
+                                <dl>
+                                    <dt>{list.title}</dt>
+                                    <dd>{list.description}</dd>
+                                </dl>
+                                <div className="status-area">
+                                    {
+                                        list.isActive ? <StatusText color="black" background="white;">승인완료</StatusText>
+                                            : <StatusText color="white;" background="#79828A;">신청접수</StatusText>
+                                    }
+                                    <button id={`menu${list.id}`} className="menu-btn" onClick={(e) => { menuModal(e, list.id) }}></button>
+                                </div>
+                                {
+                                    menuIndex == list.id &&
+                                    <div className="menu" ref={el => { if (el != null) { setPosition(el); (menu as { [key: string]: any }).current = el; } }}>
+                                        <h3 className="h3-title">{list.title}</h3>
+                                        <ul >
+                                            <li className="manage" onClick={() => navigate(`/projects/${list.id}/edit`)}>
+                                                프로젝트 관리
+                                            </li>
+                                            <li className="delete" onClick={() => isPossibleDelete(list.isActive, list.id)}>
+                                                삭제
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+
+                        </li>)
+                    }
+                </ul>
+            }
+
             {
                 meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} />
             }
