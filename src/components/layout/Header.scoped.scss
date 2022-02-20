@@ -77,15 +77,3 @@ header {
     }
   }
 }
-@media all and (max-width: 479px) {
-  header {
-    background: #5138e5;
-  }
-}
-@media all and (max-width: 360px) {
-  .logo {
-    img {
-      width: 35.7vw;
-    }
-  }
-}

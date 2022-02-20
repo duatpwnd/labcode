@@ -21,17 +21,12 @@ const SignIndButton = styled.button`
     height: 44px;
     width: 111px;
     @media all and (min-width: 480px) {
-    &:hover {
-      background: #D1D6DB;
-    }
-}
-    @media all and (max-width: 479px) {
-        color:#5138E5;
-        background:white;
-        font-weight:700;
+        &:hover {
+        background: #D1D6DB;
+        }
     }
     @media all and (max-width:360px){
-        width: 31vw;
+        width: 30vw;
     }
   
 `;
@@ -45,26 +40,29 @@ const VersionIcon = styled.span`
     line-height: 16px;
     border-radius: 4px;
     margin-left:28px;
-    @media all and (max-width: 510px) {
+    @media all and (max-width: 550px) {
         display:none
     }
 `
 const LangIcon = styled.button`
     vertical-align: middle;
     border-radius: 8px;
-    width: 44px;
+    width: 82px;
     height: 44px;
+    padding-left:9.95%;
+    font-family: Poppins;
+    text-align:left;
+    font-weight:700;
     margin-left:8px;
-    background: url(${require('src/assets/images/lang_ico.svg').default}) #E5E5E5 no-repeat center /
+    background: url(${require('src/assets/images/lang_ico.svg').default}) #E5E5E5 no-repeat center right 26% /
     16px 16px;
     @media all and (min-width: 480px) {
         &:hover {
             background-color:#D1D6DB;
         }
     }
-    @media all and (max-width: 479px) {
-        background-color:white;
-        display:none
+    @media all and (max-width:360px){
+        width: 22vw;
     }
 `
 
@@ -89,9 +87,6 @@ const Header = () => {
     const userInfo = useSelector((state: RootState) => {
         return state.signIn.userInfo
     })
-    const isMobile = useMediaQuery({
-        query: "(max-width: 479px)"
-    });
     const closeModal = (type: boolean) => {
         modalUpdate(type)
     }
@@ -123,7 +118,10 @@ const Header = () => {
             <div className="header-contents">
                 <h1 className="logo">
                     <Link to="/">
-                        {isMobile ? <img src={require("images/mobile_logo.svg").default} alt="LABCODE" title="LABCODE" /> : <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />}
+                        <picture>
+                            <source media="(max-width: 479px)" srcSet={require("images/mobile_logo.svg").default} />
+                            <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />
+                        </picture>
                     </Link>
                 </h1>
                 <VersionIcon>{t('version')}</VersionIcon>
@@ -139,7 +137,7 @@ const Header = () => {
                         </div>
 
                     }
-                    <LangIcon onClick={() => langModalUpdate(!langModal)} />
+                    <LangIcon onClick={() => langModalUpdate(!langModal)}>{lang}</LangIcon>
                     {langModal &&
                         <ul className="lang-select" ref={langsModal}>
                             {
