@@ -186,7 +186,7 @@ const Project = () => {
                 <SearchInput placeholder="원하는 프로젝트를 검색해보세요."
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
-            <LnbMenu eventHandler={getProjectList} child={<CreateBtn onClick={createProject}>프로젝트 생성</CreateBtn>} />
+            <LnbMenu eventHandler={getProjectList} child={<CreateBtn onClick={() => navigate("/projects/create")}>프로젝트 생성</CreateBtn>} />
             {/* <OrderMenu /> */}
             {
                 data &&

@@ -21,10 +21,6 @@ const ProjectDetail = (props) => {
         onChange(e);
     }, 500);
     const onChange = (e: { [key: string]: any }) => {
-        // const data = { ...inputs, [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value }
-        // setInputs({
-        //     ...data
-        // })
         modify({ [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value });
     };
     const getProject = () => {
@@ -53,7 +49,9 @@ const ProjectDetail = (props) => {
             });
     }
     useEffect(() => {
-        getProject();
+        if (params.projectId != undefined) {
+            getProject();
+        }
     }, [])
     return (
         <main>

@@ -3,15 +3,15 @@ import ConfirmModal from "src/components/common/confirm-modal/ConfirmModal";
 import SignIn from 'src/container/signin/SignIn';
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { resources, Languages } from "src/lang/i18n"
 import { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/reducers";
+import { useDispatch } from "react-redux";
 import { signOut } from "src/actions/signIn"
 import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import "./Header.scoped.scss"
+import { AppContext } from "src/App";
 const SignIndButton = styled.button`
     border-radius: 8px;
     font-size: 13px;
@@ -70,6 +70,7 @@ const LangIcon = styled.button`
 
 const Header = () => {
     const { i18n, t } = useTranslation();
+    const userInfo = useContext(AppContext);
     const [isActiveConfirmModal, setActiveConfirmModal] = useState(false);
     const [isModal, modalUpdate] = useState(false);
     const [langModal, langModalUpdate] = useState(false);
@@ -86,9 +87,6 @@ const Header = () => {
         langUpdate(lang);
         i18n.changeLanguage(lang);
     }
-    const userInfo = useSelector((state: RootState) => {
-        return state.signIn.userInfo
-    })
     const closeModal = (type: boolean) => {
         modalUpdate(type)
     }
@@ -111,8 +109,7 @@ const Header = () => {
             window.removeEventListener("click", handleCloseModal);
         }
     }, [isActiveUserModal, langModal])
-    useEffect(() => {
-    }, [userInfo])
+
     return (
         <>
             {

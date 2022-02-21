@@ -72,7 +72,7 @@ const Product = () => {
             search: `?currentPage=${page}&search=${search}`,
         });
         axios
-            .get(apiUrl.products + `?limit=10&search=${search}&page=${page}&projectId=${params.projectId}`)
+            .get(apiUrl.products + `?limit=10&search=${search}&page=${page}`)
             .then((result: any) => {
                 setList(result.data);
                 console.log('제품리스트:', result);
@@ -128,7 +128,7 @@ const Product = () => {
                 <strong className="project-title">{product && product.title}</strong>
                 <div className="btn-wrap">
                     <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61" onClick={addSamples}>샘플 데이터 추가</Btn>
-                    <Btn background="#5138E5" color="#FFFFFF" onClick={createProducts}>제품 생성</Btn>
+                    <Btn background="#5138E5" color="#FFFFFF" onClick={() => navigate("/products/create/defaultInfo")}>제품 등록</Btn>
                 </div>
             </div>
             {
