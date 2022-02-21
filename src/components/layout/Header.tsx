@@ -48,22 +48,20 @@ const VersionIcon = styled.span`
 const LangIcon = styled.button`
     vertical-align: middle;
     border-radius: 8px;
-    width: 82px;
+    max-width: 82px;
+    width:100%;
     height: 44px;
-    padding-left:9.95%;
+    padding:0 20px;
     font-family: Poppins;
     text-align:left;
     font-weight:700;
     margin-left:8px;
-    background: url(${require('src/assets/images/lang_ico.svg').default}) #E5E5E5 no-repeat center right 26% /
+    background: url(${require('src/assets/images/lang_ico.svg').default}) #E5E5E5 no-repeat center right 20px /
     16px 16px;
     @media all and (min-width: 480px) {
         &:hover {
             background-color:#D1D6DB;
         }
-    }
-    @media all and (max-width:360px){
-        width: 22vw;
     }
 `
 
