@@ -1,7 +1,6 @@
 import {
     Routes,
     Route,
-    Navigate
 } from "react-router-dom";
 import Main from "pages/main/Main"
 import Dashboard from "pages/admin/dashboard/Dashboard";
@@ -25,18 +24,12 @@ export default function CreateRoutes() {
             <Route path={`/projects/list`} element={<ProjectList />} />
             <Route path={`/projects/create`} element={<ModifyProject />} />
             <Route path="/projects/:projectId/edit" element={<ModifyProject />} />
-            <Route
-                path="/projects"
-                element={<Navigate to={`/projects/list?currentPage=1&search=&isActive=false`} />}
-            />
+
             {/* 프로젝트 :: E */}
 
             {/* 제품 :: S */}
             <Route path="/products/list" element={<ProductList />} />
-            <Route
-                path="/products"
-                element={<Navigate to={`/products/list?currentPage=1&search=`} />}
-            />
+
             {/* 제품 :: E */}
             <Route path="/projects/:projectId/manage/:industryId" element={<CategoryManagement />} />
             <Route path="/products/create" element={<CreateProduct />}>

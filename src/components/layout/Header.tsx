@@ -48,8 +48,7 @@ const VersionIcon = styled.span`
 const LangIcon = styled.button`
     vertical-align: middle;
     border-radius: 8px;
-    max-width: 82px;
-    width:100%;
+    width:84px;
     height: 44px;
     padding:0 20px;
     font-family: Poppins;
@@ -62,6 +61,12 @@ const LangIcon = styled.button`
         &:hover {
             background-color:#D1D6DB;
         }
+    }
+     @media all and (max-width:330px){
+        padding:0;
+        width:16vw;
+        background:#E5E5E5;
+        text-align:center;
     }
 `
 
@@ -132,14 +137,7 @@ const Header = () => {
                         {
                             userInfo == null ? <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton> : <img src={require("images/profile_image.svg").default} onClick={() => setUserModal(!isActiveUserModal)} />
                         }
-                        {
-                            isActiveUserModal && <div className="user-modal" ref={userModal}>
-                                <b className="user-name">{userInfo?.user.name}</b>
-                                <span className="user-email">{userInfo?.user.email}</span>
-                                <button className="sign-out-btn" onClick={() => setActiveConfirmModal(true)}>로그아웃</button>
-                            </div>
 
-                        }
                         <LangIcon onClick={() => langModalUpdate(!langModal)}>{lang}</LangIcon>
                         {langModal &&
                             <ul className="lang-select" ref={langsModal}>
@@ -149,6 +147,14 @@ const Header = () => {
                             </ul>
                         }
                     </div>
+                    {
+                        isActiveUserModal && <div className="user-modal" ref={userModal}>
+                            <b className="user-name">{userInfo?.user.name}</b>
+                            <span className="user-email">{userInfo?.user.email}</span>
+                            <button className="sign-out-btn" onClick={() => setActiveConfirmModal(true)}>로그아웃</button>
+                        </div>
+
+                    }
                 </div>
             </header>
         </>

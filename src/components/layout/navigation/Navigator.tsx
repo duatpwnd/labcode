@@ -4,6 +4,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import "./Navigator.scoped.scss"
 import history from "src/utils/history";
+import {
+    useLocation
+} from "react-router-dom";
+
 const ParentNavLink = styled(NavLink)`
     width: 100%;
     padding: 25px 35px 25px 58px;
@@ -41,7 +45,7 @@ const Navigator = () => {
     const teamId = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.teamId
     })
-
+    const { pathname } = useLocation();
     return (
         <nav>
             <ul>
@@ -52,7 +56,7 @@ const Navigator = () => {
                     <ParentNavLink to={`/teams/${teamId}`} background="team_ico.svg">팀 정보</ParentNavLink>
                 </li>
                 <li>
-                    <ParentNavLink to={`/projects`} background="project_ico.svg">프로젝트</ParentNavLink>
+                    <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list?currentPage=1&search=&isActive=false`} background="project_ico.svg">프로젝트</ParentNavLink>
                     <ul>
                         <li>
                             <ChildNavLink to={`/projects/list?currentPage=1&search=&isActive=false`}>프로젝트 목록</ChildNavLink>
@@ -66,7 +70,7 @@ const Navigator = () => {
                     </ul>
                 </li>
                 <li>
-                    <ParentNavLink to={`/products`} background="product_ico.svg">제품</ParentNavLink>
+                    <ParentNavLink className={pathname.startsWith("/products") && "active"} to={`/products/list?currentPage=1&search=`} background="product_ico.svg">제품</ParentNavLink>
                     <ul>
                         <li>
                             <ChildNavLink to={`/products/list?currentPage=1&search=`}>제품 목록</ChildNavLink>
