@@ -31,15 +31,16 @@ const SignIndButton = styled.button`
   
 `;
 const VersionIcon = styled.span`
-    vertical-align: text-bottom;
     color: #5138E5;
     font-size: 12px;
     padding: 4px 8px;
     background: rgba(81, 56, 229, 0.1);
-    align-self: center;
     line-height: 16px;
     border-radius: 4px;
     margin-left:28px;
+    position: relative;
+    top:35%;
+    transform: translateY(-35%);
     @media all and (max-width: 550px) {
         display:none
     }
