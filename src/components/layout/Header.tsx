@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import ConfirmModal from "src/components/common/confirm-modal/ConfirmModal";
+import SignIn from 'src/container/signin/SignIn';
+import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useState } from "react"
 import { resources, Languages } from "src/lang/i18n"
-import { useMediaQuery } from "react-responsive";
-import SignIn from 'src/container/signin/SignIn';
 import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/reducers";
@@ -70,6 +70,7 @@ const LangIcon = styled.button`
 
 const Header = () => {
     const { i18n, t } = useTranslation();
+    const [isActiveConfirmModal, setActiveConfirmModal] = useState(false);
     const [isModal, modalUpdate] = useState(false);
     const [langModal, langModalUpdate] = useState(false);
     const [isActiveUserModal, setUserModal] = useState(false);
@@ -96,6 +97,7 @@ const Header = () => {
         removeCookie("user_info");
         navigate("/");
         setUserModal(false);
+        setActiveConfirmModal(false);
     }
     const handleCloseModal = (e) => {
         if (langModal && (!userModal.current?.contains(e.target))) langModalUpdate(false);
@@ -112,43 +114,49 @@ const Header = () => {
     useEffect(() => {
     }, [userInfo])
     return (
-        <header>
+        <>
+            {
+                isActiveConfirmModal && <ConfirmModal title="로그아웃" contents="로그아웃 하시겠습니까?" cancelEvent={setActiveConfirmModal} okEvent={logout} />
+            }
             {
                 isModal && <SignIn setData={closeModal} />
             }
-            <div className="header-contents">
-                <h1 className="logo">
-                    <Link to="/">
-                        <picture>
-                            <source media="(max-width: 479px)" srcSet={require("images/mobile_logo.svg").default} />
-                            <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />
-                        </picture>
-                    </Link>
-                </h1>
-                <VersionIcon>{t('version')}</VersionIcon>
-                <div className="right-buttons" >
-                    {
-                        userInfo == null ? <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton> : <img src={require("images/profile_image.svg").default} onClick={() => setUserModal(!isActiveUserModal)} />
-                    }
-                    {
-                        isActiveUserModal && <div className="user-modal" ref={userModal}>
-                            <b className="user-name">{userInfo?.user.name}</b>
-                            <span className="user-email">{userInfo?.user.email}</span>
-                            <button className="sign-out-btn" onClick={logout}>로그아웃</button>
-                        </div>
+            <header>
 
-                    }
-                    <LangIcon onClick={() => langModalUpdate(!langModal)}>{lang}</LangIcon>
-                    {langModal &&
-                        <ul className="lang-select" ref={langsModal}>
-                            {
-                                Object.values(resources).map((langs, index) => <li key={index} className={keys[index] == lang ? "selected" : ""} onClick={() => handleChangeLanguage(keys[index])}>{langs.value}</li>)
-                            }
-                        </ul>
-                    }
+                <div className="header-contents">
+                    <h1 className="logo">
+                        <Link to="/">
+                            <picture>
+                                <source media="(max-width: 479px)" srcSet={require("images/mobile_logo.svg").default} />
+                                <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />
+                            </picture>
+                        </Link>
+                    </h1>
+                    <VersionIcon>{t('version')}</VersionIcon>
+                    <div className="right-buttons" >
+                        {
+                            userInfo == null ? <SignIndButton onClick={() => { modalUpdate(true) }}>{t('signInBtn')}</SignIndButton> : <img src={require("images/profile_image.svg").default} onClick={() => setUserModal(!isActiveUserModal)} />
+                        }
+                        {
+                            isActiveUserModal && <div className="user-modal" ref={userModal}>
+                                <b className="user-name">{userInfo?.user.name}</b>
+                                <span className="user-email">{userInfo?.user.email}</span>
+                                <button className="sign-out-btn" onClick={() => setActiveConfirmModal(true)}>로그아웃</button>
+                            </div>
+
+                        }
+                        <LangIcon onClick={() => langModalUpdate(!langModal)}>{lang}</LangIcon>
+                        {langModal &&
+                            <ul className="lang-select" ref={langsModal}>
+                                {
+                                    Object.values(resources).map((langs, index) => <li key={index} className={keys[index] == lang ? "selected" : ""} onClick={() => handleChangeLanguage(keys[index])}>{langs.value}</li>)
+                                }
+                            </ul>
+                        }
+                    </div>
                 </div>
-            </div>
-        </header>
+            </header>
+        </>
     )
 }
 export default Header

@@ -62,8 +62,10 @@
         border-radius: 8px;
         resize: none;
         height: 365px;
-        color: #555555;
         outline: none;
+        &::placeholder {
+          color: #9ea7ad;
+        }
       }
     }
     .row5 {

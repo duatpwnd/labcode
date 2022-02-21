@@ -9,9 +9,11 @@ import {
 } from "react-router-dom";
 import "./Team.scoped.scss"
 import { checkCorporateRegistrationNumber, homePageReg, phoneReg, emailReg } from 'src/utils/common';
+import ConfirmModal from "src/components/common/confirm-modal/ConfirmModal";
 const debounce = _.debounce;
 
 const Team = () => {
+    const [isActiveModal, setActiveModal] = useState(false);
     const [inputs, setInputs] = useState<{ [key: string]: any }>({}); // 기본값
     const [numberMsg, setNumberMsg] = useState(""); // 사업자 등록번호 유효성 메세지
     const [link, setLinkMsg] = useState(""); // 홈페이지 주소 유효성 메세지
@@ -163,6 +165,13 @@ const Team = () => {
             }
         }
     }, [inputs.businessImage])
+    const cancel = () => {
+        setActiveModal(false);
+    }
+    const ok = () => {
+        setActiveModal(false);
+        navigate(-1);
+    }
     useEffect(() => {
         // 수정페이지만 조회
         if (params.teamId != "create") {
@@ -170,87 +179,91 @@ const Team = () => {
         }
     }, [])
     return (
-        <main>
-            <h2 className="h2-title">정보 입력</h2>
-            <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
-            <section className="section1">
-                <h3 className="h3-title">회사 정보</ h3>
-                <div className="row">
-                    <label htmlFor="title">회사명</label>
-                    <input type="text" defaultValue={inputs.title} id="title" onChange={debounce((e) => notCheck(e), 500)} />
-                </div>
+        <>
+            {
+                isActiveModal && <ConfirmModal title="신청 취소" contents="취소하시겠습니까?" cancelEvent={cancel} okEvent={ok} />
+            }
+            <main>
+                <h2 className="h2-title">정보 입력</h2>
+                <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
+                <section className="section1">
+                    <h3 className="h3-title">회사 정보</ h3>
+                    <div className="row">
+                        <label htmlFor="title">회사명</label>
+                        <input type="text" defaultValue={inputs.title} id="title" onChange={debounce((e) => notCheck(e), 500)} />
+                    </div>
 
-                <div className="row">
-                    <label htmlFor="businessNumber">사업자등록번호</label>
-                    <input type="text" defaultValue={inputs.businessNumber} id="businessNumber" onChange={debounce((e) => businessNumberValueCheck(e), 500)} />
-                    <p className="warn-message">{numberMsg}</p>
-                </div>
-                <div className="row">
+                    <div className="row">
+                        <label htmlFor="businessNumber">사업자등록번호</label>
+                        <input type="text" defaultValue={inputs.businessNumber} id="businessNumber" onChange={debounce((e) => businessNumberValueCheck(e), 500)} />
+                        <p className="warn-message">{numberMsg}</p>
+                    </div>
+                    <div className="row">
+                        {
+                            isActiveImageModal && <div className="embed-container" onClick={() => setActiveImageModal(false)}>
+                                <embed src={fileLink || inputs.businessImage} width="90%" height="90%" />
+                            </div>
+                        }
+                        <label htmlFor="businessImage">사업자등록증</label>
+                        <div className="business-image-area">
+                            <div className="attach">
+                                {
+                                    (() => {
+                                        if (inputs.businessImage == null) {
+                                            return <span className="input-file" >사업자등록증을 첨부해주세요.</span>
+                                        } else {
+                                            return <span onClick={() => setActiveImageModal(true)} className="input-file" >{getFileName}</span>
+                                        }
+                                    })()
+                                }
+                                <input type="file" defaultValue={inputs.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
+                                <button className="delete-btn"></button>
+                            </div>
+                            <label htmlFor="businessImage" className="file">찾아보기</label>
+                        </div>
+                        <p className="warn-message">{businessImage}</p>
+                    </div>
+
+                    <div className="row">
+                        <label htmlFor="homepage">홈페이지 주소</label>
+                        <input type="text" defaultValue={inputs.homepage} id="homepage" onChange={debounce((e) => homePageValueCheck(e), 500)} />
+                        <p className="warn-message">{link}</p>
+                    </div>
+                </section>
+                <section>
+                    <h3 className="h3-title">담당자 정보</ h3>
+                    <div className="row">
+                        <label htmlFor="managerName">담당자명</label>
+                        <input type="text" defaultValue={inputs.managerName} id="managerName" onChange={debounce((e) => notCheck(e), 500)} />
+                    </div>
+                    <div className="row">
+                        <label htmlFor="managerPhone">연락처</label>
+                        <input type="text" defaultValue={inputs.managerPhone} id="managerPhone" onChange={debounce((e) => phoneValueCheck(e), 500)} />
+                        <p className="warn-message">{phoneMsg}</p>
+                    </div>
+                    <div className="row">
+                        <label htmlFor="managerEmail">이메일</label>
+                        <input type="text" defaultValue={inputs.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
+                        <p className="warn-message">{emailMsg}</p>
+                    </div>
+                    {/* 팀생성일때만 존재 */}
                     {
-                        isActiveImageModal && <div className="embed-container" onClick={() => setActiveImageModal(false)}>
-                            <embed src={fileLink || inputs.businessImage} width="90%" height="90%" />
+                        pathname == "/teams/create" &&
+                        <div className="row">
+                            <label htmlFor="managerPassword">비밀번호</label>
+                            <input type="password" id="managerPassword" onChange={debounce((e) => notCheck(e), 500)} />
                         </div>
                     }
-                    <label htmlFor="businessImage">사업자등록증</label>
-                    <div className="business-image-area">
-                        <div className="attach">
-                            {
-                                (() => {
-                                    if (inputs.businessImage == null) {
-                                        return <span className="input-file" >사업자등록증을 첨부해주세요.</span>
-                                    } else {
-                                        return <span onClick={() => setActiveImageModal(true)} className="input-file" >{getFileName}</span>
-                                    }
-                                })()
-                            }
-                            <input type="file" defaultValue={inputs.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
-                            <button className="delete-btn"></button>
-                        </div>
-                        <label htmlFor="businessImage" className="file">찾아보기</label>
-                    </div>
-                    <p className="warn-message">{businessImage}</p>
-                </div>
-
-                <div className="row">
-                    <label htmlFor="homepage">홈페이지 주소</label>
-                    <input type="text" defaultValue={inputs.homepage} id="homepage" onChange={debounce((e) => homePageValueCheck(e), 500)} />
-                    <p className="warn-message">{link}</p>
-                </div>
-            </section>
-            <section>
-                <h3 className="h3-title">담당자 정보</ h3>
-                <div className="row">
-                    <label htmlFor="managerName">담당자명</label>
-                    <input type="text" defaultValue={inputs.managerName} id="managerName" onChange={debounce((e) => notCheck(e), 500)} />
-                </div>
-                <div className="row">
-                    <label htmlFor="managerPhone">연락처</label>
-                    <input type="text" defaultValue={inputs.managerPhone} id="managerPhone" onChange={debounce((e) => phoneValueCheck(e), 500)} />
-                    <p className="warn-message">{phoneMsg}</p>
-                </div>
-                <div className="row">
-                    <label htmlFor="managerEmail">이메일</label>
-                    <input type="text" defaultValue={inputs.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
-                    <p className="warn-message">{emailMsg}</p>
-                </div>
+                </section>
                 {/* 팀생성일때만 존재 */}
                 {
-                    pathname == "/teams/create" &&
-                    <div className="row">
-                        <label htmlFor="managerPassword">비밀번호</label>
-                        <input type="password" id="managerPassword" onChange={debounce((e) => notCheck(e), 500)} />
+                    pathname == "/teams/create" && <div className="btn-wrap">
+                        <button type="button" className="cancel-btn" onClick={() => setActiveModal(true)}>취소</button>
+                        <button type="button" className="submit-btn" onClick={() => createTeam(inputs)}>신청</button>
                     </div>
                 }
-            </section>
-            {/* 팀생성일때만 존재 */}
-            {
-                pathname == "/teams/create" && <div className="btn-wrap">
-                    <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
-                    <button type="button" className="submit-btn" onClick={() => createTeam(inputs)}>신청</button>
-                </div>
-            }
-
-        </main >
+            </main>
+        </>
     )
 }
 export default Team
