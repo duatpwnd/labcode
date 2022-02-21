@@ -32,7 +32,7 @@ const SelectBox = () => {
                         <img src={require("images/onme_logo_ico.svg").default} alt="ONME" title="ONME" className="ico" />
                         <span className="text">안전하고 쉬운 투자, 온미</span>
                     </div>
-                    <div className="list" onClick={() => { moveLink("https://onme.gallery/", 1) }}>
+                    <div className="list" onClick={() => { moveLink("https://snaptag.co.kr/", 1) }}>
                         <img src={require("images/labcode_logo_ico.svg").default} alt="LABCODE" title="LABCODE" className="ico" />
                         <span className="text">LAB Code 솔루션 구축하는, 스냅태그</span>
                     </div>
