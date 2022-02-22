@@ -1,0 +1,155 @@
+main {
+  padding: 40px;
+  margin-left: 320px;
+  background: #f6f7f8;
+  min-height: calc(100vh - 160px);
+  .search-area {
+    width: 100%;
+    padding: 0px 22px;
+    height: 60px;
+    line-height: 60px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background: white;
+    display: inline-block;
+    &::placeholder {
+      color: #9ea7ad;
+    }
+  }
+  .guide-message {
+    text-align: center;
+    font-size: 36px;
+    margin-top: 40px;
+  }
+  .category {
+    font-size: 14px;
+    margin: 80px 0 40px 0;
+    .sub-category {
+      color: #525a61;
+      font-weight: 700;
+    }
+    .main-category {
+      color: #79828a;
+      &::after {
+        color: #9ea7ad;
+        margin: 0 8px;
+        content: ">";
+      }
+    }
+  }
+  .team-list {
+    overflow: auto;
+    table {
+      width: 100%;
+      white-space: nowrap;
+      .mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 4;
+      }
+      .image-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        z-index: 5;
+        max-width: 800px;
+        width: 90%;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 24px;
+        color: #9ea7ad;
+        font-size: 14px;
+        background: white;
+        color: #525a61;
+      }
+      .unique {
+        color: #5138e5;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .title {
+        font-weight: 700;
+      }
+      .email {
+        font-family: "Poppins";
+      }
+      th {
+        position: relative;
+        color: #9ea7ad;
+        &:not(:last-child) {
+          &::after {
+            color: #e6e8eb;
+            content: "｜";
+            position: absolute;
+            right: 0;
+            width: 6px;
+            z-index: 1;
+          }
+        }
+      }
+      tbody:before {
+        content: "@";
+        display: block;
+        line-height: 8px;
+        text-indent: -99999px;
+      }
+      tr {
+        td {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          .labcodeImage,
+          .sourceImage {
+            width: 40px;
+            height: 40px;
+          }
+          .convert-ico {
+            width: 18px;
+            height: 6px;
+            margin: 0 32px;
+            background: url("~images/convert_ico.svg") no-repeat center center /
+              18px 6px;
+          }
+        }
+      }
+    }
+  }
+  .pagination {
+    margin-top: 100px;
+    text-align: center;
+    li {
+      width: 40px;
+      display: inline-block;
+      color: #525a61;
+      vertical-align: middle;
+      font-family: "Poppins";
+      cursor: pointer;
+    }
+    .paging-btn {
+      height: 40px;
+    }
+    .prev-page-btn {
+      margin-right: 20px;
+      background: url("~images/prev_page_ico.svg") no-repeat center center /
+        40px 40px;
+    }
+    .next-page-btn {
+      margin-left: 20px;
+      background: url("~images/next_page_ico.svg") no-repeat center center /
+        40px 40px;
+    }
+    .active {
+      color: #111111;
+      font-weight: 700;
+    }
+  }
+}

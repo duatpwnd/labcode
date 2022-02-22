@@ -1,13 +1,8 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "src/reducers";
 import "./Navigator.scoped.scss"
-import history from "src/utils/history";
-import {
-    useLocation
-} from "react-router-dom";
-
+import { NavLink, useParams, useLocation } from "react-router-dom";
+import { useContext } from "react"
+import { AppContext } from "src/App";
 const ParentNavLink = styled(NavLink)`
     width: 100%;
     padding: 25px 35px 25px 58px;
@@ -42,9 +37,8 @@ const ChildNavLink = styled(NavLink)`
     }
 `
 const Navigator = () => {
-    const teamId = useSelector((state: RootState) => {
-        return state.signIn.userInfo?.user.teamId
-    })
+    const params = useParams();
+    const { teamId } = useContext(AppContext).user;
     const { pathname } = useLocation();
     return (
         <nav>
@@ -53,7 +47,16 @@ const Navigator = () => {
                     <ParentNavLink to="/dashboard" background="dashboard_ico.svg">대시보드</ParentNavLink>
                 </li>
                 <li>
-                    <ParentNavLink to={`/teams/${teamId}`} background="team_ico.svg">팀 정보</ParentNavLink>
+                    <ParentNavLink className={pathname.startsWith("/teams") && "active"} to={`/teams/list?currentPage=1&search=`} background="team_ico.svg">팀 정보</ParentNavLink>
+                    <ul>
+                        <li>
+                            <ChildNavLink className={pathname.startsWith(`/teams/detail`) && "active"} to={`/teams/detail/${teamId}`}>상세 정보{params.teamId}</ChildNavLink>
+                        </li>
+                        <li>
+                            <ChildNavLink to={`/teams/list?currentPage=1&search=`}>팀 목록</ChildNavLink>
+                        </li>
+
+                    </ul>
                 </li>
                 <li>
                     <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list?currentPage=1&search=&isActive=false`} background="project_ico.svg">프로젝트</ParentNavLink>

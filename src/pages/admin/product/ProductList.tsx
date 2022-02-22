@@ -4,10 +4,10 @@ import apiUrl from "src/utils/api";
 import styled from "styled-components";
 import _ from 'lodash'
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState, ReactElement } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
+import PaginatedItems from "src/components/common/pagination/Paginate";
 import history from "src/utils/history";
-
 const SearchInput = styled.input`
     padding-left:14px;
     box-sizing:border-box;
@@ -34,29 +34,8 @@ const Btn = styled.button`
         width:100%;
     }
 `
-const Pagination = ({ currentPage, totalPages }) => {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const search = searchParams.get('search');
-    const pageMove = (pageNumber) => {
-        history.push({
-            search: `?currentPage=${pageNumber}&search=${search}`,
-        });
-    }
-    const rendering = () => {
-        const result: ReactElement[] = [];
-        for (let i = 1; i <= totalPages; i++) {
-            result.push(<li className={currentPage == i ? "active" : ""} key={i} onClick={() => pageMove(i)}>{i}</li>);
-        }
-        return result;
-    };
 
-    return <ul className="pagination">{
-        currentPage != 1 && <li className="prev-page-btn paging-btn" onClick={() => pageMove(currentPage - 1)}></li>}{rendering()}{
-            currentPage != totalPages &&
-            <li className="next-page-btn paging-btn" onClick={() => pageMove(currentPage + 1)}></li>}
-    </ul>;
-}
+
 const Product = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -65,7 +44,7 @@ const Product = () => {
     const params = useParams();
     const debounce = _.debounce;
     const navigate = useNavigate();
-    const [{ data, meta, product }, setList] = useState<{ [key: string]: any }>({});
+    const [{ data, product }, setList] = useState<{ [key: string]: any }>({});
 
     const getProductList = (page, search) => {
         history.push({
@@ -74,8 +53,8 @@ const Product = () => {
         axios
             .get(apiUrl.products + `?limit=10&search=${search}&page=${page}`)
             .then((result: any) => {
+                console.log(result.data);
                 setList(result.data);
-                console.log('제품리스트:', result);
             })
     }
     const addSamples = () => {
@@ -121,7 +100,7 @@ const Product = () => {
         <main>
             <div className="search-area">
                 <SearchButton />
-                <SearchInput defaultValue={search} placeholder="제목 검색."
+                <SearchInput defaultValue={search} placeholder="제목 검색"
                     onChange={(e) => searchDebounce(e.target.value)} />
             </div>
             <div className="nav-area">
@@ -134,17 +113,6 @@ const Product = () => {
             {
                 data && data.length == 0 ? <p className="guide-message">등록된 제품이 없습니다. 제품을 생성해주세요.</p> : <div className="product-list">
                     <table>
-                        <colgroup>
-                            <col width="100px" />
-                            <col width="140px" />
-                            <col width="392px" />
-                            <col width="220px" />
-                            <col width="140px" />
-                            <col width="140px" />
-                            <col width="140px" />
-                            <col width="140px" />
-                            <col width="100px" />
-                        </colgroup>
                         <thead>
                             <tr>
                                 <th>
@@ -197,11 +165,9 @@ const Product = () => {
                     </table>
                 </div>
             }
-
             {
-                meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} />
+                data && <PaginatedItems itemsPerPage={1} data={data} />
             }
-
         </main>
     )
 }

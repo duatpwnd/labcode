@@ -13,7 +13,8 @@ import ConfirmModal from "src/components/common/confirm-modal/ConfirmModal";
 const debounce = _.debounce;
 
 const Team = () => {
-    const [isActiveModal, setActiveModal] = useState(false);
+    const [isActiveCancelApplyModal, setActiveCancelApplyModal] = useState(false); // 신청 취소 모달
+    const [isActiveApplyModal, setActiveApplyModal] = useState(false); // 신청 모달
     const [inputs, setInputs] = useState<{ [key: string]: any }>({}); // 기본값
     const [numberMsg, setNumberMsg] = useState(""); // 사업자 등록번호 유효성 메세지
     const [link, setLinkMsg] = useState(""); // 홈페이지 주소 유효성 메세지
@@ -27,7 +28,6 @@ const Team = () => {
     const navigate = useNavigate();
     // 팀수정
     const modify = (body, teamId) => {
-        console.log(body);
         const formData = new FormData();
         for (let key in body) {
             formData.append(key, body[key as never]);
@@ -74,6 +74,8 @@ const Team = () => {
                 }).catch((err: any) => {
                     console.log('팀생성에러:', err);
                 });
+        } else {
+            setActiveApplyModal(false)
         }
     }
     // 팀조회
@@ -159,12 +161,13 @@ const Team = () => {
             return fileType;
         }
     }, [inputs.businessImage])
-
-    const cancel = () => {
-        setActiveModal(false);
+    // 신청 완료 모달
+    const submit = () => {
+        createTeam(inputs)
     }
+    // 신청 취소 모달
     const ok = () => {
-        setActiveModal(false);
+        setActiveCancelApplyModal(false);
         navigate(-1);
     }
     useEffect(() => {
@@ -176,7 +179,10 @@ const Team = () => {
     return (
         <>
             {
-                isActiveModal && <ConfirmModal title="신청 취소" contents="취소하시겠습니까?" cancelEvent={cancel} okEvent={ok} />
+                isActiveApplyModal && <ConfirmModal title="신청 완료" contents="담당자가 2~3일 내 연락드릴 예정입니다." cancelEvent={() => setActiveApplyModal(false)} okEvent={submit} />
+            }
+            {
+                isActiveCancelApplyModal && <ConfirmModal title="신청 취소" contents="취소하시겠습니까?" cancelEvent={() => setActiveCancelApplyModal(false)} okEvent={ok} />
             }
             <main>
                 <h2 className="h2-title">정보 입력</h2>
@@ -263,8 +269,8 @@ const Team = () => {
                 {/* 팀생성일때만 존재 */}
                 {
                     pathname == "/teams/create" && <div className="btn-wrap">
-                        <button type="button" className="cancel-btn" onClick={() => setActiveModal(true)}>취소</button>
-                        <button type="button" className="submit-btn" onClick={() => createTeam(inputs)}>신청</button>
+                        <button type="button" className="cancel-btn" onClick={() => setActiveCancelApplyModal(true)}>취소</button>
+                        <button type="button" className="submit-btn" onClick={() => setActiveApplyModal(true)}>신청</button>
                     </div>
                 }
             </main>
