@@ -24,12 +24,10 @@ export default function CreateRoutes() {
             <Route path={`/projects/list`} element={<ProjectList />} />
             <Route path={`/projects/create`} element={<ModifyProject />} />
             <Route path="/projects/:projectId/edit" element={<ModifyProject />} />
-
             {/* 프로젝트 :: E */}
 
             {/* 제품 :: S */}
             <Route path="/products/list" element={<ProductList />} />
-
             {/* 제품 :: E */}
             <Route path="/projects/:projectId/manage/:industryId" element={<CategoryManagement />} />
             <Route path="/products/create" element={<CreateProduct />}>

@@ -29,7 +29,7 @@ main {
     }
     .row {
       margin-top: 24px;
-      .embed-container {
+      .mask {
         position: fixed;
         top: 0;
         left: 0;
@@ -38,14 +38,24 @@ main {
         z-index: 4;
         margin: auto;
         background: rgba(0, 0, 0, 0.7);
-        embed {
-          position: absolute;
-          top: 0%;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          margin: auto;
-        }
+      }
+      embed {
+        position: absolute;
+        top: 0%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        z-index: 5;
+      }
+      .image-modal {
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        z-index: 4;
       }
       label {
         width: 180px;
@@ -91,6 +101,7 @@ main {
             vertical-align: middle;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: #9ea7ad;
           }
           .delete-btn {
             width: 36px;

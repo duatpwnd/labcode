@@ -29,18 +29,17 @@ const Team = () => {
     const modify = (body, teamId) => {
         console.log(body);
         const formData = new FormData();
-        if (body.businessImage != null) {
-            for (let key in body) {
-                formData.append(key, body[key as never]);
-            }
-            axios
-                .patch(apiUrl.team + `/${teamId}`, formData)
-                .then((result: any) => {
-                    console.log("수정결과:", result);
-                }).catch((err: any) => {
-                    console.log('수정에러:', err);
-                });
+        for (let key in body) {
+            formData.append(key, body[key as never]);
         }
+        axios
+            .patch(apiUrl.team + `/${teamId}`, formData)
+            .then((result: any) => {
+                console.log("수정결과:", result);
+            }).catch((err: any) => {
+                console.log('수정에러:', err);
+            });
+
     }
     // 팀생성
     const createTeam = (inputs) => {
@@ -49,7 +48,6 @@ const Team = () => {
         const emailCheck = emailReg.test(inputs.managerEmail)
         const numberCheck = checkCorporateRegistrationNumber((inputs.businessNumber || "").replaceAll("-", ""))
         const homepageCheck = homePageReg.test(inputs.homepage);
-        const businessImageCheck = inputs.businessImage == null;
         if (phoneCheck == false) {
             setPhoneMsg("올바른 번호의 형식이 아닙니다.");
         }
@@ -62,10 +60,7 @@ const Team = () => {
         if (homepageCheck == false) {
             setLinkMsg("올바른 주소가 아닙니다.")
         }
-        if (businessImageCheck) {
-            setBusinessImage("사업자 등록증을 첨부해주세요.")
-        }
-        if (phoneCheck && emailCheck && numberCheck && homepageCheck && !businessImageCheck) {
+        if (phoneCheck && emailCheck && numberCheck && homepageCheck) {
             const formData = new FormData();
             for (let key in inputs) {
                 formData.append(key, inputs[key as never]);
@@ -150,21 +145,21 @@ const Team = () => {
         if (params.teamId != "create") {
             modify(data, params.teamId)
         }
-        if (e.target.id == "businessImage") {
+        if (e.target.id == "businessImage" && e.target.files[0] != null) {
             setBusinessImage("");
             setFileLink(URL.createObjectURL(e.target.files[0]))
         }
 
     }
-    const getFileName = useMemo(() => {
-        if (typeof inputs.businessImage == "object") {
-            return inputs.businessImage.name
-        } else {
-            if (inputs.businessImage != undefined) {
-                return inputs.businessImageTitle + " (" + inputs.businessImageSize + ")"
-            }
+    const fileCheck = useMemo(() => {
+        if (inputs.businessImage != undefined) {
+            let fileLength = (inputs.businessImage.name || inputs.businessImage).length;
+            let fileDot = (inputs.businessImage.name || inputs.businessImage).lastIndexOf(".");
+            let fileType = (inputs.businessImage.name || inputs.businessImage).substring(fileDot + 1, fileLength);
+            return fileType;
         }
     }, [inputs.businessImage])
+
     const cancel = () => {
         setActiveModal(false);
     }
@@ -190,34 +185,44 @@ const Team = () => {
                     <h3 className="h3-title">회사 정보</ h3>
                     <div className="row">
                         <label htmlFor="title">회사명</label>
-                        <input type="text" defaultValue={inputs.title} id="title" onChange={debounce((e) => notCheck(e), 500)} />
+                        <input type="text" placeholder="회사명 입력" defaultValue={inputs.title} id="title" onChange={debounce((e) => notCheck(e), 500)} />
                     </div>
 
                     <div className="row">
                         <label htmlFor="businessNumber">사업자등록번호</label>
-                        <input type="text" defaultValue={inputs.businessNumber} id="businessNumber" onChange={debounce((e) => businessNumberValueCheck(e), 500)} />
+                        <input type="text" placeholder="사업자등록번호 입력" defaultValue={inputs.businessNumber} id="businessNumber" onChange={debounce((e) => businessNumberValueCheck(e), 500)} />
                         <p className="warn-message">{numberMsg}</p>
                     </div>
                     <div className="row">
                         {
-                            isActiveImageModal && <div className="embed-container" onClick={() => setActiveImageModal(false)}>
-                                <embed src={fileLink || inputs.businessImage} width="90%" height="90%" />
-                            </div>
+                            isActiveImageModal && <>
+                                <div className="mask" onClick={() => setActiveImageModal(false)}>
+                                </div>
+                                {
+                                    fileCheck == "PDF" || fileCheck == "pdf" ? <embed src={fileLink || inputs.businessImage} width="90%" height="90%" /> : <img src={fileLink || inputs.businessImage} className="image-modal" />
+
+                                }
+                            </>
+
                         }
-                        <label htmlFor="businessImage">사업자등록증</label>
+                        <label htmlFor="businessImage">사업자등록증
+                        </label>
                         <div className="business-image-area">
                             <div className="attach">
                                 {
                                     (() => {
                                         if (inputs.businessImage == null) {
-                                            return <span className="input-file" >사업자등록증을 첨부해주세요.</span>
+                                            return <span className="input-file" >사업자등록증 첨부</span>
                                         } else {
-                                            return <span onClick={() => setActiveImageModal(true)} className="input-file" >{getFileName}</span>
+                                            return <span onClick={() => setActiveImageModal(true)} className="input-file" >{inputs.businessImage.name || inputs.businessImageTitle + " (" + inputs.businessImageSize + ")"}</span>
                                         }
                                     })()
                                 }
                                 <input type="file" defaultValue={inputs.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
-                                <button className="delete-btn"></button>
+                                {
+                                    inputs.businessImage != null && <button className="delete-btn" onClick={() => notCheck({ target: { id: "businessImage", files: [null] } })}></button>
+
+                                }
                             </div>
                             <label htmlFor="businessImage" className="file">찾아보기</label>
                         </div>
@@ -226,7 +231,7 @@ const Team = () => {
 
                     <div className="row">
                         <label htmlFor="homepage">홈페이지 주소</label>
-                        <input type="text" defaultValue={inputs.homepage} id="homepage" onChange={debounce((e) => homePageValueCheck(e), 500)} />
+                        <input type="text" placeholder="홈페이지 주소 입력" defaultValue={inputs.homepage} id="homepage" onChange={debounce((e) => homePageValueCheck(e), 500)} />
                         <p className="warn-message">{link}</p>
                     </div>
                 </section>
@@ -234,16 +239,16 @@ const Team = () => {
                     <h3 className="h3-title">담당자 정보</ h3>
                     <div className="row">
                         <label htmlFor="managerName">담당자명</label>
-                        <input type="text" defaultValue={inputs.managerName} id="managerName" onChange={debounce((e) => notCheck(e), 500)} />
+                        <input type="text" placeholder="담당자명 입력" defaultValue={inputs.managerName} id="managerName" onChange={debounce((e) => notCheck(e), 500)} />
                     </div>
                     <div className="row">
                         <label htmlFor="managerPhone">연락처</label>
-                        <input type="text" defaultValue={inputs.managerPhone} id="managerPhone" onChange={debounce((e) => phoneValueCheck(e), 500)} />
+                        <input type="text" placeholder="연락처 입력" defaultValue={inputs.managerPhone} id="managerPhone" onChange={debounce((e) => phoneValueCheck(e), 500)} />
                         <p className="warn-message">{phoneMsg}</p>
                     </div>
                     <div className="row">
                         <label htmlFor="managerEmail">이메일</label>
-                        <input type="text" defaultValue={inputs.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
+                        <input type="text" placeholder="이메일 입력" defaultValue={inputs.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
                         <p className="warn-message">{emailMsg}</p>
                     </div>
                     {/* 팀생성일때만 존재 */}
@@ -251,7 +256,7 @@ const Team = () => {
                         pathname == "/teams/create" &&
                         <div className="row">
                             <label htmlFor="managerPassword">비밀번호</label>
-                            <input type="password" id="managerPassword" onChange={debounce((e) => notCheck(e), 500)} />
+                            <input type="password" placeholder="8~16자, 소문자, 숫자 입력" id="managerPassword" onChange={debounce((e) => notCheck(e), 500)} />
                         </div>
                     }
                 </section>

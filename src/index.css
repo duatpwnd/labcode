@@ -36,6 +36,10 @@ format을 작성해서 해당폰트를 지원해주는 브라우저에서 해당
   src: url("fonts/Poppins-Bold.woff") format("woff");
 }
 button,
+input {
+  cursor: pointer;
+}
+button,
 input,
 select,
 table,
