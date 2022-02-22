@@ -44,7 +44,7 @@ const Product = () => {
     const params = useParams();
     const debounce = _.debounce;
     const navigate = useNavigate();
-    const [{ data, product }, setList] = useState<{ [key: string]: any }>({});
+    const [{ data, meta, product }, setList] = useState<{ [key: string]: any }>({});
 
     const getProductList = (page, search) => {
         history.push({
@@ -166,7 +166,7 @@ const Product = () => {
                 </div>
             }
             {
-                data && <PaginatedItems itemsPerPage={1} data={data} />
+                data && <PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
             }
         </main>
     )

@@ -74,11 +74,10 @@ const PaginatedItems = ({ itemsPerPage, data }) => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const search = searchParams.get('search');
-    const currentPage = searchParams.get('currentPage');
+    const currentPage = Number(searchParams.get('currentPage'));
     useEffect(() => {
         // Fetch items from another resources.
         const endOffset = itemOffset + itemsPerPage;
-        console.log(`Loading items from ${itemOffset} to ${endOffset}`);
         history.push({
             search: `?currentPage=${endOffset}&search=${search}`,
         });
@@ -96,8 +95,8 @@ const PaginatedItems = ({ itemsPerPage, data }) => {
             <MyPaginate
                 nextLabel=""
                 onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                marginPagesDisplayed={1}
                 pageCount={pageCount}
                 previousLabel=""
                 pageClassName="page-item"
