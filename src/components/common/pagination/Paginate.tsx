@@ -83,8 +83,16 @@ const PaginatedItems = ({ itemsPerPage, data }) => {
         });
         setCurrentItems(data.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(data.length / itemsPerPage));
+
     }, [itemOffset, itemsPerPage]);
 
+    useEffect(() => {
+        if (currentPage != 1) {
+            history.push({
+                search: `?currentPage=${currentPage}&search=${search}`,
+            });
+        }
+    }, [currentPage])
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
         const newOffset = (event.selected * itemsPerPage) % data.length;
@@ -93,6 +101,7 @@ const PaginatedItems = ({ itemsPerPage, data }) => {
     return (
         <>
             <MyPaginate
+                initialPage={currentPage - 1}
                 nextLabel=""
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
