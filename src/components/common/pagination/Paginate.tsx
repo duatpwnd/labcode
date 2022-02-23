@@ -12,11 +12,11 @@ const MyPaginate = styled(ReactPaginate).attrs({
     margin-top:100px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    list-style-type: none;
-    padding: 0 5rem;
+    justify-content: center;
     li{
         align-self: center;
+        flex:0.1;
+        text-align:center;
         a{
             cursor: pointer;
             font-family:Poppins;
@@ -43,27 +43,11 @@ const MyPaginate = styled(ReactPaginate).attrs({
 
         }
     }
-    .previous,
-    .next,
-    .break{
-        a{
-         border-color: transparent;
-        }
-    }
     .active {
-        a{
-        font-weight:700;
-        color:#5138E5;
+        a {
+            font-weight:700;
+            color:#5138E5;
         }
-    }
-    .disabled {
-        a{
-      color: grey;
-    }
-    }
-    li.disable,
-    li.disabled a {
-      cursor: default;
     }
   `;
 const PaginatedItems = ({ itemsPerPage, data }) => {

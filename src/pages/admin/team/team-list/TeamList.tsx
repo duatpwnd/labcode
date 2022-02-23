@@ -5,22 +5,7 @@ import history from "src/utils/history";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import SearchInput from "src/components/common/search-input/SearchInput";
-const Pagination = ({ currentPage, totalPages, getTeamList }) => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const search = searchParams.get("search");
-    const rendering = () => {
-        const result: ReactElement[] = [];
-        for (let i = 1; i <= totalPages; i++) {
-            result.push(<li className={currentPage == i ? "active" : ""} key={i} onClick={() => getTeamList(i, search)}>{i}</li>);
-        }
-        return result;
-    };
-    return <ul className="pagination">{
-        currentPage != 1 && <li className="prev-page-btn paging-btn" onClick={() => getTeamList(currentPage - 1, search)}></li>}{rendering()}{
-            currentPage != totalPages &&
-            <li className="next-page-btn paging-btn" onClick={() => getTeamList(currentPage + 1, search)}></li>}
-    </ul>;
-}
+import PaginatedItems from "src/components/common/pagination/Paginate";
 const TeamList = () => {
     const navigate = useNavigate();
     const [isActiveBsnImgModal, setActiveBsnImgModal] = useState(-1);
@@ -118,9 +103,8 @@ const TeamList = () => {
             }
 
             {
-                meta != undefined && data.length > 0 && <Pagination getTeamList={getTeamList} currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} />
+                data && <PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
             }
-
         </main >
     )
 }
