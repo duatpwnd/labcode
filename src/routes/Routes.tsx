@@ -22,6 +22,7 @@ export default function CreateRoutes() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/teams/list" element={<TeamList />} />
             <Route path="/teams/detail/:teamId" element={<Team />} />
+            <Route path="/teams/create" element={<Team />} />
             {/* 프로젝트 :: S */}
             <Route path={`/projects/list`} element={<ProjectList />} />
             <Route path={`/projects/create`} element={<ModifyProject />} />
