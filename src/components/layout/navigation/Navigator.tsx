@@ -62,7 +62,7 @@ const Navigator = () => {
                     <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list?currentPage=1&search=&isActive=true`} background="project_ico.svg">프로젝트</ParentNavLink>
                     <ul>
                         <li>
-                            <ChildNavLink to={`/projects/list?currentPage=1&search=&isActive=true`}>프로젝트 목록</ChildNavLink>
+                            <ChildNavLink className={pathname.includes(`/projects/edit`) && "active"} to={`/projects/list?currentPage=1&search=&isActive=true`}>프로젝트 목록</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={`/projects/create`}>프로젝트 등록</ChildNavLink>
@@ -76,7 +76,7 @@ const Navigator = () => {
                     <ParentNavLink className={pathname.startsWith("/products") && "active"} to={`/products/list?currentPage=1&search=`} background="product_ico.svg">제품</ParentNavLink>
                     <ul>
                         <li>
-                            <ChildNavLink to={`/products/list?currentPage=1&search=`}>제품 목록</ChildNavLink>
+                            <ChildNavLink className={pathname.includes("/products/edit") && "active"} to={`/products/list?currentPage=1&search=`}>제품 목록</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={"/products/create/defaultInfo"}>제품 등록</ChildNavLink>

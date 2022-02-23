@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import history from "src/utils/history";
-
+import qs from 'query-string';
 const MyPaginate = styled(ReactPaginate).attrs({
     activeClassName: 'active', // default to "disabled"
 })`
@@ -57,54 +57,43 @@ const PaginatedItems = ({ itemsPerPage, data }) => {
     const [itemOffset, setItemOffset] = useState(0);
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const search = searchParams.get('search');
     const currentPage = Number(searchParams.get('currentPage'));
+    const queryParams = qs.parse(location.search);
     useEffect(() => {
-        // Fetch items from another resources.
+        setPageCount(Math.ceil(data.length / itemsPerPage));
+    }, [data])
+    useEffect(() => {
         const endOffset = itemOffset + itemsPerPage;
-        history.push({
-            search: `?currentPage=${endOffset}&search=${search}`,
-        });
         setCurrentItems(data.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(data.length / itemsPerPage));
-
     }, [itemOffset, itemsPerPage]);
-
-    useEffect(() => {
-        if (currentPage != 1) {
-            history.push({
-                search: `?currentPage=${currentPage}&search=${search}`,
-            });
-        }
-    }, [currentPage])
-    // Invoke when user click to request another page.
     const handlePageClick = (event) => {
         const newOffset = (event.selected * itemsPerPage) % data.length;
+        const newQueries = { ...queryParams, currentPage: event.selected == 0 ? 1 : event.selected + 1 };
         setItemOffset(newOffset);
+        history.push({ search: qs.stringify(newQueries) });
     };
     return (
-        <>
-            <MyPaginate
-                initialPage={currentPage - 1}
-                nextLabel=""
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
-                marginPagesDisplayed={1}
-                pageCount={pageCount}
-                previousLabel=""
-                pageClassName="page-item"
-                pageLinkClassName="page-link"
-                previousClassName="page-item"
-                previousLinkClassName="page-link"
-                nextClassName="page-item"
-                nextLinkClassName="page-link"
-                breakLabel="..."
-                breakClassName="page-item"
-                breakLinkClassName="page-link"
-                containerClassName="pagination"
-                activeClassName="active"
-            />
-        </>
+        <MyPaginate
+            forcePage={currentPage - 1}
+            nextLabel=""
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={1}
+            pageCount={pageCount}
+            previousLabel=""
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+        />
     );
 }
 export default PaginatedItems;

@@ -6,10 +6,10 @@ import axios from "axios";
 import apiUrl from "src/utils/api";
 import _ from 'lodash'
 import history from "src/utils/history";
-import { ReactElement } from "react";
 import "./ProjectList.scoped.scss"
 import SelectBox from "src/components/common/base-select/SelectBox";
 import SearchInput from "src/components/common/search-input/SearchInput";
+import PaginatedItems from "src/components/common/pagination/Paginate";
 const StatusText = styled.strong`
     font-size:14px;
     text-align:center;
@@ -18,30 +18,6 @@ const StatusText = styled.strong`
     padding:9px 8px;
     border-radius:4px;
 `
-const Pagination = ({ currentPage, totalPages }) => {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const isActive = searchParams.get('isActive');
-    const search = searchParams.get('search');
-    const pageMove = (pageNumber) => {
-        history.push({
-            search: `?currentPage=${pageNumber}&search=${search}&isActive=${isActive}`,
-        });
-    }
-    const rendering = () => {
-        const result: ReactElement[] = [];
-        for (let i = 1; i <= totalPages; i++) {
-            result.push(<li className={currentPage == i ? "active" : ""} key={i} onClick={() => pageMove(i)}>{i}</li>);
-        }
-        return result;
-    };
-
-    return <ul className="pagination">{
-        currentPage != 1 && <li className="prev-page-btn paging-btn" onClick={() => pageMove(currentPage - 1)}></li>}{rendering()}{
-            currentPage != totalPages &&
-            <li className="next-page-btn paging-btn" onClick={() => pageMove(currentPage + 1)}></li>}
-    </ul>;
-}
 const Project = () => {
     const [message, setMessage] = useState("");
     const [{ data, meta }, setupList] = useState<{ [key: string]: any }>({});
@@ -173,7 +149,7 @@ const Project = () => {
                                     <div className="menu" ref={el => { if (el != null) { setPosition(el); (menu as { [key: string]: any }).current = el; } }}>
                                         <h3 className="h3-title">{list.title}</h3>
                                         <ul >
-                                            <li className="manage" onClick={() => navigate(`/projects/${list.id}/edit`)}>
+                                            <li className="manage" onClick={() => navigate(`/projects/edit/${list.id}`)}>
                                                 프로젝트 관리
                                             </li>
                                             <li className="delete" onClick={() => isPossibleDelete(list.isActive, list.id)}>
@@ -188,9 +164,9 @@ const Project = () => {
                     }
                 </ul>
             }
-
             {
-                meta != undefined && data.length > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} />
+
+                data && data.length > 0 && < PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
             }
         </main>
     )

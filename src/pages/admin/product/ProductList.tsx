@@ -8,21 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import PaginatedItems from "src/components/common/pagination/Paginate";
 import history from "src/utils/history";
-const SearchInput = styled.input`
-    padding-left:14px;
-    box-sizing:border-box;
-    font-size:18px;
-    width:calc(100% - 24px);
-    overflow:hidden;
-    text-overflow:ellipsis;
-`
-const SearchButton = styled.button`
-    width:24px;
-    height:24px;
-    vertical-align:middle;
-    background: url(${require('images/search_ico.svg').default}) no-repeat center center /
-    24px 24px;
-`
+import SearchInput from "src/components/common/search-input/SearchInput";
 const Btn = styled.button`
     background:${props => props.background};
     border-radius:8px;
@@ -34,18 +20,14 @@ const Btn = styled.button`
         width:100%;
     }
 `
-
-
 const Product = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const currentPage = searchParams.get('currentPage');
     const search = searchParams.get('search');
     const params = useParams();
-    const debounce = _.debounce;
     const navigate = useNavigate();
     const [{ data, meta, product }, setList] = useState<{ [key: string]: any }>({});
-
     const getProductList = (page, search) => {
         history.push({
             search: `?currentPage=${page}&search=${search}`,
@@ -88,21 +70,12 @@ const Product = () => {
                 console.log('기본정보적용에러:', err);
             });
     }
-    const searchDebounce = debounce((query) => {
-        console.log('검색어', query);
-        getProductList(1, query)
-    }, 500);
     useEffect(() => {
-        console.log("입장");
         getProductList(currentPage, search);
-    }, [currentPage])
+    }, [currentPage, search])
     return (
         <main>
-            <div className="search-area">
-                <SearchButton />
-                <SearchInput defaultValue={search} placeholder="제목 검색"
-                    onChange={(e) => searchDebounce(e.target.value)} />
-            </div>
+            <SearchInput placeholder="제목 검색" />
             <div className="nav-area">
                 <strong className="project-title">{product && product.title}</strong>
                 <div className="btn-wrap">
@@ -147,7 +120,7 @@ const Product = () => {
                         <tbody>
                             {
                                 data != undefined &&
-                                data.map((products, index) => <tr key={index} onClick={() => navigate(`${products.id}/defaultInfo`)}>
+                                data.map((products, index) => <tr key={index} onClick={() => navigate(`/products/edit/${products.id}/${products.projectId}/defaultInfo`)}>
                                     <td>
                                         {products.key}
                                     </td>
@@ -166,7 +139,7 @@ const Product = () => {
                 </div>
             }
             {
-                data && <PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
+                data && data.length > 0 && < PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
             }
         </main>
     )

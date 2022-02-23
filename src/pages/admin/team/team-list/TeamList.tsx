@@ -103,7 +103,8 @@ const TeamList = () => {
             }
 
             {
-                data && <PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
+
+                data && data.length > 0 && < PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
             }
         </main >
     )

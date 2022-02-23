@@ -8,7 +8,7 @@ const SearchInput = ({ placeholder }) => {
     const location = useLocation();
     const queryParams = qs.parse(location.search);
     const search = (keyword) => {
-        const newQueries = { ...queryParams, search: keyword };
+        const newQueries = { ...queryParams, search: keyword, currentPage: 1 };
         history.push({ search: qs.stringify(newQueries) });
     }
     return <div className="search-area">

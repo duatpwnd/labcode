@@ -93,13 +93,13 @@ const DefaultInfo = () => {
     const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
     const [channelTypes, setChannelTypes] = useState<{ [key: string]: any }[]>([]);
     const [inputs, setInputs] = useState({
-        projectId: params.productId == "add" ? params.projectId : params.productId,
+        projectId: params.productId == undefined ? params.projectId : params.productId,
         embedding: "2.5",
         channel: "lab_rgb",
         title: "",
         description: "",
         labcodeImage: "",
-        sourceImage: params.productId == "add" ? null : {} as { [key: string]: any },
+        sourceImage: params.productId == undefined ? null : {} as { [key: string]: any },
         url: "",
         scale: 4,
         alpha: 8
@@ -146,7 +146,7 @@ const DefaultInfo = () => {
         axios
             .post(apiUrl.products, formData)
             .then((result: any) => {
-                if (params.productId == "add") {
+                if (params.productId == undefined) {
                     navigate(`/projects/${params.projectId}/products/${result.data.data.id}/defaultInfo`);
                 }
             }).catch((err: any) => {
@@ -178,8 +178,10 @@ const DefaultInfo = () => {
                 console.log("조회에러", err);
             })
         // 수정페이지일때
-        if (params.productId != "add") {
+        console.log("params.productId", params.productId);
+        if (params.productId != undefined) {
             getProductDetail();
+        } else {
         }
     }, [params.productId])
     return (
