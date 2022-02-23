@@ -16,8 +16,8 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     const [isSubLastPage, setSubLastPage] = useState(false); //  소분류 마지막 페이지 유무
     const [mainCategoryList, setMainCategoryList] = useState<{ [key: string]: any }[]>([]); // 대분류 카테고리 리스트
     const [subCategoryList, setSubCategoryList] = useState<{ [key: string]: any }[]>([]); // 소분류 카테고리 리스트
-    const subModal = useRef<HTMLUListElement>(null);
-    const mainModal = useRef<HTMLUListElement>(null);
+    const subModal = useRef<HTMLDivElement>(null);
+    const mainModal = useRef<HTMLDivElement>(null);
     const debounce = _.debounce;
     const params = useParams();
     const navigate = useNavigate();
@@ -40,6 +40,7 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     // 대분류 선택 함수 
     const selectMainCategories = (id, title) => {
         eventHandler({ target: { id: 'mainCategoryId', value: id } })
+        eventHandler({ target: { id: 'mainCategory', value: { title: title } } })
         setMainCategoriesMenu(false); // 탭닫기
         setMainCategoryId(id); // 대분류 아이디 설정
         getSubCategories("", 1, id).then((result) => {
@@ -50,6 +51,7 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     // 소분류 선택
     const selectSubCategories = (title, id) => {
         eventHandler({ target: { id: 'subCategoryId', value: id } })
+        eventHandler({ target: { id: 'subCategory', value: { title: title } } })
         setSubCategoriesMenu(false);
     }
     // 대분류 무한스크롤 함수
@@ -99,9 +101,7 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     }
     const handleCloseModal = (e) => {
         if (mainCategoriesMenu && (!mainModal.current?.contains(e.target))) setMainCategoriesMenu(false);
-
         if (subCategoriesMenu && (!subModal.current?.contains(e.target))) setSubCategoriesMenu(false);
-
     }
     useEffect(() => {
         window.addEventListener("click", handleCloseModal)
@@ -123,10 +123,10 @@ const SelectPagination = ({ inputs, eventHandler }) => {
                 <div className="select-box classify-box" onClick={() => setMainCategoriesMenu(!mainCategoriesMenu)}>{inputs.mainCategory?.title || "대분류를 선택해주세요."}</div>
                 <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${inputs.industryId}?currentPage=1`)}>편집</button>
 
-                <div className="select-menu" style={{ visibility: mainCategoriesMenu ? 'visible' : 'hidden' }}>
+                <div className="select-menu" ref={mainModal} style={{ visibility: mainCategoriesMenu ? 'visible' : 'hidden' }}>
                     <input autoFocus type="text" onChange={debounce((e) => onChange(e), 500)} />
                     {
-                        mainCategoryList.length > 0 ? <ul onScroll={mainCategoriesScroll} ref={mainModal}>
+                        mainCategoryList.length > 0 ? <ul onScroll={mainCategoriesScroll} >
                             {
                                 mainCategoryList.map((items, index) => {
                                     return (
@@ -144,10 +144,10 @@ const SelectPagination = ({ inputs, eventHandler }) => {
                     <label htmlFor="mainCategories">소분류</label>
                     <div className="select-box classify-box" onClick={() => setSubCategoriesMenu(!subCategoriesMenu)}>{inputs.subCategory?.title || "소분류를 선택해주세요."}</div>
                     <button className="edit-btn" onClick={() => navigate(`/projects/${params.projectId}/manage/${inputs.industryId}?currentPage=1`)}>편집</button>
-                    <div className="select-menu" style={{ visibility: subCategoriesMenu ? 'visible' : 'hidden' }}>
+                    <div className="select-menu" ref={subModal} style={{ visibility: subCategoriesMenu ? 'visible' : 'hidden' }}>
                         <input type="text" autoFocus onChange={debounce((e) => searchSubCategories(e), 500)} />
                         {
-                            subCategoryList.length > 0 ? <ul onScroll={subCategoriesScroll} ref={subModal}>
+                            subCategoryList.length > 0 ? <ul onScroll={subCategoriesScroll}>
                                 {
                                     subCategoryList.map((items, index) => {
                                         return (

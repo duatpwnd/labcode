@@ -51,6 +51,9 @@ main {
           border-radius: 8px;
           width: calc(100% - 180px);
           outline: none;
+          &::placeholder {
+            color: #9ea7ad;
+          }
         }
         input {
           display: inline-block;
@@ -61,8 +64,7 @@ main {
           width: calc(100% - 180px);
           vertical-align: middle;
           &::placeholder {
-            font-weight: 700;
-            color: black;
+            color: #9ea7ad;
           }
         }
 

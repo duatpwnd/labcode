@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -8,30 +8,8 @@ import _ from 'lodash'
 import history from "src/utils/history";
 import { ReactElement } from "react";
 import "./ProjectList.scoped.scss"
-const SearchInput = styled.input`
-    padding-left:14px;
-    box-sizing:border-box;
-    font-size:18px;
-    width:calc(100% - 24px);
-    overflow:hidden;
-    text-overflow:ellipsis;
-`
-const SearchButton = styled.button`
-    width:24px;
-    height:24px;
-    vertical-align:middle;
-    background: url(${require('images/search_ico.svg').default}) no-repeat center center /
-    24px 24px;
-`
-const CreateBtn = styled.button`
-    background: #5138E5;
-    border-radius: 8px;
-    font-size: 18px;
-    width: 141px;
-    padding: 14px 0;
-    color: white;
-   
-`
+import SelectBox from "src/components/common/base-select/SelectBox";
+import SearchInput from "src/components/common/search-input/SearchInput";
 const StatusText = styled.strong`
     font-size:14px;
     text-align:center;
@@ -64,30 +42,11 @@ const Pagination = ({ currentPage, totalPages }) => {
             <li className="next-page-btn paging-btn" onClick={() => pageMove(currentPage + 1)}></li>}
     </ul>;
 }
-const LnbMenu = ({ eventHandler, child }) => {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const isActive = searchParams.get('isActive');
-    const search = searchParams.get('search');
-    const [list, setList] = useState({
-        arr: [{ value: "전체", type: "" }, { value: "신청접수", type: false }, { value: "승인완료", type: true }]
-    })
-    return (
-        <div className="btn-wrap">
-            {
-                list.arr.map((el, index) => <button key={index} className={String(el.type) == String(isActive) ? 'active category-btn' : 'category-btn'} onClick={() => {
-                    eventHandler(1, search, el.type)
-                }}>{el.value}</button>)
-            }
-            {child}
-        </div>
-    )
-}
 const Project = () => {
-    const [{ data, meta }, setupList] = useState<{ [key: string]: any }>({});
-    const [menuIndex, menuIndexUpdate] = useState(-1);
     const [message, setMessage] = useState("");
-    const menu = useRef(null);
+    const [{ data, meta }, setupList] = useState<{ [key: string]: any }>({});
+    const [menuIndex, menuIndexUpdate] = useState(-1); // 각 프로젝트 메뉴 모달
+    const menu = useRef(null); // 메뉴 모달 객체
     const debounce = _.debounce;
     const navigate = useNavigate()
     const location = useLocation();
@@ -95,9 +54,6 @@ const Project = () => {
     const currentPage = searchParams.get('currentPage');
     const isActive = searchParams.get('isActive');
     const search = searchParams.get('search');
-    const searchDebounce = debounce((query) => {
-        getProjectList(1, query, isActive);
-    }, 500);
     const getProjectList = (page, search, isActive) => {
         history.push({
             search: `?currentPage=${page}&search=${search}&isActive=${isActive}`,
@@ -118,6 +74,8 @@ const Project = () => {
                 }
                 menuIndexUpdate(-1);
                 setupList(result.data);
+            }).catch((err) => {
+                console.log("프로젝트리스트 조회에러:", err);
             })
     }
     const deleteProject = (id) => {
@@ -130,28 +88,6 @@ const Project = () => {
                 console.log('프로젝트삭제에러:', err);
             });
     }
-    const createProject = debounce(() => {
-        const body = {
-            title: "제목 미정",
-            description: "설명 미정",
-            bannerImage: "",
-            versionId: 1,
-            countryId: 1,
-            homepage: "http://snaptag.co.kr/"
-        }
-        const formData = new FormData();
-        for (let key in body) {
-            formData.append(key, body[key as never]);
-        }
-        axios
-            .post(apiUrl.project, formData)
-            .then((result: any) => {
-                console.log("프로젝트생성결과:", result);
-                navigate(`/projects/${result.data.data.id}/edit`)
-            }).catch((err: any) => {
-                console.log('프로젝트생성에러:', err);
-            });
-    }, 500);
     const setPosition = (el) => {
         const scrollHeight = document.body.scrollHeight;
         const windowScrollY = window.scrollY;
@@ -176,18 +112,37 @@ const Project = () => {
             menuIndexUpdate(id);
         }
     }
+
+
     useEffect(() => {
         getProjectList(currentPage, search, isActive);
-    }, [currentPage])
+    }, [currentPage, search, isActive])
     return (
         <main>
-            <div className="search-area">
-                <SearchButton />
-                <SearchInput placeholder="원하는 프로젝트를 검색해보세요."
-                    onChange={(e) => searchDebounce(e.target.value)} />
+            <SearchInput placeholder="원하는 프로젝트를 검색해보세요." />
+            <div className="category">
+                <span className="main-category">프로젝트</span><b className="sub-category">프로젝트 목록</b>
             </div>
-            <LnbMenu eventHandler={getProjectList} child={<CreateBtn onClick={() => navigate("/projects/create")}>프로젝트 생성</CreateBtn>} />
-            {/* <OrderMenu /> */}
+            <div className="top-menu">
+                <div className="filter-wrap">
+                    <div className="filter-menu filter-menu1">
+                        <span className="filter-title">등록 상태</span>
+                        <SelectBox id="isActive" list={[{ text: "전체", value: "" }, { text: "승인완료", value: true }, { text: "신청접수", value: false }]} defaultValue={true} />
+                    </div>
+                    <div className="filter-menu filter-menu2">
+                        <span className="filter-title">카테고리</span>
+                        <div className="category-filter">
+                            <SelectBox id="mainCategory" list={[{ text: "전체", value: "" }, { text: "승인완료", value: true }, { text: "신청접수", value: false }]} defaultValue={true} />
+                            <SelectBox id="subCategory" list={[{ text: "전체", value: "" }, { text: "승인완료", value: true }, { text: "신청접수", value: false }]} defaultValue={true} />
+                        </div>
+                    </div>
+                </div>
+                <div className="lnb-menu">
+                    <NavLink className="project-link" to={`/projects/list?currentPage=1&search=&isActive=true`}>프로젝트</NavLink>
+                    <NavLink className="team-link" to={"defaultInfo"}>팀</NavLink>
+                    <button className="create-btn" onClick={() => navigate("/projects/create")}>프로젝트 등록</button>
+                </div>
+            </div>
             {
                 data &&
                     data.length == 0 ? <p className="message">{message}</p> : <ul className="project-list">

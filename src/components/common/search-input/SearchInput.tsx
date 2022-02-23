@@ -3,7 +3,6 @@ import _ from 'lodash'
 import qs from 'query-string';
 import { useLocation } from "react-router-dom";
 import history from "src/utils/history";
-import { useEffect } from "react";
 const debounce = _.debounce;
 const SearchInput = ({ placeholder }) => {
     const location = useLocation();

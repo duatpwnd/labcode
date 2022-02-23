@@ -38,7 +38,7 @@ const ChildNavLink = styled(NavLink)`
 `
 const Navigator = () => {
     const params = useParams();
-    const { teamId } = useContext(AppContext).user;
+    const user = useContext(AppContext);
     const { pathname } = useLocation();
     return (
         <nav>
@@ -50,7 +50,7 @@ const Navigator = () => {
                     <ParentNavLink className={pathname.startsWith("/teams") && "active"} to={`/teams/list?currentPage=1&search=`} background="team_ico.svg">팀 정보</ParentNavLink>
                     <ul>
                         <li>
-                            <ChildNavLink className={pathname.startsWith(`/teams/detail`) && "active"} to={`/teams/detail/${teamId}`}>상세 정보{params.teamId}</ChildNavLink>
+                            <ChildNavLink className={pathname.startsWith(`/teams/detail`) && "active"} to={`/teams/detail/${user?.teamId}`}>상세 정보{params.teamId}</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={`/teams/list?currentPage=1&search=`}>팀 목록</ChildNavLink>
@@ -59,10 +59,10 @@ const Navigator = () => {
                     </ul>
                 </li>
                 <li>
-                    <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list?currentPage=1&search=&isActive=false`} background="project_ico.svg">프로젝트</ParentNavLink>
+                    <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list?currentPage=1&search=&isActive=true`} background="project_ico.svg">프로젝트</ParentNavLink>
                     <ul>
                         <li>
-                            <ChildNavLink to={`/projects/list?currentPage=1&search=&isActive=false`}>프로젝트 목록</ChildNavLink>
+                            <ChildNavLink to={`/projects/list?currentPage=1&search=&isActive=true`}>프로젝트 목록</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={`/projects/create`}>프로젝트 등록</ChildNavLink>

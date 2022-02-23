@@ -38,7 +38,7 @@ function* signIn(action) {
     });
     history.push({
       pathname: "/projects/list",
-      search: `?currentPage=1&search=&isActive=false`,
+      search: `?currentPage=1&search=&isActive=true`,
       state: {
         nav: false,
       },

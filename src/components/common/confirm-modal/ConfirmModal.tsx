@@ -1,7 +1,6 @@
 import "./ConfirmModal.scoped.scss"
 import { useNavigate } from "react-router-dom";
 const ConfirmModal = ({ title, contents, cancelEvent, okEvent }: any) => {
-    const navigate = useNavigate();
     return (
         <>
             <div className="mask"></div>

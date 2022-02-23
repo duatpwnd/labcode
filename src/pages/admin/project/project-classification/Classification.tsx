@@ -31,10 +31,11 @@ const Classification = ({ eventHandler, inputs }) => {
     }
 
     useEffect(() => {
+        getVersions();
         // 버전, 국가, 산업 조회
         if (inputs.versionId != undefined) {
             console.log("inputs.versionId", inputs.versionId);
-            axios.all([getVersions(), getCountries(), getIndustries()]);
+            axios.all([getCountries(), getIndustries()]);
         }
     }, [inputs.versionId]);
     return (

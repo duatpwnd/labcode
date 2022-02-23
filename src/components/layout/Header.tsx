@@ -102,9 +102,7 @@ const Header = () => {
     }
     const handleCloseModal = (e) => {
         if (langModal && (!userModal.current?.contains(e.target))) langModalUpdate(false);
-
         if (isActiveUserModal && (!userModal.current?.contains(e.target))) setUserModal(false);
-
     }
     useEffect(() => {
         window.addEventListener("click", handleCloseModal)

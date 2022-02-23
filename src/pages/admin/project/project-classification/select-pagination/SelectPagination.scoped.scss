@@ -10,6 +10,7 @@
   }
   .select-box {
     display: inline-block;
+    cursor: pointer;
     width: calc(100% - 180px);
     box-sizing: border-box;
     padding: 16px;
@@ -63,6 +64,7 @@
       padding-right: 16px;
       li {
         padding: 16px 0;
+        cursor: pointer;
       }
     }
   }

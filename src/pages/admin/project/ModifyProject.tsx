@@ -1,5 +1,7 @@
 import { useEffect, useState, createContext } from "react"
-import { useParams } from 'react-router-dom';
+import {
+    useParams, useLocation
+} from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import axios from "axios";
@@ -13,16 +15,40 @@ const ProjectDetail = (props) => {
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })
+    const { pathname } = useLocation();
     const params = useParams();
     const debounce = _.debounce;
     const [inputs, setInputs] = useState<{ [key: string]: any }>({
+        versionId: 1
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
     }, 500);
     const onChange = (e: { [key: string]: any }) => {
-        modify({ [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value });
+        if (pathname == "/projects/create") {
+            setInputs((prev) => ({ ...prev, [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value }))
+        } else {
+            modify({ [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value });
+        }
     };
+    const createProject = () => {
+        const formData = new FormData();
+        const body = {
+            ...inputs,
+            isActive: true
+        }
+        console.log("body", body);
+        for (let key in body) {
+            formData.append(key, body[key as never]);
+        }
+        axios
+            .post(apiUrl.project, formData)
+            .then((result: any) => {
+                console.log("프로젝트생성결과:", result);
+            }).catch((err: any) => {
+                console.log('프로젝트생성에러:', err);
+            });
+    }
     const getProject = () => {
         axios
             .get(apiUrl.project + `/${params.projectId}`)
@@ -49,15 +75,17 @@ const ProjectDetail = (props) => {
             });
     }
     useEffect(() => {
-        if (params.projectId != undefined) {
+        if (pathname != "/projects/create") {
             getProject();
         }
     }, [])
     return (
         <main>
             <div className="wrap">
-                <h2 className="h2-title">프로젝트 수정</h2>
-                <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
+                <h2 className="h2-title">{pathname == "/projects/create" ? "프로젝트 등록" : "프로젝트 수정"}</h2>
+                {
+                    pathname != "/projects/create" && <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
+                }
                 {/* 내부용 프로젝트 분류 */}
                 {
                     isAdmin && <Classification inputs={inputs} eventHandler={onChange} />
@@ -68,7 +96,7 @@ const ProjectDetail = (props) => {
                     <h2 className="h3-title">프로젝트 정보</h2>
                     <div className="row">
                         <label htmlFor="title" className="title">프로젝트 명</label>
-                        <input type="text" id="title" defaultValue={inputs.title} onKeyUp={(e) => inputDebounce(e)} />
+                        <input type="text" placeholder="프로젝트 명 입력" id="title" defaultValue={inputs.title} onKeyUp={(e) => inputDebounce(e)} />
                     </div>
                     <div className="row">
                         <label className="top">배너</label>
@@ -76,19 +104,18 @@ const ProjectDetail = (props) => {
                     </div>
                     <div className="row">
                         <label className="top" htmlFor="description">설명</label>
-                        <textarea id="description" defaultValue={inputs.description} onKeyUp={(e) => inputDebounce(e)} placeholder="버스 기사가 승객을 태우고 주행을 하면서 휴대폰 게임을 해 버스 승객이 불안에 떠는 일이 벌어졌다.23일 연합뉴스 보도에 따르면 지난 20일 서울 시내의 한 버스에서 기사가 휴대폰 게임을 켜놓은 채 주행을 했고 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다.">
+                        <textarea id="description" defaultValue={inputs.description} onKeyUp={(e) => inputDebounce(e)} placeholder="최소 10자 ~ 최대 1000자 입력">
                         </textarea>
                     </div>
                     <div className="row">
                         <label htmlFor="homepage" className="homepage-link">홈페이지 주소</label>
-                        <input type="text" defaultValue={inputs.homepage} id="homepage" onKeyUp={(e) => inputDebounce(e)} />
+                        <input type="text" placeholder="홈페이지 주소 입력" defaultValue={inputs.homepage} id="homepage" onKeyUp={(e) => inputDebounce(e)} />
                     </div>
-
-                    <div className="approve-btn-area">
-                        {
-                            inputs.isActive == false && inputs.mainCategoryId != undefined && inputs.subCategoryId != undefined && <button className="approve-btn" onClick={() => onChange({ target: { id: "isActive", value: true } })}>승인</button>
-                        }
-                    </div>
+                    {
+                        pathname == "/projects/create" && <div className="approve-btn-area">
+                            <button className="approve-btn" onClick={createProject}>승인</button>
+                        </div>
+                    }
                     {/* <div className="row">
                     <label>Access Token</label>
                 </div>

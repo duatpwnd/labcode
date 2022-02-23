@@ -93,7 +93,7 @@ const Team = () => {
         const data = { ...inputs, [e.target.id]: e.target.value }
         const result = phoneReg.test(e.target.value);
         setInputs(data);
-        if (result && params.teamId != "create") {
+        if (result && pathname != "/teams/create") {
             setPhoneMsg("");
             modify(data, params.teamId)
         } else if (result == false) {
@@ -106,7 +106,7 @@ const Team = () => {
         const data = { ...inputs, [e.target.id]: e.target.value }
         const result = emailReg.test(e.target.value);
         setInputs(data);
-        if (result && params.teamId != "create") {
+        if (result && pathname != "/teams/create") {
             setEmailMsg("");
             modify(data, params.teamId)
         } else if (result == false) {
@@ -119,7 +119,7 @@ const Team = () => {
         const data = { ...inputs, [e.target.id]: e.target.value }
         const result = checkCorporateRegistrationNumber(e.target.value.replaceAll("-", ""))
         setInputs(data);
-        if (result && params.teamId != "create") {
+        if (result && pathname != "/teams/create") {
             setNumberMsg("");
             modify(data, params.teamId)
         } else if (result == false) {
@@ -132,7 +132,7 @@ const Team = () => {
         const data = { ...inputs, [e.target.id]: e.target.value }
         const result = homePageReg.test(e.target.value);
         setInputs(data);
-        if (result && params.teamId != "create") {
+        if (result && pathname != "/teams/create") {
             setLinkMsg("");
             modify(data, params.teamId)
         } else if (result == false) {
@@ -144,7 +144,7 @@ const Team = () => {
     const notCheck = (e) => {
         const data = { ...inputs, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
         setInputs(data);
-        if (params.teamId != "create") {
+        if (pathname != "/teams/create") {
             modify(data, params.teamId)
         }
         if (e.target.id == "businessImage" && e.target.files[0] != null) {
@@ -172,7 +172,7 @@ const Team = () => {
     }
     useEffect(() => {
         // 수정페이지만 조회
-        if (params.teamId != "create") {
+        if (pathname != "/teams/create") {
             getTeamList(params.teamId);
         }
     }, [])

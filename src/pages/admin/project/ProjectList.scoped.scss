@@ -15,7 +15,6 @@ main {
     display: inline-block;
   }
   .btn-wrap {
-    margin-top: 40px;
     display: inline-flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -34,50 +33,90 @@ main {
       color: white;
     }
   }
-  .order-area {
-    position: relative;
-    .order-btn {
-      border: 1px solid #dbdfe1;
-      box-sizing: border-box;
-      border-radius: 8px;
-      padding: 8px 32px 8px 16px;
-      text-align: left;
+  .category {
+    font-size: 14px;
+    margin: 80px 0 28px 0;
+    .sub-category {
+      color: #525a61;
+      font-weight: 700;
     }
-    .active {
-      background: url("~images/arrow_bottom.svg") white no-repeat right 8px
-        center / 16px 16px;
-    }
-    .inactive {
-      background: url("~images/arrow_top.svg") white no-repeat right 8px center /
-        16px 16px;
-    }
-    .order-select {
-      overflow: hidden;
-      border: 1px solid #f2f4f5;
-      border-radius: 8px;
-      box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.04);
-      position: absolute;
-      top: 44px;
-      left: 0px;
-      width: 163px;
-      background: white;
-      z-index: 2;
-      li {
-        font-size: 14px;
-        font-weight: 700;
-        height: 48px;
-        line-height: 48px;
-        padding-left: 16px;
-      }
-      .selected {
-        background: rgba(81, 56, 229, 0.12);
+    .main-category {
+      color: #79828a;
+      &::after {
+        color: #9ea7ad;
+        margin: 0 8px;
+        content: ">";
       }
     }
   }
+
   .message {
     font-size: 20px;
     text-align: center;
     margin-top: 100px;
+  }
+  .top-menu {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    .filter-wrap {
+      display: inline-block;
+      .filter-menu {
+        display: inline-block;
+        vertical-align: middle;
+        width: 164px;
+        .select-box {
+          display: inline-block;
+        }
+        .filter-title {
+          font-size: 14px;
+          font-weight: 700;
+          color: #525a61;
+          margin-bottom: 8px;
+        }
+      }
+      .filter-menu1 {
+        margin-right: 12px;
+      }
+      .filter-menu2 {
+        width: 340px;
+        display: inline-flex;
+        flex-direction: column;
+        .category-filter {
+          display: flex;
+          gap: 12px;
+        }
+      }
+    }
+    .lnb-menu {
+      align-self: center;
+      a {
+        font-size: 18px;
+        color: #9ea7ad;
+        font-weight: 700;
+      }
+      .project-link {
+        &:after {
+          content: "|";
+          color: #e6e8eb;
+          margin: 0 16px;
+        }
+      }
+      .team-link {
+        margin-right: 40px;
+      }
+      .active {
+        color: #5138e5;
+      }
+      .create-btn {
+        background: #5138e5;
+        border-radius: 8px;
+        font-size: 18px;
+        width: 141px;
+        padding: 14px 0;
+        color: white;
+      }
+    }
   }
   .project-list {
     margin-top: 20px;
