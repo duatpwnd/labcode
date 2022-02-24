@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import history from "src/utils/history";
 import qs from 'query-string';
-const SelectBox = ({ list, defaultValue, id }: any) => {
+const SelectBox = ({ list, defaultValue, id }) => {
     const [selectedIndex, setIndex] = useState(null);
     const [isActiveModal, setModal] = useState(false);
     const selectBox = useRef<HTMLDivElement>(null);
@@ -32,16 +32,15 @@ const SelectBox = ({ list, defaultValue, id }: any) => {
 
     useEffect(() => {
         setIndex(defaultValue);
-
     }, [])
     return (
         <div className="select-box">
             <div className={isActiveModal ? "tab active-tab" : "tab"} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
                 {
-                    list.map((elements, index) => {
+                    list && list.map((elements, index) => {
                         return (
                             String(elements.value) == String(selectedIndex) &&
-                            <span className="type" key={index}>{elements.text}</span>
+                            <span className="type" key={index}>{elements.label}</span>
                         )
                     })
                 }
@@ -49,10 +48,10 @@ const SelectBox = ({ list, defaultValue, id }: any) => {
             {isActiveModal &&
                 <div className="list-wrap" ref={selectBox}>
                     {
-                        list.map((elements, index) => {
+                        list && list.map((elements, index) => {
                             return (
                                 <div key={index} className={String(elements.value) == String(selectedIndex) ? "list selected" : "list"} onClick={() => { select(String(elements.value)) }}>
-                                    <span className="type">{elements.text}</span>
+                                    <span className="type">{elements.label}</span>
                                 </div>
                             )
                         })

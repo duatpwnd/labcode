@@ -3,15 +3,15 @@ import ConfirmModal from "src/components/common/confirm-modal/ConfirmModal";
 import SignIn from 'src/container/signin/SignIn';
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { useState, useContext } from "react"
+import { useState } from "react"
 import { resources, Languages } from "src/lang/i18n"
 import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "src/actions/signIn"
 import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
+import { RootState } from "src/reducers";
 import "./Header.scoped.scss"
-import { AppContext } from "src/App";
 const SignIndButton = styled.button`
     border-radius: 8px;
     font-size: 13px;
@@ -73,7 +73,6 @@ const LangIcon = styled.button`
 
 const Header = () => {
     const { i18n, t } = useTranslation();
-    const userInfo = useContext(AppContext);
     const [isActiveConfirmModal, setActiveConfirmModal] = useState(false);
     const [isModal, modalUpdate] = useState(false);
     const [langModal, langModalUpdate] = useState(false);
@@ -85,6 +84,9 @@ const Header = () => {
     const userModal = useRef<HTMLDivElement>(null);
     const langsModal = useRef<HTMLUListElement>(null);
     const [cookies, setCookie, removeCookie] = useCookies(["user_info"]);
+    const userInfo = useSelector((state: RootState) => {
+        return state.signIn.userInfo
+    })
     const handleChangeLanguage = (lang: Languages) => {
         langModalUpdate(false);
         langUpdate(lang);

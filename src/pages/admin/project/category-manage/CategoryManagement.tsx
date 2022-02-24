@@ -104,7 +104,7 @@ const CategoryManagement = () => {
     const [addCategoryInput, setCategoryInput] = useState(false);
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("")
-    const { teamId } = useContext(AppContext).user;
+    const user = useContext(AppContext);
     const [searchParams] = useSearchParams();
     const currentPage = searchParams.get("currentPage");
     const params = useParams();
@@ -132,12 +132,12 @@ const CategoryManagement = () => {
 
     const onKeyPress = (e) => {
         if (e.key == "Enter") {
-            createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }, false)
+            createMainCategories({ teamId: user.teamId, title: title, order: data.length + 1, industryId: params.industryId }, false)
         }
     }
     // 대분류 & 소분류 조회
     const getCategories = (page) => {
-        axios.get(apiUrl.categories + `?industryId=${params.industryId}&teamId=${teamId}&limit=10&page=${page}`).then((result) => {
+        axios.get(apiUrl.categories + `?industryId=${params.industryId}&teamId=${user.teamId}&limit=10&page=${page}`).then((result) => {
             console.log("대분류 & 소분류 조회:", result.data);
             if (result.data.data.length == 0) {
                 setCategoryInput(true)
@@ -181,7 +181,7 @@ const CategoryManagement = () => {
                         addCategoryInput && <div className="main-category-input-area">
                             <span className="arrow-ico"></span>
                             <input type="text" value={title} autoFocus className="main-category-input" onKeyPress={onKeyPress} onChange={(e) => onChange(e)} />
-                            <button className="btn add-btn" onClick={() => createMainCategories({ teamId: teamId, title: title, order: data.length + 1, industryId: params.industryId }, true)}>추가</button>
+                            <button className="btn add-btn" onClick={() => createMainCategories({ teamId: user.teamId, title: title, order: data.length + 1, industryId: params.industryId }, true)}>추가</button>
                             <button className="btn" onClick={(e) => {
                                 setCategoryInput(false)
                             }}>삭제</button>

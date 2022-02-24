@@ -88,8 +88,6 @@ const Project = () => {
             menuIndexUpdate(id);
         }
     }
-
-
     useEffect(() => {
         getProjectList(currentPage, search, isActive);
     }, [currentPage, search, isActive])
@@ -103,13 +101,13 @@ const Project = () => {
                 <div className="filter-wrap">
                     <div className="filter-menu filter-menu1">
                         <span className="filter-title">등록 상태</span>
-                        <SelectBox id="isActive" list={[{ text: "전체", value: "" }, { text: "승인완료", value: true }, { text: "신청접수", value: false }]} defaultValue={true} />
+                        <SelectBox id="isActive" list={[{ label: "전체", value: "" }, { label: "승인완료", value: true }, { label: "신청접수", value: false }]} defaultValue={true} />
                     </div>
                     <div className="filter-menu filter-menu2">
                         <span className="filter-title">카테고리</span>
                         <div className="category-filter">
-                            <SelectBox id="mainCategory" list={[{ text: "전체", value: "" }, { text: "승인완료", value: true }, { text: "신청접수", value: false }]} defaultValue={true} />
-                            <SelectBox id="subCategory" list={[{ text: "전체", value: "" }, { text: "승인완료", value: true }, { text: "신청접수", value: false }]} defaultValue={true} />
+                            <SelectBox id="mainCategory" list={[{ label: "전체", value: "" }, { label: "승인완료", value: true }, { label: "신청접수", value: false }]} defaultValue={true} />
+                            <SelectBox id="subCategory" list={[{ label: "전체", value: "" }, { label: "승인완료", value: true }, { label: "신청접수", value: false }]} defaultValue={true} />
                         </div>
                     </div>
                 </div>

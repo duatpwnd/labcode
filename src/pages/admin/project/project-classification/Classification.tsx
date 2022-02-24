@@ -3,7 +3,7 @@ import { useEffect, useState, } from "react"
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import SelectPagination from "./select-pagination/SelectPagination";
-const Classification = ({ eventHandler, inputs }) => {
+const Classification = ({ eventHandler, inputs, isActive }: any) => {
     const [versions, setVersions] = useState<{ [key: string]: any }[]>([]);
     const [countries, setCountries] = useState<{ [key: string]: any }[]>([]);
     const [industries, setIndustries] = useState<{ [key: string]: any }[]>([]);
@@ -39,7 +39,7 @@ const Classification = ({ eventHandler, inputs }) => {
         }
     }, [inputs.versionId]);
     return (
-        <section>
+        <section style={isActive == false ? { pointerEvents: "none" } : { pointerEvents: "auto" }}>
             <h2 className="h3-title">프로젝트 분류</h2>
             <div className="row">
                 <label htmlFor="versionId">버전</label>

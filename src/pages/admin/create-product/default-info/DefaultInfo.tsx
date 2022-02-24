@@ -2,27 +2,91 @@ import "./DefaultInfo.scoped.scss"
 import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
 import InternalUse from "./internal/InternalUse";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
-
-
-const SelectBox = styled.select`
-    width: calc(100% - 180px);
-    box-sizing: border-box; 
-    padding:16px;
-    border-radius: 8px;
-    color: #303538;
-    background: url(${require('images/arrow_bottom.svg').default}) #F6F7F8 no-repeat right 10px center /
-    16px 16px;
-    @media all and (max-width: 767px) {
-        width: 100%;
-        margin-top: 10px;
+import Classification from "../../project/project-classification/Classification";
+const SelectBox = ({ id, defaultValue, children, eventHandler, getList, data }: any) => {
+    const [list, setList] = useState<{ [key: string]: any }[]>([]);
+    const [currentPage, setPage] = useState(1); // 페이징
+    const [selectedIndex, setIndex] = useState(null);
+    const [isActiveModal, setModal] = useState(false);
+    const selectBox = useRef<HTMLDivElement>(null);
+    const [isLastPage, setLastPage] = useState(false); //  소분류 마지막 페이지 유무
+    const infiniteScroll = (e) => {
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        if (bottom && isLastPage == false) {
+            console.log("대분류 바닥감지인데 마지막페이지인가?", isLastPage);
+            setPage(currentPage + 1);
+            getList(currentPage + 1, "").then((result) => {
+                console.log("result", result);
+                if (result.data.length == 0) {
+                    setLastPage(true);
+                    return;
+                }
+                setList([...list, ...result.data]);
+            });;
+        }
     }
-`
+    const handleCloseModal = (e) => {
+        if (isActiveModal && (!selectBox.current?.contains(e.target))) setModal(false);
+    }
+    // 리스트 선택
+    const select = (value) => {
+        setModal(false) // 모달닫기
+        // 현재 선택되어있는데 또다시 선택했을때 호출못하게
+        if (selectedIndex != value) {
+            setIndex(value); // 모달안에 선택된 리스트 활성화
+            eventHandler({ target: { id: id, value: value } })
+        }
+    };
+    useEffect(() => {
+        window.addEventListener("click", handleCloseModal)
+        return () => {
+            window.removeEventListener("click", handleCloseModal);
+        }
+    }, [isActiveModal])
+    useEffect(() => {
+        if (getList != undefined) {
+            getList(1, "").then((result) => {
+                console.log("result", result);
+                setList([...list, ...result.data]);
+            });
+        }
+    }, [])
+    return (
+        <div className="select-box">
+            <div className={isActiveModal ? "tab active-tab" : "tab"} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
+                {
+                    list && list.map((elements, index) => {
+                        return (
+                            String(elements[id]) == String(selectedIndex) &&
+                            <span className="type" key={index}>{elements.label || elements.title}</span>
+                        )
+                    })
+                }
+            </div>
+            {isActiveModal &&
+                <div className="slide-menu" ref={selectBox}>
+                    {children}
+                    <div className="list-wrap" onScroll={infiniteScroll}>
+                        {
+                            list && list.map((elements, index) => {
+                                return (
+                                    <div key={index} className={String(elements[id]) == String(selectedIndex) ? "list selected" : "list"} onClick={() => { select(String(elements[id])) }}>
+                                        <span className="type">{elements.label || elements.title}</span>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    )
+}
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
     const onChange = (e) => {
@@ -166,9 +230,35 @@ const DefaultInfo = () => {
                 console.log("제품 상세 조회 에러:", err);
             })
     }
+    const getProjectList = (page, search) => {
+        return axios
+            .get(apiUrl.project + `?search=${search}&page=${page}&limit=20&isActive=true`)
+            .then((result: any) => {
+                console.log('프로젝트 리스트조회결과:', result);
+                return result.data
+            })
+    }
+    const getTeamList = (page, search) => {
+        return axios
+            .get(apiUrl.team + `?page=${page}&search=${search}&limit=20`)
+            .then((result: any) => {
+                console.log('팀리스트조회결과:', result);
+                return result.data
+            });
+    }
+    const getEmbedding = () => {
+        axios.get(apiUrl.embeddingTypes).then((result) => {
+            setEmbeddingTypes(result.data);
+        })
+    }
+    const getChannelTypes = () => {
+        return axios.get(apiUrl.channelTypes).then((result) => {
+            return result.data
+        })
+    }
     useEffect(() => {
-        axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas), axios.get(apiUrl.channelTypes), axios.get(apiUrl.embeddingTypes)]).then(axios.spread((res1, res2, res3, res4) => {
-            console.log("코드크기,적용세기,채널조회");
+        axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas)]).then(axios.spread((res1, res2, res3, res4) => {
+            console.log("코드크기,적용세기,채널조회", res3.data.data, res4.data.data);
             setScales(res1.data.data);
             setAlphas(res2.data.data);
             setChannelTypes(res3.data.data);
@@ -178,80 +268,88 @@ const DefaultInfo = () => {
                 console.log("조회에러", err);
             })
         // 수정페이지일때
-        console.log("params.productId", params.productId);
         if (params.productId != undefined) {
             getProductDetail();
         } else {
         }
     }, [params.productId])
     return (
-        <section>
-            <h3 className="h3-title">기본 정보</h3>
-            <div className="form">
-                <div className="row">
-                    <label htmlFor="title" className="title" >제목</label>
-                    <input type="text" id="title" defaultValue={inputs.title} placeholder="제목을 입력해주세요." onChange={(e) => onChange(e)} />
-                </div>
-                <div className="row">
-                    <label htmlFor="description">설명</label>
-                    <textarea id="description" defaultValue={inputs.description} placeholder="버스 기사가 승객을 태우고 주행을 하면서 휴대폰 게임을 해 버스 승객이 불안에 떠는 일이 벌어졌다.23일 연합뉴스 보도에 따르면 지난 20일 서울 시내의 한 버스에서 기사가 휴대폰 게임을 켜놓은 채 주행을 했고 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다. 이 장면을 승객들이 직접 목격했다." onChange={(e) => onChange(e)}>
-                    </textarea>
-                </div>
-                <div className="row">
-                    <label htmlFor="url" className="link">링크</label>
-                    <input type="text" id="url" defaultValue={inputs.url} placeholder="링크를 입력해주세요." onChange={(e) => onChange(e)} />
-                </div>
-                <div className="row">
-                    <label className="source-image">원본 이미지</label>
-                    <DragDrop link={inputs.sourceImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "459px" }} />
-                </div>
-                {isAdmin &&
+        <>
+            <Classification isActive={false} inputs={{ versionId: 1, countryId: 1, industryId: 1, mainCategoryId: 1 }} />
+            <section>
+                <h3 className="h3-title">기본 정보</h3>
+                <div className="form">
                     <div className="row">
-                        <label htmlFor="embedding">임베딩 버전</label>
-                        <SelectBox value={inputs.embedding} id="embedding" onChange={(e) => onChange(e)}>
-                            {
-                                embeddingTypes.map((options, index) => {
-                                    return <option value={options.value} key={index}>{options.label}</option>
-                                })
-                            }
+                        <label htmlFor="teamId" className="team" >팀</label>
+                        <SelectBox id="teamId" defaultValue={2.5} eventHandler={onChange} getList={getTeamList}>
+                            <div className="search-area">
+                                <input type="text" placeholder="팀 검색" />
+                                <button />
+                            </div>
                         </SelectBox>
                     </div>
-                }
-                {isAdmin &&
                     <div className="row">
-                        <label htmlFor="channel">적용 기술</label>
-                        <SelectBox value={inputs.channel} id="channel" onChange={(e) => onChange(e)}>
-                            {
-                                channelTypes.map((options, index) => {
-                                    return <option value={options.value} key={index}>{options.label}</option>
-                                })
-                            }
+                        <label htmlFor="projectId" className="project" >프로젝트</label>
+                        <SelectBox id="projectId" defaultValue={2.5} eventHandler={onChange} getList={getProjectList}>
+                            <div className="search-area">
+                                <input type="text" placeholder="프로젝트 검색" />
+                                <button />
+                            </div>
                         </SelectBox>
                     </div>
-                }
-                <div className="row">
-                    <label htmlFor="scale" className="scale">코드 크기</label>
-                    <SlideBar id="scale" isAdmin={isAdmin} inputs={inputs} scales={scales} eventHandler={setInputs} />
-                </div>
-                <div className="row">
-                    <label htmlFor="alpha" className="alpha">적용 세기</label>
-                    <SlideBar id="alpha" isAdmin={isAdmin} inputs={inputs} scales={alphas} eventHandler={setInputs} />
-                </div>
-                {/* 수정페이지에만 존재 */}
-                <InternalUse />
-                {
-                    inputs.labcodeImage !== null && <div className="row">
-                        <label>변경 이미지</label>
-                        <img src={inputs.labcodeImage} alt="labcodeImage" title="labcodeImage" className="labcodeImage" />
+                    <div className="row">
+                        <label htmlFor="title" className="title" >제목</label>
+                        <input type="text" id="title" defaultValue={inputs.title} placeholder="제목을 입력해주세요." onChange={(e) => onChange(e)} />
                     </div>
+                    <div className="row">
+                        <label htmlFor="description">설명</label>
+                        <textarea id="description" defaultValue={inputs.description} onChange={(e) => onChange(e)}>
+                        </textarea>
+                    </div>
+                    <div className="row">
+                        <label htmlFor="url" className="link">링크</label>
+                        <input type="text" id="url" defaultValue={inputs.url} placeholder="링크를 입력해주세요." onChange={(e) => onChange(e)} />
+                    </div>
+                    <div className="row">
+                        <label className="source-image">원본 이미지</label>
+                        <DragDrop link={inputs.sourceImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "459px" }} />
+                    </div>
+                    {isAdmin &&
+                        <div className="row ">
+                            <label htmlFor="embedding">임베딩 버전</label>
+                            <SelectBox data={embeddingTypes} id="embedding" defaultValue={2.5} eventHandler={onChange} />
+                        </div>
+                    }
+                    {isAdmin &&
+                        <div className="row ">
+                            <label htmlFor="channel">적용 기술</label>
+                            <SelectBox id="channel" getList={getChannelTypes} defaultValue="lab_rgb" eventHandler={onChange} />
+                        </div>
+                    }
+                    <div className="row">
+                        <label htmlFor="scale" className="scale">코드 크기</label>
+                        <SlideBar id="scale" isAdmin={isAdmin} inputs={inputs} scales={scales} eventHandler={setInputs} />
+                    </div>
+                    <div className="row">
+                        <label htmlFor="alpha" className="alpha">적용 세기</label>
+                        <SlideBar id="alpha" isAdmin={isAdmin} inputs={inputs} scales={alphas} eventHandler={setInputs} />
+                    </div>
+                    {/* 수정페이지에만 존재 */}
+                    <InternalUse />
+                    {
+                        inputs.labcodeImage !== null && <div className="row">
+                            <label>변경 이미지</label>
+                            <img src={inputs.labcodeImage} alt="labcodeImage" title="labcodeImage" className="labcodeImage" />
+                        </div>
 
-                }
-                <div className="btn-wrap">
-                    <button className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
-                    <button className="submit-btn" onClick={() => modify({ ...inputs })}>기본 정보 수정</button>
+                    }
+                    <div className="btn-wrap">
+                        <button className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
+                        <button className="submit-btn" onClick={() => modify({ ...inputs })}>기본 정보 수정</button>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     )
 }
 export default DefaultInfo

@@ -1,4 +1,5 @@
 section {
+  margin-top: 80px;
   .h3-title {
     padding-bottom: 10px;
     font-size: 24px;
@@ -15,6 +16,96 @@ section {
         font-weight: 700;
         display: inline-block;
         vertical-align: middle;
+      }
+      .select-box {
+        display: inline-block;
+        width: calc(100% - 180px);
+        position: relative;
+        box-sizing: border-box;
+        border-radius: 8px;
+        cursor: pointer;
+        .tab {
+          border-radius: 4px;
+          padding: 0px 16px;
+          background: url("~images/arrow_bottom.svg") white no-repeat right 15px
+            center / 16px 16px;
+          height: 53px;
+          line-height: 53px;
+          box-sizing: border-box;
+          border: 1px solid #f6f7f8;
+          .type {
+            vertical-align: middle;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+        }
+        .slide-menu {
+          position: absolute;
+          top: 60px;
+          width: 100%;
+          z-index: 1;
+          .search-area {
+            width: 100%;
+            padding: 16px 22px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border: 1px solid #f6f7f8;
+            display: inline-block;
+            background: white;
+            z-index: 1;
+            &::placeholder {
+              color: #9ea7ad;
+            }
+            input {
+              padding-left: 14px;
+              box-sizing: border-box;
+              font-size: 18px;
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              background: url("~images/search_ico.svg") #f6f7f8 no-repeat center
+                right 14px/ 24px 24px;
+            }
+          }
+        }
+
+        .list-wrap {
+          width: 100%;
+          max-height: 410px;
+          overflow: auto;
+          box-sizing: border-box;
+          background: white;
+          border: 1px solid #f6f7f8;
+          z-index: 2;
+          border-bottom-left-radius: 4px;
+          border-bottom-right-radius: 4px;
+          .list {
+            padding: 0px 22px;
+            height: 41px;
+            line-height: 41px;
+            .text {
+              padding: 1px 0;
+              vertical-align: middle;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+          }
+          .selected {
+            background: rgba(81, 56, 229, 0.08);
+          }
+        }
+
+        .ico {
+          width: 24px;
+          height: 24px;
+          vertical-align: middle;
+          margin-left: 28px;
+          margin-right: 14px;
+        }
       }
       .source-image,
       label[for="description"] {

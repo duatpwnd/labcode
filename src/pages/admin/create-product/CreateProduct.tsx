@@ -13,7 +13,11 @@ const CreateProduct = () => {
         <main style={{ background: split[1] == "productInfo" ? "#F0F1F2" : "white" }}>
             <div className="wrap">
                 <header className="header">
-                    <h2 className="h2-title">제품 수정</h2>
+                    <h2 className="h2-title">
+                        {
+                            location.pathname.includes("/products/create") ? "제품 등록" : "제품 수정"
+                        }
+                    </h2>
                     <nav className="lnb">
                         <ul>
                             <li>

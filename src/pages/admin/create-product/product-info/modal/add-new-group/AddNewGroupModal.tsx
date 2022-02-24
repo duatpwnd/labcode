@@ -55,13 +55,13 @@ const InputTitle = ({ setTitle }) => {
 }
 const AddNewGroupModal = ({ data, SearchBar, setPage, closeModal }) => {
     const [checked, setChecked] = useState([]);
-    const { teamId } = useContext(AppContext).user;
+    const user = useContext(AppContext);
     const [title, setTitle] = useState("");
     const params = useParams();
     const saveGroup = () => {
         console.log("checked", checked);
         axios.post(apiUrl.productInfosGroups, {
-            teamId: teamId,
+            teamId: user.teamId,
             productId: params.productId,
             title: title,
             productInfoIds: checked,

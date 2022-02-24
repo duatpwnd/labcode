@@ -6,7 +6,7 @@ import apiUrl from "src/utils/api";
 import axios from "axios";
 import _ from 'lodash'
 const SelectPagination = ({ inputs, eventHandler }) => {
-    const { teamId } = useContext(AppContext).user;
+    const user = useContext(AppContext);
     const [mainCategoryId, setMainCategoryId] = useState(null); // 대분류 선택 여부
     const [mainCategoriesMenu, setMainCategoriesMenu] = useState(false); // 대분류 리스트 모달
     const [subCategoriesMenu, setSubCategoriesMenu] = useState(false); // 소분류 리스트 모달
@@ -94,7 +94,7 @@ const SelectPagination = ({ inputs, eventHandler }) => {
     }
     // 대분류 조회
     const getMainCategories = (search, page) => {
-        return axios.get(apiUrl.mainCategories + `?industryId=${inputs.industryId}&teamId=${teamId}&page=${page}&limit=10&search=${search}`).then((result) => {
+        return axios.get(apiUrl.mainCategories + `?industryId=${inputs.industryId}&teamId=${user.teamId}&page=${page}&limit=10&search=${search}`).then((result) => {
             console.log('대분류조회:', result.data, "maincategor", inputs.mainCategoryId);
             return result.data
         })
