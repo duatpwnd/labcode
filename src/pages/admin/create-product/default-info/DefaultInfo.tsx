@@ -8,85 +8,7 @@ import InternalUse from "./internal/InternalUse";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import Classification from "../../project/project-classification/Classification";
-const SelectBox = ({ id, defaultValue, children, eventHandler, getList, data }: any) => {
-    const [list, setList] = useState<{ [key: string]: any }[]>([]);
-    const [currentPage, setPage] = useState(1); // 페이징
-    const [selectedIndex, setIndex] = useState(null);
-    const [isActiveModal, setModal] = useState(false);
-    const selectBox = useRef<HTMLDivElement>(null);
-    const [isLastPage, setLastPage] = useState(false); //  소분류 마지막 페이지 유무
-    const infiniteScroll = (e) => {
-        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-        if (bottom && isLastPage == false) {
-            console.log("대분류 바닥감지인데 마지막페이지인가?", isLastPage);
-            setPage(currentPage + 1);
-            getList(currentPage + 1, "").then((result) => {
-                console.log("result", result);
-                if (result.data.length == 0) {
-                    setLastPage(true);
-                    return;
-                }
-                setList([...list, ...result.data]);
-            });;
-        }
-    }
-    const handleCloseModal = (e) => {
-        if (isActiveModal && (!selectBox.current?.contains(e.target))) setModal(false);
-    }
-    // 리스트 선택
-    const select = (value) => {
-        setModal(false) // 모달닫기
-        // 현재 선택되어있는데 또다시 선택했을때 호출못하게
-        if (selectedIndex != value) {
-            setIndex(value); // 모달안에 선택된 리스트 활성화
-            eventHandler({ target: { id: id, value: value } })
-        }
-    };
-    useEffect(() => {
-        window.addEventListener("click", handleCloseModal)
-        return () => {
-            window.removeEventListener("click", handleCloseModal);
-        }
-    }, [isActiveModal])
-    useEffect(() => {
-        if (getList != undefined) {
-            getList(1, "").then((result) => {
-                console.log("result", result);
-                setList([...list, ...result.data]);
-            });
-        }
-    }, [])
-    return (
-        <div className="select-box">
-            <div className={isActiveModal ? "tab active-tab" : "tab"} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
-                {
-                    list && list.map((elements, index) => {
-                        return (
-                            String(elements[id]) == String(selectedIndex) &&
-                            <span className="type" key={index}>{elements.label || elements.title}</span>
-                        )
-                    })
-                }
-            </div>
-            {isActiveModal &&
-                <div className="slide-menu" ref={selectBox}>
-                    {children}
-                    <div className="list-wrap" onScroll={infiniteScroll}>
-                        {
-                            list && list.map((elements, index) => {
-                                return (
-                                    <div key={index} className={String(elements[id]) == String(selectedIndex) ? "list selected" : "list"} onClick={() => { select(String(elements[id])) }}>
-                                        <span className="type">{elements.label || elements.title}</span>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-            }
-        </div>
-    )
-}
+import _ from 'lodash'
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
     const onChange = (e) => {
@@ -146,6 +68,108 @@ const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
         </div>
     )
 }
+
+
+const SelectBox = ({ id, eventHandler, getList, data, defaultValue }: any) => {
+    const [list, setList] = useState<{ [key: string]: any }[]>([]);
+    const [currentPage, setPage] = useState(1); // 페이징
+    const [selectedIndex, setIndex] = useState(null);
+    const [isActiveModal, setModal] = useState(false);
+    const selectBox = useRef<HTMLDivElement>(null);
+    const [isLastPage, setLastPage] = useState(false); // 마지막 페이지 유무
+    const [title, setTitle] = useState(""); // 팀, 프로젝트 제목
+    const debounce = _.debounce;
+    // 무한스크롤
+    const infiniteScroll = (e) => {
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        if (bottom && isLastPage == false) {
+            setPage(currentPage + 1);
+            getList(currentPage + 1, "").then((result) => {
+                if (result.data.length == 0) {
+                    setLastPage(true);
+                    return;
+                }
+                setList([...list, ...result.data]);
+            });;
+        }
+    }
+    // 모달 영역 이외 클릭시 모달창 닫기
+    const handleCloseModal = (e) => {
+        if (isActiveModal && (!selectBox.current?.contains(e.target))) setModal(false);
+    }
+    // 리스트 선택
+    const select = (value) => {
+        setModal(false) // 모달닫기
+        // 현재 선택되어있는데 또다시 선택했을때 호출못하게
+        if (selectedIndex != value) {
+            setIndex(value); // 모달안에 선택된 리스트 활성화
+            eventHandler((prev) => {
+                return ({ ...prev, [id]: value })
+            })
+        }
+    };
+    // 검색하기
+    const search = (search) => {
+        getList(1, search).then((result) => {
+            setList(result.data);
+        });
+    }
+    useEffect(() => {
+        window.addEventListener("click", handleCloseModal)
+        return () => {
+            window.removeEventListener("click", handleCloseModal);
+        }
+    }, [isActiveModal])
+    useEffect(() => {
+        if (getList != undefined) {
+            getList(1, "").then((result) => {
+                setList([...list, ...result.data]);
+            });
+        }
+    }, [])
+    return (
+        <div className="select-box">
+            <div className={isActiveModal ? "tab active-tab" : "tab"} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
+                {
+                    // data 가 존재하면 임베딩 버전, 적용기술 셀렉트바
+                    data != undefined ?
+                        <span className="type">{defaultValue}</span> : <span className="type" >{defaultValue == null ? "선택해주세요." : title || defaultValue}</span>
+                }
+            </div>
+            {isActiveModal &&
+                <div className="slide-menu" ref={selectBox}>
+                    {
+                        // 검색 영역 
+                        data == undefined && <div className="search-area">
+                            <input type="text" autoFocus placeholder="검색" onChange={debounce((e) => search(e.target.value), 200)} />
+                            <button />
+                        </div>
+                    }
+                    <div className="list-wrap" onScroll={data == undefined ? infiniteScroll : () => { }}>
+                        {
+                            // 리스트 영역 
+                            data != undefined ? data && data.map((elements, index) => {
+                                return (
+                                    // 임베딩,적용기술
+                                    <div key={index} className={defaultValue == elements.value ? "list selected" : "list"} onClick={() => select(elements.value)}>
+                                        <span className="type">{elements.label}</span>
+                                    </div>
+                                )
+                            }) :
+                                list && list.map((elements, index) => {
+                                    return (
+                                        <div key={index} className={elements.id == defaultValue ? "list selected" : "list"} onClick={(e) => { select(elements.id); setTitle((e.target as HTMLElement).innerText) }}>
+                                            <span className="type">{elements.title}</span>
+                                        </div>
+                                    )
+                                })
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    )
+}
 const DefaultInfo = () => {
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
@@ -157,12 +181,13 @@ const DefaultInfo = () => {
     const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
     const [channelTypes, setChannelTypes] = useState<{ [key: string]: any }[]>([]);
     const [inputs, setInputs] = useState({
-        projectId: params.productId == undefined ? params.projectId : params.productId,
+        projectId: null,
+        teamId: null,
         embedding: "2.5",
         channel: "lab_rgb",
         title: "",
         description: "",
-        labcodeImage: "",
+        labcodeImage: null,
         sourceImage: params.productId == undefined ? null : {} as { [key: string]: any },
         url: "",
         scale: 4,
@@ -181,38 +206,38 @@ const DefaultInfo = () => {
             })
         }
     };
-    const modify = (body) => {
-        console.log("body", body);
-        if (body.sourceImage == null) {
+    const modify = () => {
+        console.log("modify", inputs);
+        if (inputs.sourceImage == null) {
             alert("이미지를 첨부해주세요.")
         } else {
             const formData = new FormData();
-            for (let key in body) {
-                formData.append(key, body[key as never]);
+            for (let key in inputs) {
+                formData.append(key, inputs[key as never]);
             }
             axios
                 .patch(apiUrl.products + `/${params.productId}`, formData)
                 .then((result: any) => {
-                    console.log("기본정보수정결과:", result);
+                    console.log("수정결과:", result);
                     getProductDetail();
                 }).catch((err: any) => {
-                    console.log('기본정보수정에러:', err);
+                    console.log('수정에러:', err);
                 });
         }
 
     }
-    const apply = (body) => {
-        console.log("body", body);
+    const apply = () => {
+        console.log("inputs", inputs);
         const formData = new FormData();
-        for (let key in body) {
-            formData.append(key, body[key as never]);
+        for (let key in inputs) {
+            formData.append(key, inputs[key as never]);
         }
         axios
             .post(apiUrl.products, formData)
             .then((result: any) => {
-                if (params.productId == undefined) {
-                    navigate(`/projects/${params.projectId}/products/${result.data.data.id}/defaultInfo`);
-                }
+                console.log("적용결과", result);
+                // navigate(`/products/edit/${products.id}/${result.data.data.id}/defaultInfo`)}
+
             }).catch((err: any) => {
                 console.log('기본정보적용에러:', err);
             });
@@ -230,6 +255,7 @@ const DefaultInfo = () => {
                 console.log("제품 상세 조회 에러:", err);
             })
     }
+    // 프로젝트 리스트 조회
     const getProjectList = (page, search) => {
         return axios
             .get(apiUrl.project + `?search=${search}&page=${page}&limit=20&isActive=true`)
@@ -238,6 +264,7 @@ const DefaultInfo = () => {
                 return result.data
             })
     }
+    // 팀 리스트 조회
     const getTeamList = (page, search) => {
         return axios
             .get(apiUrl.team + `?page=${page}&search=${search}&limit=20`)
@@ -246,18 +273,8 @@ const DefaultInfo = () => {
                 return result.data
             });
     }
-    const getEmbedding = () => {
-        axios.get(apiUrl.embeddingTypes).then((result) => {
-            setEmbeddingTypes(result.data);
-        })
-    }
-    const getChannelTypes = () => {
-        return axios.get(apiUrl.channelTypes).then((result) => {
-            return result.data
-        })
-    }
     useEffect(() => {
-        axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas)]).then(axios.spread((res1, res2, res3, res4) => {
+        axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas), axios.get(apiUrl.channelTypes), axios.get(apiUrl.embeddingTypes)]).then(axios.spread((res1, res2, res3, res4) => {
             console.log("코드크기,적용세기,채널조회", res3.data.data, res4.data.data);
             setScales(res1.data.data);
             setAlphas(res2.data.data);
@@ -281,21 +298,11 @@ const DefaultInfo = () => {
                 <div className="form">
                     <div className="row">
                         <label htmlFor="teamId" className="team" >팀</label>
-                        <SelectBox id="teamId" defaultValue={2.5} eventHandler={onChange} getList={getTeamList}>
-                            <div className="search-area">
-                                <input type="text" placeholder="팀 검색" />
-                                <button />
-                            </div>
-                        </SelectBox>
+                        <SelectBox id="teamId" defaultValue={inputs.teamId} eventHandler={setInputs} getList={getTeamList} />
                     </div>
                     <div className="row">
                         <label htmlFor="projectId" className="project" >프로젝트</label>
-                        <SelectBox id="projectId" defaultValue={2.5} eventHandler={onChange} getList={getProjectList}>
-                            <div className="search-area">
-                                <input type="text" placeholder="프로젝트 검색" />
-                                <button />
-                            </div>
-                        </SelectBox>
+                        <SelectBox id="projectId" defaultValue={inputs.projectId} eventHandler={setInputs} getList={getProjectList} />
                     </div>
                     <div className="row">
                         <label htmlFor="title" className="title" >제목</label>
@@ -317,13 +324,13 @@ const DefaultInfo = () => {
                     {isAdmin &&
                         <div className="row ">
                             <label htmlFor="embedding">임베딩 버전</label>
-                            <SelectBox data={embeddingTypes} id="embedding" defaultValue={2.5} eventHandler={onChange} />
+                            <SelectBox data={embeddingTypes} id="embedding" defaultValue={inputs.embedding} eventHandler={setInputs} />
                         </div>
                     }
                     {isAdmin &&
                         <div className="row ">
                             <label htmlFor="channel">적용 기술</label>
-                            <SelectBox id="channel" getList={getChannelTypes} defaultValue="lab_rgb" eventHandler={onChange} />
+                            <SelectBox id="channel" defaultValue={inputs.channel} data={channelTypes} eventHandler={setInputs} />
                         </div>
                     }
                     <div className="row">
@@ -345,7 +352,7 @@ const DefaultInfo = () => {
                     }
                     <div className="btn-wrap">
                         <button className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
-                        <button className="submit-btn" onClick={() => modify({ ...inputs })}>기본 정보 수정</button>
+                        <button className="submit-btn" onClick={() => inputs.labcodeImage == null ? apply() : modify()}>기술 적용</button>
                     </div>
                 </div>
             </section>
