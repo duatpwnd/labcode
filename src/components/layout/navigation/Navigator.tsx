@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import "./Navigator.scoped.scss"
-import { NavLink, useParams, useLocation } from "react-router-dom";
-import { useContext } from "react"
-import { AppContext } from "src/App";
+import { NavLink, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "src/reducers";
 const ParentNavLink = styled(NavLink)`
     width: 100%;
     padding: 25px 35px 25px 58px;
@@ -37,8 +37,9 @@ const ChildNavLink = styled(NavLink)`
     }
 `
 const Navigator = () => {
-    const params = useParams();
-    const user = useContext(AppContext);
+    const userInfo = useSelector((state: RootState) => {
+        return state.signIn.userInfo
+    })
     const { pathname } = useLocation();
     return (
         <nav>
@@ -50,7 +51,7 @@ const Navigator = () => {
                     <ParentNavLink className={pathname.startsWith("/teams") && "active"} to={`/teams/list?currentPage=1&search=`} background="team_ico.svg">팀 정보</ParentNavLink>
                     <ul>
                         <li>
-                            <ChildNavLink className={pathname.startsWith(`/teams/detail`) && "active"} to={`/teams/detail/${user?.teamId}`}>상세 정보{params.teamId}</ChildNavLink>
+                            <ChildNavLink className={pathname.startsWith(`/teams/detail`) && "active"} to={`/teams/detail/${userInfo?.user.teamId}`}>상세 정보</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={`/teams/list?currentPage=1&search=`}>팀 목록</ChildNavLink>
@@ -59,10 +60,10 @@ const Navigator = () => {
                     </ul>
                 </li>
                 <li>
-                    <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list?currentPage=1&search=&isActive=true`} background="project_ico.svg">프로젝트</ParentNavLink>
+                    <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true`} background="project_ico.svg">프로젝트</ParentNavLink>
                     <ul>
                         <li>
-                            <ChildNavLink className={pathname.includes(`/projects/edit`) && "active"} to={`/projects/list?currentPage=1&search=&isActive=true`}>프로젝트 목록</ChildNavLink>
+                            <ChildNavLink className={pathname.includes(`/projects/edit`) && "active" || pathname.includes(`/projects/list`) && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true`}>프로젝트 목록</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={`/projects/create`}>프로젝트 등록</ChildNavLink>

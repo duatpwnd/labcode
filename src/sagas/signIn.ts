@@ -37,7 +37,7 @@ function* signIn(action) {
       expires: date,
     });
     history.push({
-      pathname: "/projects/list",
+      pathname: "/projects/list/my",
       search: `?currentPage=1&search=&isActive=true`,
       state: {
         nav: false,

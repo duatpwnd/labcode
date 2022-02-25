@@ -62,9 +62,6 @@ export default function Main() {
         query: "(max-width: 479px)"
     });
     const innerText = t('fixedTitle').replace(/<br>/gi, " ");
-    useEffect(() => {
-        console.log("onmounted", innerText);
-    }, [])
     return (
         <div className="bg" ref={bgRef}>
             <div className="center-area">

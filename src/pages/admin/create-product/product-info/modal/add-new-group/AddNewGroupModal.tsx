@@ -2,9 +2,10 @@ import "./AddNewGroupModal.scoped.scss"
 import _ from 'lodash';
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { AppContext } from "src/App";
+import { useSelector } from "react-redux";
+import { RootState } from "src/reducers";
 import { ProductList } from "../../ProductInfo";
 // 전체 체크 박스
 const AllCheckbox = ({ data, checked, setChecked }) => {
@@ -55,13 +56,16 @@ const InputTitle = ({ setTitle }) => {
 }
 const AddNewGroupModal = ({ data, SearchBar, setPage, closeModal }) => {
     const [checked, setChecked] = useState([]);
-    const user = useContext(AppContext);
+    const userInfo = useSelector((state: RootState) => {
+        return state.signIn.userInfo
+    })
+
     const [title, setTitle] = useState("");
     const params = useParams();
     const saveGroup = () => {
         console.log("checked", checked);
         axios.post(apiUrl.productInfosGroups, {
-            teamId: user.teamId,
+            teamId: userInfo?.user.teamId,
             productId: params.productId,
             title: title,
             productInfoIds: checked,

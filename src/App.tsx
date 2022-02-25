@@ -5,12 +5,11 @@ import Navigator from 'components/layout/navigation/Navigator';
 import Routes from "src/routes/Routes"
 import { useCookies } from 'react-cookie';
 import { signInSuccess } from "src/actions/signIn"
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/reducers";
-
 import {
   useLocation
 } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "src/reducers";
 import { useEffect, createContext } from 'react';
 export const AppContext = createContext<{ [key: string]: any }>({})
 export default function App() {
@@ -20,7 +19,9 @@ export default function App() {
   const userInfo = useSelector((state: RootState) => {
     return state.signIn.userInfo
   })
-
+  useEffect(() => {
+    console.log("userInfo", userInfo);
+  }, [userInfo])
   useEffect(() => {
     if (cookies.user_info != null) {
       dispatch(signInSuccess(cookies.user_info))

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signInRequest, signInFail } from "src/actions/signIn"
 import { RootState } from "src/reducers";
 import _ from 'lodash'
-import { emailReg, passwordReg } from 'src/utils/common';
+import { emailReg } from 'src/utils/common';
 const SignIn = ({ setData }) => {
     const dispatch = useDispatch();
     // snaptag_official@snaptag.co.kr
