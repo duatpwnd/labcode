@@ -61,7 +61,7 @@ const SelectBox = ({ id, eventHandler, getList, list, defaultValue, style }: any
         <div className="select-box">
             <div className={` ${isActiveModal ? "tab active-tab" : "tab"}`} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
                 {list === undefined ?
-                    <span className="type" style={style && style}>{title}</span> :
+                    <span className="type" style={style && style}>{defaultValue || title}</span> :
                     list && list.map((elements, index) => {
                         return (
                             String(elements.value) == String(selectedIndex) &&

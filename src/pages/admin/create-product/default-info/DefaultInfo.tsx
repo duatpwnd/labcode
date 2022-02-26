@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import InternalUse from "./internal/InternalUse";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
-import Classification from "../../project/project-classification/Classification";
+import Classification from "../../project/projects-classification/Classification";
 import _ from 'lodash'
 import SelectBox from "src/components/common/base-select/SelectBox";
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {

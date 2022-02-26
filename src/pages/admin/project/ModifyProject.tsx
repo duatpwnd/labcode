@@ -9,7 +9,7 @@ import apiUrl from "src/utils/api";
 import DragDrop from "components/common/drag-drop/DragDrop";
 import "./ModifyProject.scoped.scss"
 import _ from 'lodash'
-import Classification from "pages/admin/project/project-classification/Classification";
+import Classification from "src/pages/admin/project/projects-classification/Classification";
 export const ProjectContext = createContext<{ [key: string]: any }>({})
 const ProjectDetail = (props) => {
     const isAdmin = useSelector((state: RootState) => {
