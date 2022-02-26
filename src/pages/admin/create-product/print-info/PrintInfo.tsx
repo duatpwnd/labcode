@@ -10,9 +10,11 @@ const DatePickerWrapperStyles = createGlobalStyle`
     .react-datepicker-wrapper{
         width:200px;
         border-radius: 8px;    
+        overflow: hidden;
+        vertical-align: middle;
         .react-datepicker__input-container{
             input{
-                background: url(${require('images/calender_ico.svg').default}) #f0f1f2 no-repeat center right 4px /
+                background: url(${require('images/calender_ico.svg').default}) #f0f1f2 no-repeat center right 16px /
                 28px 28px;
                 padding: 15px 16px;
                 border: 1px solid #f6f7f8;

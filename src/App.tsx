@@ -20,9 +20,6 @@ export default function App() {
     return state.signIn.userInfo
   })
   useEffect(() => {
-    console.log("userInfo", userInfo);
-  }, [userInfo])
-  useEffect(() => {
     if (cookies.user_info != null) {
       dispatch(signInSuccess(cookies.user_info))
     }
