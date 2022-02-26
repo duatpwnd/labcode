@@ -2,13 +2,14 @@ import "./DefaultInfo.scoped.scss"
 import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import InternalUse from "./internal/InternalUse";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import Classification from "../../project/project-classification/Classification";
 import _ from 'lodash'
+import SelectBox from "src/components/common/base-select/SelectBox";
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
     const onChange = (e) => {
@@ -68,108 +69,106 @@ const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
         </div>
     )
 }
-
-
-const SelectBox = ({ id, eventHandler, getList, data, defaultValue }: any) => {
-    const [list, setList] = useState<{ [key: string]: any }[]>([]);
-    const [currentPage, setPage] = useState(1); // 페이징
-    const [selectedIndex, setIndex] = useState(null);
-    const [isActiveModal, setModal] = useState(false);
-    const selectBox = useRef<HTMLDivElement>(null);
-    const [isLastPage, setLastPage] = useState(false); // 마지막 페이지 유무
-    const [title, setTitle] = useState(""); // 팀, 프로젝트 제목
-    const debounce = _.debounce;
-    // 무한스크롤
-    const infiniteScroll = (e) => {
-        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-        if (bottom && isLastPage == false) {
-            setPage(currentPage + 1);
-            getList(currentPage + 1, "").then((result) => {
-                if (result.data.length == 0) {
-                    setLastPage(true);
-                    return;
-                }
-                setList([...list, ...result.data]);
-            });;
-        }
-    }
-    // 모달 영역 이외 클릭시 모달창 닫기
-    const handleCloseModal = (e) => {
-        if (isActiveModal && (!selectBox.current?.contains(e.target))) setModal(false);
-    }
-    // 리스트 선택
-    const select = (value) => {
-        setModal(false) // 모달닫기
-        // 현재 선택되어있는데 또다시 선택했을때 호출못하게
-        if (selectedIndex != value) {
-            setIndex(value); // 모달안에 선택된 리스트 활성화
-            eventHandler((prev) => {
-                return ({ ...prev, [id]: value })
-            })
-        }
-    };
-    // 검색하기
-    const search = (search) => {
-        getList(1, search).then((result) => {
-            setList(result.data);
-        });
-    }
-    useEffect(() => {
-        window.addEventListener("click", handleCloseModal)
-        return () => {
-            window.removeEventListener("click", handleCloseModal);
-        }
-    }, [isActiveModal])
-    useEffect(() => {
-        if (getList != undefined) {
-            getList(1, "").then((result) => {
-                setList([...list, ...result.data]);
-            });
-        }
-    }, [])
-    return (
-        <div className="select-box">
-            <div className={isActiveModal ? "tab active-tab" : "tab"} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
-                {
-                    // data 가 존재하면 임베딩 버전, 적용기술 셀렉트바
-                    data != undefined ?
-                        <span className="type">{defaultValue}</span> : <span className="type" >{defaultValue == null ? "선택해주세요." : title || defaultValue}</span>
-                }
-            </div>
-            {isActiveModal &&
-                <div className="slide-menu" ref={selectBox}>
-                    {
-                        // 검색 영역 
-                        data == undefined && <div className="search-area">
-                            <input type="text" autoFocus placeholder="검색" onChange={debounce((e) => search(e.target.value), 200)} />
-                            <button />
-                        </div>
-                    }
-                    <div className="list-wrap" onScroll={data == undefined ? infiniteScroll : () => { }}>
-                        {
-                            // 리스트 영역 
-                            data != undefined ? data && data.map((elements, index) => {
-                                return (
-                                    // 임베딩,적용기술
-                                    <div key={index} className={defaultValue == elements.value ? "list selected" : "list"} onClick={() => select(elements.value)}>
-                                        <span className="type">{elements.label}</span>
-                                    </div>
-                                )
-                            }) :
-                                list && list.map((elements, index) => {
-                                    return (
-                                        <div key={index} className={elements.id == defaultValue ? "list selected" : "list"} onClick={(e) => { select(elements.id); setTitle((e.target as HTMLElement).innerText) }}>
-                                            <span className="type">{elements.title}</span>
-                                        </div>
-                                    )
-                                })
-                        }
-                    </div>
-                </div>
-            }
-        </div>
-    )
-}
+// const SelectBox = ({ id, eventHandler, getList, data, defaultValue }: any) => {
+//     const [list, setList] = useState<{ [key: string]: any }[]>([]);
+//     const [currentPage, setPage] = useState(1); // 페이징
+//     const [selectedIndex, setIndex] = useState(null);
+//     const [isActiveModal, setModal] = useState(false);
+//     const selectBox = useRef<HTMLDivElement>(null);
+//     const [isLastPage, setLastPage] = useState(false); // 마지막 페이지 유무
+//     const [title, setTitle] = useState(""); // 팀, 프로젝트 제목
+//     const debounce = _.debounce;
+//     // 무한스크롤
+//     const infiniteScroll = (e) => {
+//         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+//         if (bottom && isLastPage == false) {
+//             setPage(currentPage + 1);
+//             getList(currentPage + 1, "").then((result) => {
+//                 if (result.data.length == 0) {
+//                     setLastPage(true);
+//                     return;
+//                 }
+//                 setList([...list, ...result.data]);
+//             });;
+//         }
+//     }
+//     // 모달 영역 이외 클릭시 모달창 닫기
+//     const handleCloseModal = (e) => {
+//         if (isActiveModal && (!selectBox.current?.contains(e.target))) setModal(false);
+//     }
+//     // 리스트 선택
+//     const select = (value) => {
+//         setModal(false) // 모달닫기
+//         // 현재 선택되어있는데 또다시 선택했을때 호출못하게
+//         if (selectedIndex != value) {
+//             setIndex(value); // 모달안에 선택된 리스트 활성화
+//             eventHandler((prev) => {
+//                 return ({ ...prev, [id]: value })
+//             })
+//         }
+//     };
+//     // 검색하기
+//     const search = (search) => {
+//         getList(1, search).then((result) => {
+//             setList(result.data);
+//         });
+//     }
+//     useEffect(() => {
+//         window.addEventListener("click", handleCloseModal)
+//         return () => {
+//             window.removeEventListener("click", handleCloseModal);
+//         }
+//     }, [isActiveModal])
+//     useEffect(() => {
+//         if (getList != undefined) {
+//             getList(1, "").then((result) => {
+//                 setList([...list, ...result.data]);
+//             });
+//         }
+//     }, [])
+//     return (
+//         <div className="select-box">
+//             <div className={isActiveModal ? "tab active-tab" : "tab"} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
+//                 {
+//                     // data 가 존재하면 임베딩 버전, 적용기술 셀렉트바
+//                     data != undefined ?
+//                         <span className="type">{defaultValue}</span> : <span className="type" >{defaultValue == null ? "선택해주세요." : title || defaultValue}</span>
+//                 }
+//             </div>
+//             {isActiveModal &&
+//                 <div className="slide-menu" ref={selectBox}>
+//                     {
+//                         // 검색 영역 
+//                         data == undefined && <div className="search-area">
+//                             <input type="text" autoFocus placeholder="검색" onChange={debounce((e) => search(e.target.value), 200)} />
+//                             <button />
+//                         </div>
+//                     }
+//                     <div className="list-wrap" onScroll={data == undefined ? infiniteScroll : () => { }}>
+//                         {
+//                             // 리스트 영역 
+//                             data != undefined ? data && data.map((elements, index) => {
+//                                 return (
+//                                     // 임베딩,적용기술
+//                                     <div key={index} className={defaultValue == elements.value ? "list selected" : "list"} onClick={() => select(elements.value)}>
+//                                         <span className="type">{elements.label}</span>
+//                                     </div>
+//                                 )
+//                             }) :
+//                                 list && list.map((elements, index) => {
+//                                     return (
+//                                         <div key={index} className={elements.id == defaultValue ? "list selected" : "list"} onClick={(e) => { select(elements.id); setTitle((e.target as HTMLElement).innerText) }}>
+//                                             <span className="type">{elements.title}</span>
+//                                         </div>
+//                                     )
+//                                 })
+//                         }
+//                     </div>
+//                 </div>
+//             }
+//         </div>
+//     )
+// }
 const DefaultInfo = () => {
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
@@ -290,6 +289,9 @@ const DefaultInfo = () => {
         } else {
         }
     }, [params.productId])
+    const selectBoxStyle = {
+        padding: '16px 0',
+    }
     return (
         <>
             <Classification isActive={false} inputs={{ versionId: 1, countryId: 1, industryId: 1, mainCategoryId: 1 }} />
@@ -298,11 +300,15 @@ const DefaultInfo = () => {
                 <div className="form">
                     <div className="row">
                         <label htmlFor="teamId" className="team" >팀</label>
-                        <SelectBox id="teamId" defaultValue={inputs.teamId} eventHandler={setInputs} getList={getTeamList} />
+                        <div className="select-box-wrap">
+                            <SelectBox style={selectBoxStyle} id="teamId" defaultValue={inputs.teamId} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} getList={getTeamList} />
+                        </div>
                     </div>
                     <div className="row">
                         <label htmlFor="projectId" className="project" >프로젝트</label>
-                        <SelectBox id="projectId" defaultValue={inputs.projectId} eventHandler={setInputs} getList={getProjectList} />
+                        <div className="select-box-wrap">
+                            <SelectBox style={selectBoxStyle} id="projectId" defaultValue={inputs.projectId} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} getList={getProjectList} />
+                        </div>
                     </div>
                     <div className="row">
                         <label htmlFor="title" className="title" >제목</label>
@@ -322,15 +328,19 @@ const DefaultInfo = () => {
                         <DragDrop link={inputs.sourceImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "459px" }} />
                     </div>
                     {isAdmin &&
-                        <div className="row ">
+                        <div className="row">
                             <label htmlFor="embedding">임베딩 버전</label>
-                            <SelectBox data={embeddingTypes} id="embedding" defaultValue={inputs.embedding} eventHandler={setInputs} />
+                            <div className="select-box-wrap">
+                                <SelectBox style={selectBoxStyle} id="embedding" list={embeddingTypes} defaultValue={inputs.embedding} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} />
+                            </div>
                         </div>
                     }
                     {isAdmin &&
-                        <div className="row ">
+                        <div className="row">
                             <label htmlFor="channel">적용 기술</label>
-                            <SelectBox id="channel" defaultValue={inputs.channel} data={channelTypes} eventHandler={setInputs} />
+                            <div className="select-box-wrap">
+                                <SelectBox style={selectBoxStyle} id="channel" list={channelTypes} defaultValue={inputs.channel} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} />
+                            </div>
                         </div>
                     }
                     <div className="row">

@@ -29,8 +29,10 @@
         display: inline-block;
         vertical-align: middle;
         width: 164px;
-        .select-box {
-          display: inline-block;
+        .select-box-wrap {
+          cursor: pointer;
+          position: relative;
+          background: white;
         }
         .filter-title {
           font-size: 14px;

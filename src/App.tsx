@@ -1,6 +1,6 @@
 import './App.css';
-import Header from "components/layout/Header";
-import Footer from "components/layout/Footer";
+import Header from "src/components/layout/header/Header";
+import Footer from './components/layout/footer/Footer';
 import Navigator from 'components/layout/navigation/Navigator';
 import Routes from "src/routes/Routes"
 import { useCookies } from 'react-cookie';
