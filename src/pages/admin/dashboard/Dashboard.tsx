@@ -1,8 +1,8 @@
 import "./Dashboard.scoped.scss"
-import Doughnut from "src/components/chart/Doughnut"
-import GroupedBar from "src/components/chart/GroupedBar"
-import LineChart from "src/components/chart/LineChart"
-import KoreaMap from "src/components/chart/KoreaMap"
+import Doughnut from "src/components/chart/doughnut/Doughnut"
+import GroupedBar from "src/components/chart/grouped-bar/GroupedBar"
+import LineChart from "src/components/chart/line/LineChart"
+import KoreaMap from "src/components/chart/korea-map/KoreaMap"
 import { useEffect } from "react"
 const Dashboard = () => {
     useEffect(() => {
