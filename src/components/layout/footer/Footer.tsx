@@ -1,7 +1,7 @@
 import "./Footer.scoped.scss"
 import { Link } from "react-router-dom";
 import SelectBox from "src/components/common/base-select/SelectBox";
-const navigate = (id, link) => {
+const navigate = (link) => {
     window.open(link, '_blank')
 }
 const selectBoxStyle1 = {
@@ -37,7 +37,11 @@ export default function Footer() {
             <div className="col2">
                 <b>패밀리 사이트</b>
                 <div className="select-box-wrap">
-                    <SelectBox style={[selectBoxStyle1, selectBoxStyle2]} list={[{ label: "안전하고 쉬운 투자, 온미", value: "https://onme.gallery/" }, { label: "LAB Code 솔루션 구축하는, 스냅태그", value: "https://snaptag.co.kr/" }]} defaultValue="https://onme.gallery/" eventHandler={navigate} />
+                    <SelectBox
+                        property="label"
+                        value="value"
+                        style={[selectBoxStyle1, selectBoxStyle2]}
+                        list={[{ label: "안전하고 쉬운 투자, 온미", value: "https://onme.gallery/" }, { label: "LAB Code 솔루션 구축하는, 스냅태그", value: "https://snaptag.co.kr/" }]} defaultValue="https://onme.gallery/" eventHandler={navigate} />
                 </div>
             </div>
         </footer>

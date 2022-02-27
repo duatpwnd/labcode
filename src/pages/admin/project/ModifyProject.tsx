@@ -11,7 +11,7 @@ import "./ModifyProject.scoped.scss"
 import _ from 'lodash'
 import Classification from "src/pages/admin/project/projects-classification/Classification";
 export const ProjectContext = createContext<{ [key: string]: any }>({})
-const ProjectDetail = (props) => {
+const ProjectDetail = () => {
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })
@@ -19,14 +19,29 @@ const ProjectDetail = (props) => {
     const params = useParams();
     const debounce = _.debounce;
     const [inputs, setInputs] = useState<{ [key: string]: any }>({
-        versionId: 1
+        versionId: 1,
+        industryId: null,
+        countryId: null,
+        mainCategoryId: null,
+        subCategoryId: null
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
     }, 500);
     const onChange = (e: { [key: string]: any }) => {
         if (pathname == "/projects/create") {
-            setInputs((prev) => ({ ...prev, [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value }))
+            if (e.target == undefined) {
+                setInputs((prev) => ({ ...prev, bannerImage: e }))
+            } else {
+                setInputs((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+                if (e.target.id == "versionId") {
+                    setInputs((prev) => ({ ...prev, ...{ countryId: null, industryId: null, mainCategoryId: null, subCategoryId: null } }));
+                } else if (e.target.id == "industryId") {
+                    setInputs((prev) => ({ ...prev, ...{ mainCategoryId: null, subCategoryId: null } }));
+                } else if (e.target.id == "mainCategoryId") {
+                    setInputs((prev) => ({ ...prev, ...{ subCategoryId: null } }));
+                }
+            }
         } else {
             modify({ [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value });
         }
@@ -74,6 +89,14 @@ const ProjectDetail = (props) => {
                 console.log('프로젝트수정에러:', err);
             });
     }
+    useEffect(() => {
+        setInputs({
+            versionId: 1,
+            countryId: null,
+            mainCategoryId: null,
+            subCategoryId: null
+        });
+    }, [useLocation()])
     useEffect(() => {
         if (pathname != "/projects/create") {
             getProject();

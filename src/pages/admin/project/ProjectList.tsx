@@ -10,8 +10,10 @@ const Project = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = qs.parse(location.search);
-    const changeUrlQuery = (id, value) => {
-        const newQueries = { ...queryParams, [id]: value };
+    const searchParams = new URLSearchParams(location.search);
+    const isActive = searchParams.get('isActive');
+    const changeUrlQuery = (value) => {
+        const newQueries = { ...queryParams, "isActive": value };
         history.push({ search: qs.stringify(newQueries) });
     }
     const selectBoxStyle = {
@@ -28,7 +30,12 @@ const Project = () => {
                     <div className="filter-menu filter-menu1">
                         <span className="filter-title">등록 상태</span>
                         <div className="select-box-wrap">
-                            <SelectBox style={selectBoxStyle} id="isActive" list={[{ label: "전체", value: "" }, { label: "승인완료", value: true }, { label: "신청접수", value: false }]} defaultValue={true} eventHandler={changeUrlQuery} />
+                            <SelectBox
+                                property="label"
+                                defaultValue={isActive}
+                                value="value"
+                                style={selectBoxStyle}
+                                list={[{ label: "전체", value: "" }, { label: "승인완료", value: true }, { label: "신청접수", value: false }]} eventHandler={changeUrlQuery} />
                         </div>
                     </div>
                     {/* <div className="filter-menu filter-menu2">

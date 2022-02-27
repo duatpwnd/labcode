@@ -31,17 +31,12 @@ main {
         .top {
           vertical-align: top;
         }
-        .select-box {
+        .select-box-wrap {
           display: inline-block;
           width: calc(100% - 180px);
-          box-sizing: border-box;
-          padding: 16px;
-          border-radius: 8px;
-          color: #303538;
-          background: url("~images/arrow_bottom.svg") #f6f7f8 no-repeat right
-            10px center / 16px 16px;
+          cursor: pointer;
+          position: relative;
         }
-
         textarea {
           height: 220px;
           padding: 20px;

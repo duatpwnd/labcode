@@ -1,13 +1,13 @@
 import "./SelectBox.scoped.scss"
 import _ from 'lodash'
 import { useEffect, useRef, useState } from "react";
-const SelectBox = ({ id, eventHandler, getList, list, defaultValue, style }: any) => {
+const SelectBox = ({ property, value, eventHandler, getList, list, defaultValue, style }: any) => {
     const [infiniteList, setInfiniteList] = useState<{ [key: string]: any }[]>([]);
     const [selectedIndex, setIndex] = useState(null);
     const [isActiveModal, setModal] = useState(false);
     const [currentPage, setPage] = useState(1); // 페이징
     const [isLastPage, setLastPage] = useState(false); // 마지막 페이지 유무
-    const [title, setTitle] = useState("선택해주세요"); // 팀, 프로젝트 제목
+    const [title, setTitle] = useState("");
     const debounce = _.debounce;
     // 무한스크롤
     const infiniteScroll = (e) => {
@@ -26,11 +26,12 @@ const SelectBox = ({ id, eventHandler, getList, list, defaultValue, style }: any
     const selectBox = useRef<HTMLDivElement>(null);
     // 리스트 선택
     const select = (value) => {
+        console.log("value", value);
         setModal(false) // 모달닫기
         // 현재 선택되어있는데 또다시 선택했을때 호출못하게
         if (selectedIndex != value) {
             setIndex(value); // 모달안에 선택된 리스트 활성화
-            eventHandler(id, value);
+            eventHandler(value);
         }
     };
     const handleCloseModal = (e) => {
@@ -49,25 +50,28 @@ const SelectBox = ({ id, eventHandler, getList, list, defaultValue, style }: any
         }
     }, [isActiveModal])
     useEffect(() => {
+        setTitle("");
         getList && getList(1, "").then((result) => {
-            console.log("result", result);
-            setInfiniteList([...infiniteList, ...result.data]);
+            setInfiniteList(result.data);
         });
-    }, [])
+    }, [getList])
     useEffect(() => {
         setIndex(defaultValue);
-    }, [])
+    }, [defaultValue])
     return (
         <div className="select-box">
             <div className={` ${isActiveModal ? "tab active-tab" : "tab"}`} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
                 {list === undefined ?
-                    <span className="type" style={style && style}>{defaultValue || title}</span> :
-                    list && list.map((elements, index) => {
-                        return (
-                            String(elements.value) == String(selectedIndex) &&
-                            <span className="type" key={index} style={style && style[index] || style} >{elements.label}</span>
-                        )
-                    })
+                    defaultValue == null ? <span className="type" style={style && style}>{title || "선택해주세요."}</span> :
+                        <span className="type" style={style && style}>{defaultValue.title}</span>
+                    :
+                    defaultValue == null ? <span className="type" style={style && style}>선택해주세요.</span> :
+                        list && list.map((elements, index) => {
+                            return (
+                                String(elements[value]) == String(selectedIndex) &&
+                                <span className="type" key={index} style={style && style[index] || style} >{elements[property]}</span>
+                            )
+                        })
                 }
             </div>
             {
@@ -82,8 +86,10 @@ const SelectBox = ({ id, eventHandler, getList, list, defaultValue, style }: any
                             {
                                 infiniteList && infiniteList.map((elements, index) => {
                                     return (
-                                        <div key={index} className={elements.id == defaultValue ? "list selected" : "list"} onClick={(e) => { select(String(elements.id)); setTitle((e.target as HTMLElement).innerText) }}>
-                                            <span className="type" style={style && style[index] || style}>{elements.title}</span>
+                                        <div key={index} className={elements[value] == defaultValue ? "list selected" : "list"} onClick={(e) => {
+                                            select(String(elements[value])); setTitle((e.target as any).innerText);
+                                        }}>
+                                            <span className="type" style={style && style[index] || style}>{elements[property]}</span>
                                         </div>
                                     )
                                 })
@@ -95,8 +101,8 @@ const SelectBox = ({ id, eventHandler, getList, list, defaultValue, style }: any
                         {
                             list && list.map((elements, index) => {
                                 return (
-                                    <div key={index} className={` ${String(elements.value) == String(selectedIndex) ? "list selected" : "list"}`} onClick={() => { select(String(elements.value)) }}>
-                                        <span style={style && style[index] || style} className="type">{elements.label}</span>
+                                    <div key={index} className={` ${String(elements[value]) == String(selectedIndex) ? "list selected" : "list"}`} onClick={() => { select(String(elements[value])) }}>
+                                        <span style={style && style[index] || style} className="type">{elements[property]}</span>
                                     </div>
                                 )
                             })

@@ -86,10 +86,6 @@ const Header = () => {
     const userInfo = useSelector((state: RootState) => {
         return state.signIn.userInfo
     })
-    useEffect(() => {
-        console.log(userInfo);
-
-    }, [userInfo])
     const handleChangeLanguage = (lang: Languages) => {
         langModalUpdate(false);
         langUpdate(lang);

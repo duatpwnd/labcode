@@ -201,13 +201,23 @@ const DefaultInfo = () => {
                     <div className="row">
                         <label htmlFor="teamId" className="team" >팀</label>
                         <div className="select-box-wrap">
-                            <SelectBox style={selectBoxStyle} id="teamId" defaultValue={inputs.teamId} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} getList={getTeamList} />
+                            <SelectBox
+                                property="title"
+                                value="id"
+                                style={selectBoxStyle}
+                                defaultValue={inputs.teamId}
+                                eventHandler={(value) => setInputs((prev) => ({ ...prev, teamId: value }))} getList={getTeamList} />
                         </div>
                     </div>
                     <div className="row">
                         <label htmlFor="projectId" className="project" >프로젝트</label>
                         <div className="select-box-wrap">
-                            <SelectBox style={selectBoxStyle} id="projectId" defaultValue={inputs.projectId} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} getList={getProjectList} />
+                            <SelectBox
+                                property="title"
+                                value="id"
+                                style={selectBoxStyle}
+                                defaultValue={inputs.projectId}
+                                eventHandler={(value) => setInputs((prev) => ({ ...prev, projectId: value }))} getList={getProjectList} />
                         </div>
                     </div>
                     <div className="row">
@@ -231,7 +241,13 @@ const DefaultInfo = () => {
                         <div className="row">
                             <label htmlFor="embedding">임베딩 버전</label>
                             <div className="select-box-wrap">
-                                <SelectBox style={selectBoxStyle} id="embedding" list={embeddingTypes} defaultValue={inputs.embedding} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} />
+                                <SelectBox
+                                    property="label"
+                                    value="value"
+                                    style={selectBoxStyle}
+                                    list={embeddingTypes}
+                                    defaultValue={inputs.embedding}
+                                    eventHandler={(value) => setInputs((prev) => ({ ...prev, embedding: value }))} />
                             </div>
                         </div>
                     }
@@ -239,7 +255,13 @@ const DefaultInfo = () => {
                         <div className="row">
                             <label htmlFor="channel">적용 기술</label>
                             <div className="select-box-wrap">
-                                <SelectBox style={selectBoxStyle} id="channel" list={channelTypes} defaultValue={inputs.channel} eventHandler={(id, value) => setInputs((prev) => ({ ...prev, [id]: value }))} />
+                                <SelectBox
+                                    property="label"
+                                    value="value"
+                                    style={selectBoxStyle}
+                                    list={channelTypes}
+                                    defaultValue={inputs.channel}
+                                    eventHandler={(value) => setInputs((prev) => ({ ...prev, channel: value }))} />
                             </div>
                         </div>
                     }

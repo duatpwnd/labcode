@@ -145,7 +145,13 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                             </td>
                                             <td style={type == "modal" ? { pointerEvents: "none", color: "#9ea7ad" } : { pointerEvents: "auto" }}>
                                                 <div className="select-box-wrap">
-                                                    <SelectBox style={selectBoxStyle} defaultValue={list.type} id="type" type={list.type} list={[{ label: "텍스트", value: 'text' }, { label: '숫자', value: 'number' }, { label: "참,거짓", value: 'boolean' }, { label: "URL", value: 'url' }, { label: "날짜", value: 'date' }, { label: "이미지", value: 'image' }]} eventHandler={(id, value) => modifyProductInfos({ target: { id: id, value: value } }, list.id)} />
+                                                    <SelectBox
+                                                        style={selectBoxStyle}
+                                                        defaultValue={list.type}
+                                                        property="label"
+                                                        value="value"
+                                                        list={[{ label: "텍스트", value: 'text' }, { label: '숫자', value: 'number' }, { label: "참,거짓", value: 'boolean' }, { label: "URL", value: 'url' }, { label: "날짜", value: 'date' }, { label: "이미지", value: 'image' }]}
+                                                        eventHandler={(value) => modifyProductInfos({ target: { id: "type", value: value } }, list.id)} />
                                                 </div>
                                             </td>
                                             <td >
