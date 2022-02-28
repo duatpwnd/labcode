@@ -113,7 +113,7 @@ const MyProjects = () => {
                                 </dl>
                                 <div className="status-area">
                                     {
-                                        list.isActive ? <StatusText color="black" background="white;">승인완료</StatusText>
+                                        list.isActive ? <StatusText color="white" background="black;">승인완료</StatusText>
                                             : <StatusText color="white;" background="#79828A;">신청접수</StatusText>
                                     }
                                     <button id={`menu${list.id}`} className="menu-btn" onClick={(e) => { menuModal(e, list.id) }}></button>

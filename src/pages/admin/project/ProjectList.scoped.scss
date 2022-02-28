@@ -22,7 +22,7 @@
   .top-menu {
     flex-wrap: wrap;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     .filter-wrap {
       display: inline-block;
       .filter-menu {

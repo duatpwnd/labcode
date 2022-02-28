@@ -24,7 +24,7 @@ const CreateProduct = () => {
                                 <NavLink to={"defaultInfo"}>기본 정보</NavLink>
                             </li>
                             <li>
-                                <NavLink to={"productInfo?currentPage=1&search="}>제품 정보</NavLink>
+                                <NavLink to={"productInfo?currentPage=1&search="}>템플릿 정보</NavLink>
                             </li>
                             {
                                 isAdmin && <li>

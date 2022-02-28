@@ -8,6 +8,7 @@ import InternalUse from "./internal/InternalUse";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import Classification from "../../project/projects-classification/Classification";
+import { useLocation } from 'react-router-dom';
 import _ from 'lodash'
 import SelectBox from "src/components/common/base-select/SelectBox";
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
@@ -21,9 +22,6 @@ const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
         }
         eventHandler({ ...inputs, [id]: e.target.value })
     }
-    useEffect(() => {
-        console.log("scales", inputs[id], scales);
-    }, [])
     return (
         <div className="slide-bar-container">
             {
@@ -70,6 +68,7 @@ const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     )
 }
 const DefaultInfo = () => {
+    const { pathname } = useLocation();
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })
@@ -82,8 +81,8 @@ const DefaultInfo = () => {
     const [inputs, setInputs] = useState({
         projectId: null,
         teamId: null,
-        embedding: "2.5",
-        channel: "lab_rgb",
+        embedding: null,
+        channel: null,
         title: "",
         description: "",
         labcodeImage: null,
@@ -146,7 +145,6 @@ const DefaultInfo = () => {
             .get(apiUrl.products + `/${params.productId}`)
             .then((result: any) => {
                 console.log('제품 상세 조회:', result);
-
                 setInputs({
                     ...result.data.data
                 })
@@ -179,22 +177,46 @@ const DefaultInfo = () => {
             setAlphas(res2.data.data);
             setChannelTypes(res3.data.data);
             setEmbeddingTypes(res4.data.data);
+            const defaultChannelTypes = res3.data.data.filter((el, index) => el.default == true);
+            const defaultEmbeddingTypes = res4.data.data.filter((el, index) => el.default == true);
+            setInputs((prev) => ({
+                ...prev, ...{
+                    channel: defaultChannelTypes[0].value,
+                    embedding: defaultEmbeddingTypes[0].value
+                }
+            }))
+            // 수정페이지일때
+            if (pathname.startsWith("/products/edit")) {
+                getProductDetail();
+            }
         }))
             .catch((err) => {
                 console.log("조회에러", err);
             })
-        // 수정페이지일때
-        if (params.productId != undefined) {
-            getProductDetail();
-        } else {
-        }
-    }, [params.productId])
+    }, [])
+    useEffect(() => {
+
+        setInputs({
+            projectId: null,
+            teamId: null,
+            embedding: null,
+            channel: null,
+            title: "",
+            description: "",
+            labcodeImage: null,
+            sourceImage: params.productId == undefined ? null : {} as { [key: string]: any },
+            url: "",
+            scale: 4,
+            alpha: 8
+        });
+
+    }, [pathname])
     const selectBoxStyle = {
         padding: '16px 0',
     }
     return (
         <>
-            <Classification isActive={false} inputs={{ versionId: 1, countryId: 1, industryId: 1, mainCategoryId: 1 }} />
+            <Classification isActive={false} inputs={{ versionId: 1, countryId: 1, industryId: 1, mainCategoryId: 1, subCategoryId: null }} />
             <section>
                 <h3 className="h3-title">기본 정보</h3>
                 <div className="form">
@@ -253,7 +275,7 @@ const DefaultInfo = () => {
                     }
                     {isAdmin &&
                         <div className="row">
-                            <label htmlFor="channel">적용 기술</label>
+                            <label htmlFor="channel">적용 기술{inputs.channel}</label>
                             <div className="select-box-wrap">
                                 <SelectBox
                                     property="label"

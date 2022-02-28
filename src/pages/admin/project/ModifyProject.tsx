@@ -9,6 +9,7 @@ import apiUrl from "src/utils/api";
 import DragDrop from "components/common/drag-drop/DragDrop";
 import "./ModifyProject.scoped.scss"
 import _ from 'lodash'
+import SelectBox from "src/components/common/base-select/SelectBox";
 import Classification from "src/pages/admin/project/projects-classification/Classification";
 export const ProjectContext = createContext<{ [key: string]: any }>({})
 const ProjectDetail = () => {
@@ -18,13 +19,7 @@ const ProjectDetail = () => {
     const { pathname } = useLocation();
     const params = useParams();
     const debounce = _.debounce;
-    const [inputs, setInputs] = useState<{ [key: string]: any }>({
-        versionId: 1,
-        industryId: null,
-        countryId: null,
-        mainCategoryId: null,
-        subCategoryId: null
-    });
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({});
     const inputDebounce = debounce((e) => {
         onChange(e);
     }, 500);
@@ -37,9 +32,12 @@ const ProjectDetail = () => {
                 if (e.target.id == "versionId") {
                     setInputs((prev) => ({ ...prev, ...{ countryId: null, industryId: null, mainCategoryId: null, subCategoryId: null } }));
                 } else if (e.target.id == "industryId") {
-                    setInputs((prev) => ({ ...prev, ...{ mainCategoryId: null, subCategoryId: null } }));
+                    setInputs((prev) => ({ ...prev, ...{ mainCategory: null, subCategory: null, mainCategoryId: null, subCategoryId: null } }));
                 } else if (e.target.id == "mainCategoryId") {
-                    setInputs((prev) => ({ ...prev, ...{ subCategoryId: null } }));
+                    setInputs((prev) => ({ ...prev, ...{ mainCategory: { title: e.target.text }, subCategoryId: null, subCategory: null } }));
+                }
+                else if (e.target.id == "subCategoryId") {
+                    setInputs((prev) => ({ ...prev, ...{ subCategory: { title: e.target.text } } }));
                 }
             }
         } else {
@@ -65,6 +63,7 @@ const ProjectDetail = () => {
             });
     }
     const getProject = () => {
+        console.log(" getProject();호출")
         axios
             .get(apiUrl.project + `/${params.projectId}`)
             .then((result: { [key: string]: any }) => {
@@ -89,19 +88,28 @@ const ProjectDetail = () => {
                 console.log('프로젝트수정에러:', err);
             });
     }
+    // 팀 리스트 조회
+    const getTeamList = (page, search) => {
+        return axios
+            .get(apiUrl.team + `?page=${page}&search=${search}&limit=20`)
+            .then((result: any) => {
+                console.log('팀리스트조회결과:', result);
+                return result.data
+            });
+    }
+    const selectBoxStyle = {
+        padding: '16px 0',
+    }
     useEffect(() => {
-        setInputs({
-            versionId: 1,
-            countryId: null,
-            mainCategoryId: null,
-            subCategoryId: null
-        });
-    }, [useLocation()])
-    useEffect(() => {
-        if (pathname != "/projects/create") {
+        if (pathname == "/projects/create") {
+            setInputs({
+                versionId: 1,
+            });
+        } else {
             getProject();
         }
-    }, [])
+    }, [pathname])
+
     return (
         <main>
             <div className="wrap">
@@ -118,11 +126,22 @@ const ProjectDetail = () => {
                 <section className="section1">
                     <h2 className="h3-title">프로젝트 정보</h2>
                     <div className="row">
+                        <label htmlFor="teamId" className="team" >팀</label>
+                        <div className="select-box-wrap">
+                            <SelectBox
+                                property="title"
+                                value="id"
+                                style={selectBoxStyle}
+                                defaultValue={inputs.teamId}
+                                eventHandler={(value) => setInputs((prev) => ({ ...prev, teamId: value }))} getList={getTeamList} />
+                        </div>
+                    </div>
+                    <div className="row">
                         <label htmlFor="title" className="title">프로젝트 명</label>
                         <input type="text" placeholder="프로젝트 명 입력" id="title" defaultValue={inputs.title} onKeyUp={(e) => inputDebounce(e)} />
                     </div>
                     <div className="row">
-                        <label className="top">배너</label>
+                        <label className="top">썸네일 이미지</label>
                         <DragDrop link={inputs.bannerImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "495px" }} />
                     </div>
                     <div className="row">

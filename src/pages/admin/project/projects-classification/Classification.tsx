@@ -10,7 +10,6 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
     const userInfo = useSelector((state: RootState) => {
         return state.signIn.userInfo
     })
-    const { pathname } = useLocation();
     const [versions, setVersions] = useState<{ [key: string]: any }[]>([]);
     const [countries, setCountries] = useState<{ [key: string]: any }[]>([]);
     const [industries, setIndustries] = useState<{ [key: string]: any }[]>([]);
@@ -36,23 +35,24 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
         })
     }
     // 소분류 조회
-    const getSubCategories = useCallback((page, search) => {
+    const getSubCategories = (page, search) => {
         return axios.get(apiUrl.subCategories + `?mainCategoryId=${inputs.mainCategoryId}&page=${page}&limit=10&search=${search}`).then((result) => {
             console.log('소분류조회:', result.data);
             return result.data;
         })
-    }, [inputs.mainCategoryId])
+    }
     // 대분류 조회
-    const getMainCategories = useCallback((page, search) => {
+    const getMainCategories = (page, search) => {
         return axios.get(apiUrl.mainCategories + `?industryId=${inputs.industryId}&teamId=${userInfo?.user.teamId}&page=${page}&limit=10&search=${search}`).then((result) => {
             console.log('대분류조회:', result.data, inputs.mainCategoryId);
             return result.data
         })
-    }, [inputs.industryId])
+    }
     useEffect(() => {
         // 버전, 국가, 산업 조회
-        console.log("inputs.versionId", inputs.versionId);
-        axios.all([getVersions(), getCountries(), getIndustries()]);
+        if (inputs.versionId != null) {
+            axios.all([getVersions(), getCountries(), getIndustries()]);
+        }
     }, [inputs.versionId]);
     const selectBoxStyle = {
         padding: '16px 0'
@@ -62,7 +62,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
         <section style={isActive == false ? { pointerEvents: "none" } : { pointerEvents: "auto" }}>
             <h2 className="h3-title">프로젝트 분류</h2>
             <div className="row">
-                <label htmlFor="versionId">버전{String(inputs.versionId)}</label>
+                <label htmlFor="versionId">버전</label>
                 <div className="select-box-wrap">
                     <SelectBox
                         style={selectBoxStyle}
@@ -75,7 +75,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             </div>
             {
                 countries.length != 0 && <div className="row">
-                    <label htmlFor="countryId">국가{String(inputs.countryId)}</label>
+                    <label htmlFor="countryId">국가</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}
@@ -90,7 +90,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
 
             {
                 inputs.countryId != null && <div className="row">
-                    <label htmlFor="industryId" >산업{inputs.industryId}</label>
+                    <label htmlFor="industryId" >산업군</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}
@@ -105,14 +105,15 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             {
                 inputs.industryId != null &&
                 <div className="row">
-                    <label htmlFor="mainCategoryId" >대분류{String(inputs.mainCategoryId)}</label>
+                    <label htmlFor="mainCategoryId" >대분류</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}
                             property="title"
                             value="id"
-                            defaultValue={inputs.mainCategory}
-                            eventHandler={(value) => eventHandler({ target: { id: "mainCategoryId", value: value } })}
+                            inputs={inputs}
+                            defaultValue={inputs.mainCategory?.title}
+                            eventHandler={(value, text) => eventHandler({ target: { id: "mainCategoryId", value: value, text: text } })}
                             getList={getMainCategories} />
                     </div>
                 </div>
@@ -120,14 +121,15 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             {
                 inputs.mainCategoryId != null &&
                 <div className="row">
-                    <label htmlFor="subCategoryId" >소분류{String(inputs.subCategoryId)}</label>
+                    <label htmlFor="subCategoryId" >소분류</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}
                             property="title"
                             value="id"
-                            defaultValue={inputs.subCategory}
-                            eventHandler={(value) => eventHandler({ target: { id: "subCategoryId", value: value } })}
+                            inputs={inputs}
+                            defaultValue={inputs.subCategory?.title}
+                            eventHandler={(value, text) => eventHandler({ target: { id: "subCategoryId", value: value, text: text } })}
                             getList={getSubCategories} />
                     </div>
                 </div>

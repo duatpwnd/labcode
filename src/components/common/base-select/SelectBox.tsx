@@ -1,13 +1,12 @@
 import "./SelectBox.scoped.scss"
 import _ from 'lodash'
-import { useEffect, useRef, useState } from "react";
-const SelectBox = ({ property, value, eventHandler, getList, list, defaultValue, style }: any) => {
+import { useEffect, useMemo, useRef, useState } from "react";
+const SelectBox = ({ inputs, property, value, eventHandler, getList, list, defaultValue, style }: any) => {
     const [infiniteList, setInfiniteList] = useState<{ [key: string]: any }[]>([]);
     const [selectedIndex, setIndex] = useState(null);
     const [isActiveModal, setModal] = useState(false);
     const [currentPage, setPage] = useState(1); // 페이징
     const [isLastPage, setLastPage] = useState(false); // 마지막 페이지 유무
-    const [title, setTitle] = useState("");
     const debounce = _.debounce;
     // 무한스크롤
     const infiniteScroll = (e) => {
@@ -25,13 +24,13 @@ const SelectBox = ({ property, value, eventHandler, getList, list, defaultValue,
     }
     const selectBox = useRef<HTMLDivElement>(null);
     // 리스트 선택
-    const select = (value) => {
+    const select = (value, text?) => {
         console.log("value", value);
         setModal(false) // 모달닫기
         // 현재 선택되어있는데 또다시 선택했을때 호출못하게
         if (selectedIndex != value) {
             setIndex(value); // 모달안에 선택된 리스트 활성화
-            eventHandler(value);
+            eventHandler(value, text);
         }
     };
     const handleCloseModal = (e) => {
@@ -50,11 +49,10 @@ const SelectBox = ({ property, value, eventHandler, getList, list, defaultValue,
         }
     }, [isActiveModal])
     useEffect(() => {
-        setTitle("");
         getList && getList(1, "").then((result) => {
             setInfiniteList(result.data);
         });
-    }, [getList])
+    }, [inputs?.industryId, inputs?.mainCategoryId])
     useEffect(() => {
         setIndex(defaultValue);
     }, [defaultValue])
@@ -62,8 +60,7 @@ const SelectBox = ({ property, value, eventHandler, getList, list, defaultValue,
         <div className="select-box">
             <div className={` ${isActiveModal ? "tab active-tab" : "tab"}`} onClick={() => setModal(!isActiveModal)} style={{ backgroundImage: isActiveModal ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }}>
                 {list === undefined ?
-                    defaultValue == null ? <span className="type" style={style && style}>{title || "선택해주세요."}</span> :
-                        <span className="type" style={style && style}>{defaultValue.title}</span>
+                    <span className="type" style={style && style}>{defaultValue || "선택해주세요."} </span>
                     :
                     defaultValue == null ? <span className="type" style={style && style}>선택해주세요.</span> :
                         list && list.map((elements, index) => {
@@ -87,7 +84,7 @@ const SelectBox = ({ property, value, eventHandler, getList, list, defaultValue,
                                 infiniteList && infiniteList.map((elements, index) => {
                                     return (
                                         <div key={index} className={elements[value] == defaultValue ? "list selected" : "list"} onClick={(e) => {
-                                            select(String(elements[value])); setTitle((e.target as any).innerText);
+                                            select(String(elements[value]), (e.target as { [key: string]: any }).innerText);
                                         }}>
                                             <span className="type" style={style && style[index] || style}>{elements[property]}</span>
                                         </div>
