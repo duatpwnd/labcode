@@ -4,22 +4,19 @@ main {
     max-width: 840px;
     margin: 0 auto;
     padding: 40px;
-    .sub-category {
-      span {
-        font-size: 14px;
+    .category {
+      font-size: 14px;
+      .sub-category {
         color: #525a61;
-      }
-      .project-manage {
-        margin: 0 6px;
-        &:before {
-          content: " > ";
-        }
-        &:after {
-          content: " >  ";
-        }
-      }
-      .current-category {
         font-weight: 700;
+      }
+      .main-category {
+        color: #79828a;
+        &::after {
+          color: #9ea7ad;
+          margin: 0 8px;
+          content: ">";
+        }
       }
     }
     .h2-title {
@@ -88,6 +85,7 @@ main {
           height: 32px;
           position: relative;
           .toggle-btn {
+            cursor: pointer;
             vertical-align: middle;
             width: 16px;
             height: 16px;

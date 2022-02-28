@@ -69,7 +69,7 @@ const Navigator = () => {
                             <ChildNavLink to={`/projects/create`}>프로젝트 등록</ChildNavLink>
                         </li>
                         <li>
-                            <ChildNavLink to={`/projects/manage`}>카테고리 관리</ChildNavLink>
+                            <ChildNavLink to={`/projects/manage?currentPage=1`}>카테고리 관리</ChildNavLink>
                         </li>
                     </ul>
                 </li>

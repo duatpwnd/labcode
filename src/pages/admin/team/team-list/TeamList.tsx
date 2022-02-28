@@ -18,7 +18,7 @@ const TeamList = () => {
             search: `?currentPage=${page}&search=${search}`,
         });
         axios
-            .get(apiUrl.team + `?page=${page}&search=${search}&limit=10`)
+            .get(apiUrl.team + `/projects?page=${page}&search=${search}&limit=10`)
             .then((result: any) => {
                 console.log('팀리스트조회결과:', result);
                 setList(result.data)
@@ -85,7 +85,7 @@ const TeamList = () => {
                                         <td>{teams.managerName}</td>
                                         <td className="email">{teams.managerEmail}</td>
                                         <td>
-                                            준비중{isActiveBsnImgModal == teams.id &&
+                                            {teams.projects.length}{isActiveBsnImgModal == teams.id &&
                                                 <>
                                                     <div className="mask" onClick={() => setActiveBsnImgModal(-1)}></div>
                                                     <embed src={teams.businessImage} className="image-modal" />
@@ -94,7 +94,7 @@ const TeamList = () => {
 
                                         </td>
                                         <td>준비중</td>
-                                        <td>준비중</td>
+                                        <td>사용중</td>
                                     </tr>)
                             }
                         </tbody>

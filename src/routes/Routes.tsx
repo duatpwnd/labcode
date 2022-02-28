@@ -40,7 +40,7 @@ export default function CreateRoutes() {
 
             {/* 제품 :: S */}
             <Route path="/products/list" element={<ProductList />} />
-            <Route path="/projects/:projectId/manage/:industryId" element={<CategoryManagement />} />
+            <Route path="/projects/manage" element={<CategoryManagement />} />
             <Route path="/products/create" element={<CreateProduct />}>
                 <Route path="defaultInfo" element={<DefaultInfo />} />
                 <Route path="printInfo" element={<PrintInfo />} />

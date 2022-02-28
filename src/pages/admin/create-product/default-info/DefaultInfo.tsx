@@ -78,7 +78,13 @@ const DefaultInfo = () => {
     const [alphas, setAlphas] = useState<{ [key: string]: any }[]>([]);
     const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
     const [channelTypes, setChannelTypes] = useState<{ [key: string]: any }[]>([]);
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({
+        project: {
+            title: "",
+            team: {
+                title: ""
+            }
+        },
         projectId: null,
         teamId: null,
         embedding: null,
@@ -195,9 +201,14 @@ const DefaultInfo = () => {
             })
     }, [])
     useEffect(() => {
-
         setInputs({
             projectId: null,
+            project: {
+                title: "",
+                team: {
+                    title: ""
+                }
+            },
             teamId: null,
             embedding: null,
             channel: null,
@@ -227,8 +238,8 @@ const DefaultInfo = () => {
                                 property="title"
                                 value="id"
                                 style={selectBoxStyle}
-                                defaultValue={inputs.teamId}
-                                eventHandler={(value) => setInputs((prev) => ({ ...prev, teamId: value }))} getList={getTeamList} />
+                                defaultValue={inputs.project.team.title}
+                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, teamId: value, project: { title: prev.project.title, team: { title: text } } }))} getList={getTeamList} />
                         </div>
                     </div>
                     <div className="row">
@@ -238,8 +249,8 @@ const DefaultInfo = () => {
                                 property="title"
                                 value="id"
                                 style={selectBoxStyle}
-                                defaultValue={inputs.projectId}
-                                eventHandler={(value) => setInputs((prev) => ({ ...prev, projectId: value }))} getList={getProjectList} />
+                                defaultValue={inputs.project.title}
+                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, projectId: value, project: { title: text, team: { title: prev.project.team.title } } }))} getList={getProjectList} />
                         </div>
                     </div>
                     <div className="row">

@@ -6,8 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import Pagination from "components/common/pagination/Pagination";
-
+import PaginatedItems from "src/components/common/pagination/Paginate";
 // 소분류 생성
 const createSubCategories = ({ mainCategoryId }) => {
     return axios.post(apiUrl.subCategories, { mainCategoryId: mainCategoryId, title: "" }).then((result) => {
@@ -63,7 +62,7 @@ const ToggleList = ({ mainCategories, getCategories }) => {
         <div className="categories" >
             {/* 대분류 */}
             <div className="main-category-list" >
-                <span className="toggle-btn" style={{ backgroundImage: toggle ? `url(${require("images/arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }} onClick={() => setToggle(!toggle)}></span>
+                <span className="toggle-btn" style={{ backgroundImage: toggle ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }} onClick={() => setToggle(!toggle)}></span>
                 <span className="main-category-title">{mainCategories.title} <strong className="current-count">{mainCategories.subCategories.length}</strong>/8</span>
                 <button className="btn add-btn" onClick={() => {
                     addSubCategories({ mainCategoryId: mainCategories.id });
@@ -149,15 +148,13 @@ const CategoryManagement = () => {
         })
     }
     useEffect(() => {
-        getCategories(currentPage == null ? 1 : currentPage)
-    }, [])
+        getCategories(currentPage)
+    }, [currentPage])
     return (
         <main>
             <div className="wrap">
-                <div className="sub-category">
-                    <span>프로젝트</span>
-                    <span className="project-manage">프로젝트 관리</span>
-                    <span className="current-category">카테고리 관리</span>
+                <div className="category">
+                    <span className="main-category">프로젝트</span><b className="sub-category">카테고리 관리</b>
                 </div>
                 <h2 className="h2-title">카테고리 관리</h2>
                 <p className="guide-message">정보를 변경하면 자동으로 저장됩니다.</p>
@@ -193,7 +190,8 @@ const CategoryManagement = () => {
                     }
                 </section>
                 {
-                    meta != undefined && meta.totalPages > 0 && <Pagination currentPage={Number(meta.currentPage)} totalPages={meta.totalPages} eventHandler={getCategories} />
+
+                    data && data.length > 0 && < PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />
                 }
             </div >
         </main >

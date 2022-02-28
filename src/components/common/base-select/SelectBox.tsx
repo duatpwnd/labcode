@@ -25,7 +25,7 @@ const SelectBox = ({ inputs, property, value, eventHandler, getList, list, defau
     const selectBox = useRef<HTMLDivElement>(null);
     // 리스트 선택
     const select = (value, text?) => {
-        console.log("value", value);
+        console.log("value", text);
         setModal(false) // 모달닫기
         // 현재 선택되어있는데 또다시 선택했을때 호출못하게
         if (selectedIndex != value) {

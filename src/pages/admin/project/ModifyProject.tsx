@@ -129,10 +129,10 @@ const ProjectDetail = () => {
                         <label htmlFor="teamId" className="team" >팀</label>
                         <div className="select-box-wrap">
                             <SelectBox
+                                style={selectBoxStyle}
                                 property="title"
                                 value="id"
-                                style={selectBoxStyle}
-                                defaultValue={inputs.teamId}
+                                defaultValue={inputs.project.team.title}
                                 eventHandler={(value) => setInputs((prev) => ({ ...prev, teamId: value }))} getList={getTeamList} />
                         </div>
                     </div>
