@@ -88,7 +88,6 @@ const MyProjects = () => {
 
 
     useEffect(() => {
-        console.log("감ㄱ지");
         getProjectList(currentPage, search, isActive);
     }, [currentPage, search, isActive])
     return (

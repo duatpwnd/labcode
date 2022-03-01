@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import PaginatedItems from "src/components/common/pagination/Paginate";
 import history from "src/utils/history";
 import SearchInput from "src/components/common/search-input/SearchInput";
+import toast from 'react-hot-toast';
 const Btn = styled.button`
     background:${props => props.background};
     border-radius:8px;
@@ -40,10 +41,15 @@ const Product = () => {
             })
     }
     const addSamples = () => {
-        axios.post(apiUrl.addSamples + `?projectId=${params.projectId}`).then((result) => {
+        const callMyFunction = axios.post(apiUrl.addSamples + `?projectId=${params.projectId}`).then((result) => {
             console.log("샘플데이터추가결과:", result);
             getProductList(1, "");
         })
+        toast.promise(callMyFunction, {
+            loading: "Loading...",
+            success: "샘플 데이터가 추가 되었습니다.",
+            error: "샘플 데이터 추가중에 오류가 발생되었습니다.",
+        });
     }
     const createProducts = () => {
         const body = {

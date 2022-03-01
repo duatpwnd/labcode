@@ -11,15 +11,23 @@ import "./ModifyProject.scoped.scss"
 import _ from 'lodash'
 import SelectBox from "src/components/common/base-select/SelectBox";
 import Classification from "src/pages/admin/project/projects-classification/Classification";
+import toast from 'react-hot-toast';
 export const ProjectContext = createContext<{ [key: string]: any }>({})
 const ProjectDetail = () => {
+
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })
     const { pathname } = useLocation();
     const params = useParams();
     const debounce = _.debounce;
-    const [inputs, setInputs] = useState<{ [key: string]: any }>({});
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({
+        project: {
+            team: {
+                title: ""
+            }
+        }
+    });
     const inputDebounce = debounce((e) => {
         onChange(e);
     }, 500);
@@ -50,7 +58,6 @@ const ProjectDetail = () => {
             ...inputs,
             isActive: true
         }
-        console.log("body", body);
         for (let key in body) {
             formData.append(key, body[key as never]);
         }
@@ -58,6 +65,14 @@ const ProjectDetail = () => {
             .post(apiUrl.project, formData)
             .then((result: any) => {
                 console.log("프로젝트생성결과:", result);
+                toast.success('승인이 완료되었습니다.', {
+                    icon: '👏',
+                    iconTheme: {
+                        primary: '#5138e5',
+                        secondary: '#FFFFFF',
+                    },
+                });
+
             }).catch((err: any) => {
                 console.log('프로젝트생성에러:', err);
             });
@@ -104,6 +119,11 @@ const ProjectDetail = () => {
         if (pathname == "/projects/create") {
             setInputs({
                 versionId: 1,
+                project: {
+                    team: {
+                        title: ""
+                    }
+                }
             });
         } else {
             getProject();
@@ -112,6 +132,7 @@ const ProjectDetail = () => {
 
     return (
         <main>
+
             <div className="wrap">
                 <h2 className="h2-title">{pathname == "/projects/create" ? "프로젝트 등록" : "프로젝트 수정"}</h2>
                 {
@@ -132,8 +153,8 @@ const ProjectDetail = () => {
                                 style={selectBoxStyle}
                                 property="title"
                                 value="id"
-                                defaultValue={inputs.project.team.title}
-                                eventHandler={(value) => setInputs((prev) => ({ ...prev, teamId: value }))} getList={getTeamList} />
+                                defaultValue={inputs.project?.team.title}
+                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, teamId: value, project: { team: { title: text } } }))} getList={getTeamList} />
                         </div>
                     </div>
                     <div className="row">

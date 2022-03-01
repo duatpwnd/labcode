@@ -3,16 +3,15 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from "src/store"
-import axios from "src/utils/axios"
+import Axios from './utils/Axios';
 import 'src/lang/i18n';
 import CustomRouter from './CustomRouter';
 import App from "src/App"
 import history from "src/utils/history"
-axios();
-
 ReactDOM.render(
   <Provider store={store}>
     <CustomRouter history={history}>
+      <Axios />
       <App />
     </CustomRouter>
   </Provider>

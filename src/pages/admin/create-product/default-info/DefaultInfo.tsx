@@ -11,6 +11,7 @@ import Classification from "../../project/projects-classification/Classification
 import { useLocation } from 'react-router-dom';
 import _ from 'lodash'
 import SelectBox from "src/components/common/base-select/SelectBox";
+import toast from 'react-hot-toast';
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
     const onChange = (e) => {
@@ -144,6 +145,7 @@ const DefaultInfo = () => {
 
             }).catch((err: any) => {
                 console.log('기본정보적용에러:', err);
+                toast.error('This is an error!');
             });
     }
     const getProductDetail = () => {

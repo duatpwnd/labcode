@@ -11,6 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/reducers";
 import { useEffect, createContext } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 export const AppContext = createContext<{ [key: string]: any }>({})
 export default function App() {
   const { pathname } = useLocation();
@@ -27,6 +28,10 @@ export default function App() {
   return (
     <AppContext.Provider value={userInfo as { [key: string]: any } || cookies.user_info}>
       <div className="App">
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
         <Header />
         {pathname != "/" && pathname != "/inquiries/create" && pathname != "/teams/create" &&
           <Navigator />
