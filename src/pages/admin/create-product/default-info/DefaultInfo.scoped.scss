@@ -44,7 +44,11 @@ section {
         width: calc(100% - 180px);
         vertical-align: middle;
       }
-
+      .warn-message {
+        color: red;
+        margin-top: 10px;
+        margin-left: 180px;
+      }
       .labcodeImage {
         border-radius: 8px;
         width: calc(100% - 180px);

@@ -30,6 +30,7 @@ const Product = () => {
     const navigate = useNavigate();
     const [{ data, meta, product }, setList] = useState<{ [key: string]: any }>({});
     const getProductList = (page, search) => {
+        toast.dismiss();
         history.push({
             search: `?currentPage=${page}&search=${search}`,
         });
@@ -37,6 +38,9 @@ const Product = () => {
             .get(apiUrl.products + `?limit=10&search=${search}&page=${page}`)
             .then((result: any) => {
                 console.log(result.data);
+                if (result.data.data.length == 0) {
+                    toast.error("검색결과가 없습니다.")
+                }
                 setList(result.data);
             })
     }
@@ -90,7 +94,7 @@ const Product = () => {
                 </div>
             </div>
             {
-                data && data.length == 0 ? <p className="guide-message">등록된 제품이 없습니다. 제품을 생성해주세요.</p> : <div className="product-list">
+                data && data.length != 0 && <div className="product-list">
                     <table>
                         <thead>
                             <tr>
@@ -126,7 +130,7 @@ const Product = () => {
                         <tbody>
                             {
                                 data != undefined &&
-                                data.map((products, index) => <tr key={index} onClick={() => navigate(`/products/edit/${products.id}/${products.projectId}/defaultInfo`)}>
+                                data.map((products, index) => <tr key={index} onClick={() => navigate(`/products/edit/${products.id}/defaultInfo`)}>
                                     <td>
                                         {products.key}
                                     </td>

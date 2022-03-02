@@ -12,6 +12,7 @@ import { useLocation } from 'react-router-dom';
 import _ from 'lodash'
 import SelectBox from "src/components/common/base-select/SelectBox";
 import toast from 'react-hot-toast';
+import { homePageReg } from 'src/utils/common';
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
     const onChange = (e) => {
@@ -75,6 +76,10 @@ const DefaultInfo = () => {
     })
     const params = useParams();
     const navigate = useNavigate();
+    const [link, setLinkMsg] = useState(""); // 홈페이지 주소 유효성 메세지
+    const [businessImage, setBusinessImage] = useState(""); // 사업자 등록증 유효성 메세지
+    const [isSelectTeam, setSelectTeam] = useState(""); // 팀 선택 여부
+    const [isSelectProject, setSelectProject] = useState(""); // 프로젝트 선택 여부
     const [scales, setScales] = useState<{ [key: string]: any }[]>([]);
     const [alphas, setAlphas] = useState<{ [key: string]: any }[]>([]);
     const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
@@ -113,49 +118,71 @@ const DefaultInfo = () => {
     };
     const modify = () => {
         console.log("modify", inputs);
-        if (inputs.sourceImage == null) {
-            alert("이미지를 첨부해주세요.")
-        } else {
-            const formData = new FormData();
-            for (let key in inputs) {
-                formData.append(key, inputs[key as never]);
-            }
-            axios
-                .patch(apiUrl.products + `/${params.productId}`, formData)
-                .then((result: any) => {
-                    console.log("수정결과:", result);
-                    getProductDetail();
-                }).catch((err: any) => {
-                    console.log('수정에러:', err);
-                });
-        }
-
-    }
-    const apply = () => {
-        console.log("inputs", inputs);
         const formData = new FormData();
         for (let key in inputs) {
             formData.append(key, inputs[key as never]);
         }
         axios
-            .post(apiUrl.products, formData)
+            .patch(apiUrl.products + `/${params.productId}`, formData)
             .then((result: any) => {
-                console.log("적용결과", result);
-                // navigate(`/products/edit/${products.id}/${result.data.data.id}/defaultInfo`)}
-
+                console.log("수정결과:", result);
+                getProductDetail();
             }).catch((err: any) => {
-                console.log('기본정보적용에러:', err);
-                toast.error('This is an error!');
+                console.log('수정에러:', err);
             });
+    }
+    const apply = () => {
+        const formData = new FormData();
+        for (let key in inputs) {
+            formData.append(key, inputs[key as never]);
+        }
+        const homepageCheck = homePageReg.test(inputs.url);
+        if (inputs.projectId == null) {
+            setSelectProject("프로젝트를 선택해주세요.");
+        } else {
+            setSelectProject("");
+        }
+        if (inputs.project.team.id == null) {
+            setSelectTeam("팀을 선택해주세요.");
+        } else {
+            setSelectTeam("");
+        }
+        if (homepageCheck == false) {
+            setLinkMsg("올바른 주소가 아닙니다.")
+        } else {
+            setLinkMsg("")
+        }
+        if (inputs.sourceImage == null) {
+            setBusinessImage("원본 이미지를 첨부해주세요.")
+        } else {
+            setBusinessImage("")
+        }
+        if (homepageCheck && inputs.projectId != null && inputs.project.team.id != null && homepageCheck && inputs.sourceImage != null) {
+            console.log("시작)");
+            const callMyFunction = axios
+                .post(apiUrl.products, formData)
+                .then((result: any) => {
+                    console.log("적용결과", result);
+                    setTimeout(() => {
+                        navigate(`/products/edit/${result.data.data.id}/defaultInfo`)
+
+                    }, 1000)
+                }).catch((err: any) => {
+                    console.log('기본정보적용에러:', err);
+                });
+            toast.promise(callMyFunction, {
+                loading: "Loading...",
+                success: "제품이 등록되었습니다.",
+                error: "제품등록에 실패하였습니다.",
+            });
+        }
     }
     const getProductDetail = () => {
         axios
             .get(apiUrl.products + `/${params.productId}`)
             .then((result: any) => {
                 console.log('제품 상세 조회:', result);
-                setInputs({
-                    ...result.data.data
-                })
+                setInputs(result.data.data)
             }).catch((err) => {
                 console.log("제품 상세 조회 에러:", err);
             })
@@ -193,36 +220,37 @@ const DefaultInfo = () => {
                     embedding: defaultEmbeddingTypes[0].value
                 }
             }))
-            // 수정페이지일때
-            if (pathname.startsWith("/products/edit")) {
-                getProductDetail();
-            }
+
         }))
             .catch((err) => {
                 console.log("조회에러", err);
             })
     }, [])
     useEffect(() => {
-        setInputs({
-            projectId: null,
-            project: {
+        // 수정페이지일때
+        if (pathname.startsWith("/products/edit")) {
+            getProductDetail();
+        } else {
+            setInputs({
+                projectId: null,
+                project: {
+                    title: "",
+                    team: {
+                        title: ""
+                    }
+                },
+                teamId: null,
+                embedding: null,
+                channel: null,
                 title: "",
-                team: {
-                    title: ""
-                }
-            },
-            teamId: null,
-            embedding: null,
-            channel: null,
-            title: "",
-            description: "",
-            labcodeImage: null,
-            sourceImage: params.productId == undefined ? null : {} as { [key: string]: any },
-            url: "",
-            scale: 4,
-            alpha: 8
-        });
-
+                description: "",
+                labcodeImage: null,
+                sourceImage: params.productId == undefined ? null : {} as { [key: string]: any },
+                url: "",
+                scale: 4,
+                alpha: 8
+            });
+        }
     }, [pathname])
     const selectBoxStyle = {
         padding: '16px 0',
@@ -234,43 +262,47 @@ const DefaultInfo = () => {
                 <h3 className="h3-title">기본 정보</h3>
                 <div className="form">
                     <div className="row">
-                        <label htmlFor="teamId" className="team" >팀</label>
+                        <label htmlFor="teamId" className="team">팀</label>
                         <div className="select-box-wrap">
                             <SelectBox
                                 property="title"
                                 value="id"
                                 style={selectBoxStyle}
                                 defaultValue={inputs.project.team.title}
-                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, teamId: value, project: { title: prev.project.title, team: { title: text } } }))} getList={getTeamList} />
+                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, project: { title: prev.project.title, team: { id: value, title: text } } }))} getList={getTeamList} />
                         </div>
+                        <p className="warn-message">{isSelectTeam}</p>
                     </div>
                     <div className="row">
-                        <label htmlFor="projectId" className="project" >프로젝트</label>
+                        <label htmlFor="projectId" className="project">프로젝트</label>
                         <div className="select-box-wrap">
                             <SelectBox
                                 property="title"
                                 value="id"
                                 style={selectBoxStyle}
                                 defaultValue={inputs.project.title}
-                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, projectId: value, project: { title: text, team: { title: prev.project.team.title } } }))} getList={getProjectList} />
+                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, projectId: value, project: { title: text, team: { id: prev.project.team.id, title: prev.project.team.title } } }))} getList={getProjectList} />
                         </div>
+                        <p className="warn-message">{isSelectProject}</p>
                     </div>
                     <div className="row">
                         <label htmlFor="title" className="title" >제목</label>
-                        <input type="text" id="title" defaultValue={inputs.title} placeholder="제목을 입력해주세요." onChange={(e) => onChange(e)} />
+                        <input type="text" id="title" value={inputs.title} placeholder="제목을 입력해주세요." onChange={(e) => onChange(e)} />
                     </div>
                     <div className="row">
                         <label htmlFor="description">설명</label>
-                        <textarea id="description" defaultValue={inputs.description} onChange={(e) => onChange(e)}>
+                        <textarea id="description" value={inputs.description} onChange={(e) => onChange(e)}>
                         </textarea>
                     </div>
                     <div className="row">
                         <label htmlFor="url" className="link">링크</label>
-                        <input type="text" id="url" defaultValue={inputs.url} placeholder="링크를 입력해주세요." onChange={(e) => onChange(e)} />
+                        <input type="text" id="url" value={inputs.url} placeholder="링크를 입력해주세요." onChange={(e) => onChange(e)} />
+                        <p className="warn-message">{link}</p>
                     </div>
                     <div className="row">
                         <label className="source-image">원본 이미지</label>
                         <DragDrop link={inputs.sourceImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "459px" }} />
+                        <p className="warn-message">{businessImage}</p>
                     </div>
                     {isAdmin &&
                         <div className="row">

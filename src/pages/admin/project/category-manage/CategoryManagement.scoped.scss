@@ -28,6 +28,28 @@ main {
       margin-top: 8px;
     }
     section {
+      .h3-title {
+        margin-top: 50px;
+        margin-bottom: 40px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #e6e8eb;
+      }
+      .row {
+        margin-top: 16px;
+        label {
+          font-weight: 700;
+          width: 180px;
+          vertical-align: middle;
+          display: inline-block;
+          color: #79828a;
+        }
+        .select-box-wrap {
+          display: inline-block;
+          width: calc(100% - 180px);
+          cursor: pointer;
+          position: relative;
+        }
+      }
       .add-area {
         margin-top: 56px;
         position: relative;

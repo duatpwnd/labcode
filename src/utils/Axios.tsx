@@ -4,6 +4,7 @@ import { Cookies } from "react-cookie";
 import { signInFail } from "src/actions/signIn";
 import store from "src/store";
 import { useEffect } from "react";
+import toast from 'react-hot-toast';
 const cookies = new Cookies();
 const Axios = () => {
   useEffect(() => {
@@ -29,6 +30,12 @@ const Axios = () => {
       (err: any) => {
         console.log("요청후에러:", err.response);
         if (err.response.data.statusCode == 401) {
+          toast.dismiss();
+          toast("로그아웃 처리되었습니다.", {
+            style: {
+              color: '#ff4b4b',
+            }
+          });
           cookies.remove("user_info");
           store.dispatch(signInFail(false));
           history.push("/");

@@ -22,7 +22,6 @@ import TeamsProjects from "src/pages/admin/project/teams-projects/TeamsProjects"
 export default function CreateRoutes() {
     const location = useLocation();
     return (
-
         <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/dashboard" element={<Dashboard />} />
@@ -46,7 +45,7 @@ export default function CreateRoutes() {
                 <Route path="printInfo" element={<PrintInfo />} />
                 <Route path="productInfo" element={<ProductInfo />} />
             </Route>
-            <Route path="/products/edit/:productId/:projectId" element={<CreateProduct />}>
+            <Route path="/products/edit/:productId" element={<CreateProduct />}>
                 <Route path="defaultInfo" element={<DefaultInfo />} />
                 <Route path="printInfo" element={<PrintInfo />} />
                 <Route path="productInfo" element={<ProductInfo />} />

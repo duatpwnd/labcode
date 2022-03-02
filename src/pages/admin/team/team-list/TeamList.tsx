@@ -1,6 +1,7 @@
 import "./TeamList.scoped.scss"
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState, ReactElement } from "react";
+import { useEffect, useState } from "react";
+import toast from 'react-hot-toast';
 import history from "src/utils/history";
 import axios from "axios";
 import apiUrl from "src/utils/api";
@@ -14,6 +15,7 @@ const TeamList = () => {
     const search = searchParams.get('search');
     const currentPage = searchParams.get('currentPage');
     const getTeamList = (page, search) => {
+        toast.dismiss();
         history.push({
             search: `?currentPage=${page}&search=${search}`,
         });
@@ -21,8 +23,21 @@ const TeamList = () => {
             .get(apiUrl.team + `/projects?page=${page}&search=${search}&limit=10`)
             .then((result: any) => {
                 console.log('팀리스트조회결과:', result);
+                if (result.data.data.length == 0) {
+                    toast.error("검색결과가 없습니다.")
+                }
                 setList(result.data)
             });
+    }
+    const isExistBsnImg = (id, link) => {
+        if (link == null) {
+            setActiveBsnImgModal(-1);
+            toast.error('사업자 등록증이 첨부되지 않았습니다.', {
+                id: 'clipboard',
+            });
+        } else {
+            setActiveBsnImgModal(id);
+        }
     }
     useEffect(() => {
         getTeamList(currentPage, search);
@@ -34,7 +49,7 @@ const TeamList = () => {
                 <span className="main-category">팀 정보</span><b className="sub-category">팀 목록</b>
             </div>
             {
-                data && data.length == 0 ? <p className="guide-message">팀 리스트가 없습니다.</p> : <div className="team-list">
+                data && data.length != 0 && <div className="team-list">
                     <table>
                         <thead>
                             <tr>
@@ -81,14 +96,16 @@ const TeamList = () => {
                                         <td className="title">{teams.title}</td>
                                         <td>{teams.created.split("T")[0]}</td>
                                         <td>{teams.managerPhone}</td>
-                                        <td className="unique" onClick={() => setActiveBsnImgModal(teams.id)}>{teams.businessNumber}</td>
+                                        <td className="unique" onClick={() => isExistBsnImg(teams.id, teams.businessImage)}>{teams.businessNumber}</td>
                                         <td>{teams.managerName}</td>
                                         <td className="email">{teams.managerEmail}</td>
                                         <td>
                                             {teams.projects.length}{isActiveBsnImgModal == teams.id &&
                                                 <>
                                                     <div className="mask" onClick={() => setActiveBsnImgModal(-1)}></div>
-                                                    <embed src={teams.businessImage} className="image-modal" />
+                                                    {
+                                                        teams.businessImage != null && <embed src={teams.businessImage} className="image-modal" />
+                                                    }
                                                 </>
                                             }
 

@@ -6,6 +6,7 @@ import apiUrl from "src/utils/api";
 import history from "src/utils/history";
 import { SlideDown } from 'react-slidedown'
 import 'react-slidedown/lib/slidedown.css'
+import toast from 'react-hot-toast';
 import "./TeamsProjects.scoped.scss"
 const SlideList = ({ teams }) => {
     const [isActiveSlideMenu, setActiveSlideMenu] = useState(true);
@@ -37,13 +38,13 @@ const SlideList = ({ teams }) => {
 }
 const TeamsProjects = () => {
     const [{ data, meta }, setupList] = useState<{ [key: string]: any }>({});
-    const [message, setMessage] = useState("");
     const navigate = useNavigate()
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const currentPage = searchParams.get('currentPage');
     const search = searchParams.get('search');
     const getTeamsList = (page, search) => {
+        toast.dismiss();
         history.push({
             search: `?currentPage=${page}&search=${search}`,
         });
@@ -51,7 +52,9 @@ const TeamsProjects = () => {
             .get(apiUrl.team + `/projects/?search=${search}&page=${page}&limit=16`)
             .then((result: any) => {
                 console.log('팀리스트:', result);
-
+                if (result.data.data.length == 0) {
+                    toast.error("검색결과가 없습니다.")
+                }
                 setupList(result.data);
             }).catch((err) => {
                 console.log("팀리스트 조회에러:", err);
@@ -66,17 +69,17 @@ const TeamsProjects = () => {
         <main>
             {
                 data &&
-                    data.length == 0 ? <p className="message">{message}</p> :
-                    <>
-                        {
-                            data && data.map((teams, index) =>
-                                <div className="slide-list" key={index}>
-                                    <SlideList teams={teams} />
-                                </div>
-                            )
-                        }
+                data.length != 0 &&
+                <>
+                    {
+                        data && data.map((teams, index) =>
+                            <div className="slide-list" key={index}>
+                                <SlideList teams={teams} />
+                            </div>
+                        )
+                    }
 
-                    </>
+                </>
             }
             {
                 data && data.length > 0 && < PaginatedItems itemsPerPage={1} data={[...Array(meta.totalPages).keys()]} />

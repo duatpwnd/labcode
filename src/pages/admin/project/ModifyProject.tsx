@@ -14,7 +14,6 @@ import Classification from "src/pages/admin/project/projects-classification/Clas
 import toast from 'react-hot-toast';
 export const ProjectContext = createContext<{ [key: string]: any }>({})
 const ProjectDetail = () => {
-
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })

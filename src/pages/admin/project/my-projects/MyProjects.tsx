@@ -6,6 +6,7 @@ import _ from 'lodash'
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import PaginatedItems from "src/components/common/pagination/Paginate";
+import toast from 'react-hot-toast';
 import axios from "axios";
 import apiUrl from "src/utils/api";
 const StatusText = styled.strong`
@@ -17,7 +18,6 @@ const StatusText = styled.strong`
     border-radius:4px;
 `
 const MyProjects = () => {
-    const [message, setMessage] = useState("");
     const [{ data, meta }, setupList] = useState<{ [key: string]: any }>({});
     const [menuIndex, menuIndexUpdate] = useState(-1); // 각 프로젝트 메뉴 모달
     const menu = useRef(null); // 메뉴 모달 객체
@@ -62,6 +62,7 @@ const MyProjects = () => {
         }
     }
     const getProjectList = (page, search, isActive) => {
+        toast.dismiss();
         history.push({
             search: `?currentPage=${page}&search=${search}&isActive=${isActive}`,
         });
@@ -69,15 +70,8 @@ const MyProjects = () => {
             .get(apiUrl.project + `?search=${search}&page=${page}&isActive=${isActive}&limit=16`)
             .then((result: any) => {
                 console.log('프로젝트리스트:', result);
-                if (result.data.data.length == 0 && search != "") {
-                    setMessage('검색결과가 없습니다.')
-                } else {
-                    setMessage("")
-                }
-                if (result.data.data.length == 0 && search == "") {
-                    setMessage('프로젝트를 생성해주세요.')
-                } else {
-                    setMessage('')
+                if (result.data.data.length == 0) {
+                    toast.error("검색결과가 없습니다.")
                 }
                 menuIndexUpdate(-1);
                 setupList(result.data);
@@ -94,7 +88,7 @@ const MyProjects = () => {
         <main>
             {
                 data &&
-                    data.length == 0 ? <p className="message">{message}</p> : <ul className="project-list">
+                data.length != 0 && <ul className="project-list">
                     {
                         data &&
                         data.map((list, index) => <li className="list" key={index}>
