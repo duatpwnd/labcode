@@ -47,9 +47,17 @@ const SelectBox = ({ inputs, property, value, eventHandler, getList, list, defau
             window.removeEventListener("click", handleCloseModal);
         }
     }, [isActiveModal])
+    // 팀아이디가 변할때마다 프로젝트 갱신시켜주기위함
     useEffect(() => {
-        console.log("calssteaid변화", inputs?.project?.team?.id);
-    }, [inputs?.project])
+        if (inputs?.project?.team?.id != undefined) {
+            console.log("calssteaid변화", inputs?.project?.team?.id);
+            getList && getList(1, "").then((result) => {
+                setInfiniteList(result.data);
+            });
+
+        }
+    }, [inputs?.project?.team?.id])
+    // 대분류 또는 소분류를 갱신시켜주기위함
     useEffect(() => {
         getList && getList(1, "").then((result) => {
             setInfiniteList(result.data);

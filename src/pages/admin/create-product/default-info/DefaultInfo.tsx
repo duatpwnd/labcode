@@ -2,16 +2,16 @@ import "./DefaultInfo.scoped.scss"
 import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import { useEffect, useMemo, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom";
 import InternalUse from "./internal/InternalUse";
-import { useSelector } from "react-redux";
-import { RootState } from "src/reducers";
 import Classification from "../../project/projects-classification/Classification";
-import { useLocation } from 'react-router-dom';
-import _ from 'lodash'
 import SelectBox from "src/components/common/base-select/SelectBox";
 import toast from 'react-hot-toast';
+import _ from 'lodash'
+import { useLocation } from 'react-router-dom';
+import { useEffect, useMemo, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "src/reducers";
 import { homePageReg } from 'src/utils/common';
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
@@ -143,11 +143,6 @@ const DefaultInfo = () => {
         } else {
             setSelectProject("");
         }
-        if (inputs.project.team.id == null) {
-            setSelectTeam("팀을 선택해주세요.");
-        } else {
-            setSelectTeam("");
-        }
         if (homepageCheck == false) {
             setLinkMsg("올바른 주소가 아닙니다.")
         } else {
@@ -158,7 +153,7 @@ const DefaultInfo = () => {
         } else {
             setBusinessImage("")
         }
-        if (homepageCheck && inputs.project.id != null && inputs.project.team.id != null && homepageCheck && inputs.sourceImage != null) {
+        if (homepageCheck && inputs.project.id != null && homepageCheck && inputs.sourceImage != null) {
             const callMyFunction = axios
                 .post(apiUrl.products, formData)
                 .then((result: any) => {
@@ -179,7 +174,7 @@ const DefaultInfo = () => {
             .get(apiUrl.products + `/${params.productId}`)
             .then((result: any) => {
                 console.log('제품 상세 조회:', result);
-                setInputs(result.data.data)
+                setInputs((prev) => ({ ...prev, ...result.data.data }))
             }).catch((err) => {
                 console.log("제품 상세 조회 에러:", err);
             })
@@ -202,9 +197,6 @@ const DefaultInfo = () => {
                 return result.data
             });
     }
-    useEffect(() => {
-        console.log('팀아이디변화', inputs.project.team.id);
-    }, [inputs.project.team.id])
     useEffect(() => {
         axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas), axios.get(apiUrl.channelTypes), axios.get(apiUrl.embeddingTypes)]).then(axios.spread((res1, res2, res3, res4) => {
             console.log("코드크기,적용세기,채널조회", res3.data.data, res4.data.data);
@@ -253,10 +245,12 @@ const DefaultInfo = () => {
         }
     }, [pathname]);
     const classificationId = useMemo(() => {
+        console.log(inputs.project);
         return {
             versionId: inputs.project?.versionId,
             countryId: inputs.project?.countryId,
             industryId: inputs.project?.industryId,
+            teamId: inputs.project?.team && inputs.project?.team.id,
             mainCategoryId: inputs.project?.mainCategoryId,
             mainCategory: inputs.project?.mainCategory,
             subCategoryId: inputs.project?.subCategoryId,
@@ -279,7 +273,7 @@ const DefaultInfo = () => {
                                 property="title"
                                 value="id"
                                 style={selectBoxStyle}
-                                defaultValue={inputs.project.team?.title}
+                                defaultValue={inputs.project.team && inputs.project.team.title}
                                 eventHandler={(value) => setInputs((prev) => {
                                     console.log('팀:', { ...prev, project: { ...prev.project, team: { ...value } } });
                                     return { ...prev, project: { ...prev.project, team: { ...value } } }
@@ -287,21 +281,26 @@ const DefaultInfo = () => {
                         </div>
                         <p className="warn-message">{isSelectTeam}</p>
                     </div>
-                    <div className="row">
-                        <label htmlFor="projectId" className="project">프로젝트</label>
-                        <div className="select-box-wrap">
-                            <SelectBox
-                                property="title"
-                                value="id"
-                                style={selectBoxStyle}
-                                defaultValue={inputs.project.title}
-                                eventHandler={(value) => setInputs((prev) => {
-                                    console.log("prev", { ...prev, project: { ...value, ...prev.project.team } });
-                                    return ({ ...prev, project: { ...value, team: { ...prev.project.team } } })
-                                })} getList={getProjectList} />
+                    {
+                        inputs.project.team &&
+                        inputs.project.team.id != undefined && <div className="row">
+                            <label htmlFor="projectId" className="project">프로젝트</label>
+                            <div className="select-box-wrap">
+                                <SelectBox
+                                    property="title"
+                                    value="id"
+                                    inputs={inputs}
+                                    style={selectBoxStyle}
+                                    defaultValue={inputs.project.title}
+                                    eventHandler={(value) => setInputs((prev) => {
+                                        console.log("prev", value);
+                                        return ({ ...prev, project: { ...value, team: { ...prev.project.team } } })
+                                    })} getList={getProjectList} />
+                            </div>
+                            <p className="warn-message">{isSelectProject}</p>
                         </div>
-                        <p className="warn-message">{isSelectProject}</p>
-                    </div>
+
+                    }
                     <div className="row">
                         <label htmlFor="title" className="title" >제목</label>
                         <input type="text" id="title" defaultValue={inputs.title} placeholder="제목을 입력해주세요." onChange={(e) => onChange(e)} />

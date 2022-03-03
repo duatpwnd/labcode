@@ -1,14 +1,11 @@
 import "../ModifyProject.scoped.scss"
+import { useLocation } from 'react-router-dom';
 import { useEffect, useState, } from "react"
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import { useSelector } from "react-redux";
-import { RootState } from "src/reducers";
 import SelectBox from "src/components/common/base-select/SelectBox";
 const Classification = ({ eventHandler, inputs, isActive }: any) => {
-    const userInfo = useSelector((state: RootState) => {
-        return state.signIn.userInfo
-    })
+    const { pathname } = useLocation();
     const [versions, setVersions] = useState<{ [key: string]: any }[]>([]);
     const [countries, setCountries] = useState<{ [key: string]: any }[]>([]);
     const [industries, setIndustries] = useState<{ [key: string]: any }[]>([]);
@@ -57,7 +54,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             });
     }
     useEffect(() => {
-        console.log("팀아이디 바뀌었노");
+        console.log("팀아이디 바뀌었노", inputs.teamId);
     }, [inputs.teamId])
     useEffect(() => {
         console.log(inputs);
@@ -111,17 +108,20 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
                         list={industries} />
                 </div>
             </div>
-            <div className="row">
-                <label htmlFor="teamId" className="team" >팀{String(inputs.teamId)}</label>
-                <div className="select-box-wrap">
-                    <SelectBox
-                        style={selectBoxStyle}
-                        property="title"
-                        value="id"
-                        defaultValue={inputs.team?.title}
-                        eventHandler={(value) => eventHandler({ target: { id: "team", value: value } })} getList={getTeamList} />
+            {
+                pathname.includes('defaultInfo') == false && <div className="row">
+                    <label htmlFor="teamId" className="team" >팀{String(inputs.teamId)}</label>
+                    <div className="select-box-wrap">
+                        <SelectBox
+                            style={selectBoxStyle}
+                            property="title"
+                            value="id"
+                            defaultValue={inputs.team?.title}
+                            eventHandler={(value) => eventHandler({ target: { id: "team", value: value } })} getList={getTeamList} />
+                    </div>
                 </div>
-            </div>
+
+            }
             {
                 inputs.industryId != null && inputs.teamId != null &&
                 <div className="row">
