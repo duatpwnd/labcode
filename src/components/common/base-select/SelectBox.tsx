@@ -25,7 +25,6 @@ const SelectBox = ({ inputs, property, value, eventHandler, getList, list, defau
     const selectBox = useRef<HTMLDivElement>(null);
     // 리스트 선택
     const select = (value, text?) => {
-        console.log("value", text);
         setModal(false) // 모달닫기
         // 현재 선택되어있는데 또다시 선택했을때 호출못하게
         if (selectedIndex != value) {
@@ -48,6 +47,9 @@ const SelectBox = ({ inputs, property, value, eventHandler, getList, list, defau
             window.removeEventListener("click", handleCloseModal);
         }
     }, [isActiveModal])
+    useEffect(() => {
+        console.log("calssteaid변화", inputs?.project?.team?.id);
+    }, [inputs?.project])
     useEffect(() => {
         getList && getList(1, "").then((result) => {
             setInfiniteList(result.data);

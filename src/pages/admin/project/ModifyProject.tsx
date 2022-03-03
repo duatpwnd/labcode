@@ -79,18 +79,15 @@ const ProjectDetail = () => {
         const formData = new FormData();
         const body = {
             ...inputs,
-            isActive: true
+            isActive: isAdmin
         }
         console.log(body);
         for (let key in body) {
             formData.append(key, body[key as never]);
         }
         const homepageCheck = homePageReg.test(inputs.homepage);
-        if (inputs.team?.id == null) {
-            setSelectTeam("팀을 선택해주세요.");
-        } else {
-            setSelectTeam("");
-        }
+
+        // 외부용 내부용일때 공통
         if (inputs.bannerImage == null) {
             setBusinessImage("이미지를 첨부해주세요.")
         } else {
@@ -101,7 +98,16 @@ const ProjectDetail = () => {
         } else {
             setLinkMsg("")
         }
-        if (homepageCheck && inputs.team?.id != null && homepageCheck && inputs.bannerImage != null) {
+        // 내부용일때
+        if (isAdmin) {
+            if (inputs.team?.id == null) {
+                setSelectTeam("팀을 선택해주세요.");
+                return false;
+            } else {
+                setSelectTeam("");
+            }
+        }
+        if (homepageCheck && homepageCheck && inputs.bannerImage != null) {
             const callMyFunction = axios
                 .post(apiUrl.project, formData)
                 .then((result: any) => {
@@ -200,8 +206,11 @@ const ProjectDetail = () => {
                         <p className="warn-message">{link}</p>
                     </div>
                     {
-                        pathname == "/projects/create" && <div className="approve-btn-area">
-                            <button className="approve-btn" onClick={createProject}>승인</button>
+                        <div className="approve-btn-area">
+                            {
+                                isAdmin ? inputs.isActive == false && <button className="approve-btn" onClick={pathname == "/projects/create" ? createProject : () => { onChange({ target: { id: "isActive", value: true } }) }}>승인</button> :
+                                    pathname == "/projects/create" && <button className="approve-btn" onClick={createProject}>등록</button>
+                            }
                         </div>
                     }
                     {/* <div className="row">

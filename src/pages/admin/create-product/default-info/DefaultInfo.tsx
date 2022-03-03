@@ -187,7 +187,7 @@ const DefaultInfo = () => {
     // 프로젝트 리스트 조회
     const getProjectList = (page, search) => {
         return axios
-            .get(apiUrl.project + `?search=${search}&page=${page}&limit=20&isActive=true`)
+            .get(apiUrl.project + `?search=${search}&page=${page}&limit=20&isActive=true&teamId=${inputs.project.team.id}`)
             .then((result: any) => {
                 console.log('프로젝트 리스트조회결과:', result);
                 return result.data
@@ -202,6 +202,9 @@ const DefaultInfo = () => {
                 return result.data
             });
     }
+    useEffect(() => {
+        console.log('팀아이디변화', inputs.project.team.id);
+    }, [inputs.project.team.id])
     useEffect(() => {
         axios.all([axios.get(apiUrl.scales), axios.get(apiUrl.alphas), axios.get(apiUrl.channelTypes), axios.get(apiUrl.embeddingTypes)]).then(axios.spread((res1, res2, res3, res4) => {
             console.log("코드크기,적용세기,채널조회", res3.data.data, res4.data.data);
@@ -277,7 +280,10 @@ const DefaultInfo = () => {
                                 value="id"
                                 style={selectBoxStyle}
                                 defaultValue={inputs.project.team?.title}
-                                eventHandler={(value) => setInputs((prev) => ({ ...prev, project: { ...prev.project, team: { ...value } } }))} getList={getTeamList} />
+                                eventHandler={(value) => setInputs((prev) => {
+                                    console.log('팀:', { ...prev, project: { ...prev.project, team: { ...value } } });
+                                    return { ...prev, project: { ...prev.project, team: { ...value } } }
+                                })} getList={getTeamList} />
                         </div>
                         <p className="warn-message">{isSelectTeam}</p>
                     </div>
