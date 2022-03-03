@@ -28,6 +28,7 @@ const Team = () => {
     const navigate = useNavigate();
     // 팀수정
     const modify = (body, teamId) => {
+        console.log(body, teamId);
         const formData = new FormData();
         for (let key in body) {
             formData.append(key, body[key as never]);
@@ -142,16 +143,22 @@ const Team = () => {
         }
     }
     const notCheck = (e) => {
-        const data = { ...inputs, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
-        setInputs(data);
-        if (pathname != "/teams/create") {
-            modify(data, params.teamId)
+        let data = { ...inputs, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
+        if (e.target.id == "businessImageUrl") {
+            data = {
+                ...data,
+                businessImage: null
+            }
         }
-        if (e.target.id == "businessImage" && e.target.files[0] != null) {
+        if (e.target.id == "businessImage" && e.target.files[0] != "") {
             setBusinessImage("");
             setFileLink(URL.createObjectURL(e.target.files[0]))
         }
+        setInputs(data);
 
+        if (pathname != "/teams/create") {
+            modify(data, params.teamId)
+        }
     }
     const fileCheck = useMemo(() => {
         if (inputs.businessImage != undefined) {
@@ -216,17 +223,12 @@ const Team = () => {
                         <div className="business-image-area">
                             <div className="attach">
                                 {
-                                    (() => {
-                                        if (inputs.businessImage == null) {
-                                            return <span className="input-file" >사업자등록증 첨부</span>
-                                        } else {
-                                            return <span onClick={() => setActiveImageModal(true)} className="input-file" >{inputs.businessImage.name || inputs.businessImageTitle + " (" + inputs.businessImageSize + ")"}</span>
-                                        }
-                                    })()
+                                    inputs.businessImage == null || inputs.businessImage == "" ? <span className="input-file" >사업자등록증 첨부</span> : <span onClick={() => setActiveImageModal(true)} className="input-file" >{inputs.businessImage.name || inputs.businessImageTitle + " (" + inputs.businessImageSize + ")"}</span>
+
                                 }
                                 <input type="file" defaultValue={inputs.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
                                 {
-                                    inputs.businessImage != null && <button className="delete-btn" onClick={() => notCheck({ target: { id: "businessImage", files: [null] } })}></button>
+                                    inputs.businessImage != null && inputs.businessImage != "" && <button className="delete-btn" onClick={() => { notCheck({ target: { id: "businessImageUrl", value: "" } }); }}></button>
 
                                 }
                             </div>

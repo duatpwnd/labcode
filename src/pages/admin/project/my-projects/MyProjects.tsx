@@ -93,7 +93,7 @@ const MyProjects = () => {
                         data &&
                         data.map((list, index) => <li className="list" key={index}>
                             {
-                                list.isActive ? <Link to={`/projects/${list.id}/products?currentPage=1&search=`} className="link" >
+                                list.isActive ? <Link to={`/products/list?projectId=${list.id}&currentPage=1&search=`} className="link" >
                                     <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" />
                                 </Link> : <div className="link"><div className="mask"></div>
                                     <img src={list.bannerImage || require("images/default_project_thumbnail.jpg").default} title={list.title} className="thumbnail" /></div>

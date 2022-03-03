@@ -26,16 +26,17 @@ const Product = () => {
     const searchParams = new URLSearchParams(location.search);
     const currentPage = searchParams.get('currentPage');
     const search = searchParams.get('search');
+    const projectId = searchParams.get('projectId');
     const params = useParams();
     const navigate = useNavigate();
     const [{ data, meta, product }, setList] = useState<{ [key: string]: any }>({});
     const getProductList = (page, search) => {
         toast.dismiss();
         history.push({
-            search: `?currentPage=${page}&search=${search}`,
+            search: `?projectId=${projectId || ""}&currentPage=${page}&search=${search}`,
         });
         axios
-            .get(apiUrl.products + `?limit=10&search=${search}&page=${page}`)
+            .get(apiUrl.products + `?projectId=${projectId || ""}&limit=10&search=${search}&page=${page}`)
             .then((result: any) => {
                 console.log(result.data);
                 if (result.data.data.length == 0) {
@@ -45,7 +46,7 @@ const Product = () => {
             })
     }
     const addSamples = () => {
-        const callMyFunction = axios.post(apiUrl.addSamples + `?projectId=${params.projectId}`).then((result) => {
+        const callMyFunction = axios.post(apiUrl.addSamples + `?projectId=${projectId}`).then((result) => {
             console.log("샘플데이터추가결과:", result);
             getProductList(1, "");
         })
@@ -55,41 +56,44 @@ const Product = () => {
             error: "샘플 데이터 추가중에 오류가 발생되었습니다.",
         });
     }
-    const createProducts = () => {
-        const body = {
-            projectId: params.projectId,
-            embedding: "2.5",
-            channel: "lab_rgb",
-            title: "",
-            description: "",
-            labcodeImage: null,
-            sourceImage: null,
-            url: "",
-            scale: 4,
-            alpha: 8
-        }
-        const formData = new FormData();
-        for (let key in body) {
-            formData.append(key, body[key as never]);
-        }
-        axios
-            .post(apiUrl.products, formData)
-            .then((result: any) => {
-                navigate(`/projects/${params.projectId}/products/${result.data.data.id}/defaultInfo`);
-            }).catch((err: any) => {
-                console.log('기본정보적용에러:', err);
-            });
-    }
+    // const createProducts = () => {
+    //     const body = {
+    //         projectId: params.projectId,
+    //         embedding: "2.5",
+    //         channel: "lab_rgb",
+    //         title: "",
+    //         description: "",
+    //         labcodeImage: null,
+    //         sourceImage: null,
+    //         url: "",
+    //         scale: 4,
+    //         alpha: 8
+    //     }
+    //     const formData = new FormData();
+    //     for (let key in body) {
+    //         formData.append(key, body[key as never]);
+    //     }
+    //     axios
+    //         .post(apiUrl.products, formData)
+    //         .then((result: any) => {
+    //             navigate(`/projects/${params.projectId}/products/${result.data.data.id}/defaultInfo`);
+    //         }).catch((err: any) => {
+    //             console.log('기본정보적용에러:', err);
+    //         });
+    // }
     useEffect(() => {
         getProductList(currentPage, search);
-    }, [currentPage, search])
+    }, [projectId, currentPage, search])
     return (
         <main>
             <SearchInput placeholder="제목 검색" />
             <div className="nav-area">
                 <strong className="project-title">{product && product.title}</strong>
                 <div className="btn-wrap">
-                    <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61" onClick={addSamples}>샘플 데이터 추가</Btn>
+                    {
+                        projectId != "" && <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61" onClick={addSamples}>샘플 데이터 추가</Btn>
+
+                    }
                     <Btn background="#5138E5" color="#FFFFFF" onClick={() => navigate("/products/create/defaultInfo")}>제품 등록</Btn>
                 </div>
             </div>
@@ -137,7 +141,7 @@ const Product = () => {
                                     <td>{products.title}</td>
                                     <td>{products.description}</td>
                                     <td><a href={products.sourceImage} download><img src={products.sourceImage} className="sourceImage" /></a><span className="convert-ico"></span><img src={products.labcodeImage} className="labcodeImage" /></td>
-                                    <td>{products.typeChannel}</td>
+                                    <td>{products.channel}</td>
                                     <td>{products.scale}</td>
                                     <td>{products.alpha}</td>
                                     <td>{products.created.split("T")[0]}</td>

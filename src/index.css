@@ -192,8 +192,10 @@ span {
 img {
   vertical-align: middle;
 }
+textarea {
+  outline: none;
+}
 /* 아이폰 input 둥근테두리 그림자 제거 */
-
 input {
   -webkit-appearance: none;
   -webkit-border-radius: 0;

@@ -1,6 +1,6 @@
 import { useEffect, useState, createContext } from "react"
 import {
-    useParams, useLocation
+    useNavigate, useParams, useLocation
 } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
@@ -12,21 +12,20 @@ import _ from 'lodash'
 import SelectBox from "src/components/common/base-select/SelectBox";
 import Classification from "src/pages/admin/project/projects-classification/Classification";
 import toast from 'react-hot-toast';
+import { homePageReg } from 'src/utils/common';
 export const ProjectContext = createContext<{ [key: string]: any }>({})
 const ProjectDetail = () => {
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })
+    const navigate = useNavigate();
+    const [link, setLinkMsg] = useState(""); // 홈페이지 주소 유효성 메세지
+    const [businessImage, setBusinessImage] = useState(""); // 사업자 등록증 유효성 메세지
+    const [isSelectTeam, setSelectTeam] = useState(""); // 팀 선택 여부
     const { pathname } = useLocation();
     const params = useParams();
     const debounce = _.debounce;
-    const [inputs, setInputs] = useState<{ [key: string]: any }>({
-        project: {
-            team: {
-                title: ""
-            }
-        }
-    });
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({});
     const inputDebounce = debounce((e) => {
         onChange(e);
     }, 500);
@@ -36,19 +35,44 @@ const ProjectDetail = () => {
                 setInputs((prev) => ({ ...prev, bannerImage: e }))
             } else {
                 setInputs((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+                if (e.target.id == "team") {
+                    setInputs((prev) => ({ ...prev, teamId: e.target.value.id, mainCategory: null, subCategory: null, mainCategoryId: null, subCategoryId: null }))
+                }
                 if (e.target.id == "versionId") {
                     setInputs((prev) => ({ ...prev, ...{ countryId: null, industryId: null, mainCategoryId: null, subCategoryId: null } }));
                 } else if (e.target.id == "industryId") {
                     setInputs((prev) => ({ ...prev, ...{ mainCategory: null, subCategory: null, mainCategoryId: null, subCategoryId: null } }));
                 } else if (e.target.id == "mainCategoryId") {
-                    setInputs((prev) => ({ ...prev, ...{ mainCategory: { title: e.target.text }, subCategoryId: null, subCategory: null } }));
+                    setInputs((prev) => ({ ...prev, ...{ mainCategory: e.target.value, mainCategoryId: e.target.value.id, subCategoryId: null, subCategory: null } }));
                 }
                 else if (e.target.id == "subCategoryId") {
-                    setInputs((prev) => ({ ...prev, ...{ subCategory: { title: e.target.text } } }));
+                    setInputs((prev) => ({ ...prev, ...{ subCategory: e.target.value, subCategoryId: e.target.value.id } }));
                 }
             }
         } else {
-            modify({ [e.target == undefined ? "bannerImage" : e.target.id]: e.target == undefined ? e : e.target.value });
+            toast.dismiss();
+            toast.loading('Waiting...');
+            let data;
+            if (e.target.id == "team") {
+                data = {
+                    teamId: e.target.value.id
+                }
+            }
+            else if (e.target.id == "mainCategoryId" || e.target.id == "subCategoryId") {
+                data = {
+                    [e.target.id]: e.target.value.id
+                }
+            } else if (e.target == undefined) {
+                data = {
+                    bannerImage: e
+                }
+            } else {
+                data = {
+                    [e.target.id]: e.target.value
+                }
+            }
+            console.log("data data data data data", data);
+            modify(data);
         }
     };
     const createProject = () => {
@@ -57,27 +81,43 @@ const ProjectDetail = () => {
             ...inputs,
             isActive: true
         }
+        console.log(body);
         for (let key in body) {
             formData.append(key, body[key as never]);
         }
-        axios
-            .post(apiUrl.project, formData)
-            .then((result: any) => {
-                console.log("프로젝트생성결과:", result);
-                toast.success('승인이 완료되었습니다.', {
-                    icon: '👏',
-                    iconTheme: {
-                        primary: '#5138e5',
-                        secondary: '#FFFFFF',
-                    },
+        const homepageCheck = homePageReg.test(inputs.homepage);
+        if (inputs.team?.id == null) {
+            setSelectTeam("팀을 선택해주세요.");
+        } else {
+            setSelectTeam("");
+        }
+        if (inputs.bannerImage == null) {
+            setBusinessImage("이미지를 첨부해주세요.")
+        } else {
+            setBusinessImage("")
+        }
+        if (homepageCheck == false) {
+            setLinkMsg("올바른 주소가 아닙니다.")
+        } else {
+            setLinkMsg("")
+        }
+        if (homepageCheck && inputs.team?.id != null && homepageCheck && inputs.bannerImage != null) {
+            const callMyFunction = axios
+                .post(apiUrl.project, formData)
+                .then((result: any) => {
+                    console.log("프로젝트생성결과:", result);
+                    navigate(`/projects/edit/${result.data.data.id}`)
+                }).catch((err: any) => {
+                    console.log('프로젝트생성에러:', err);
                 });
-
-            }).catch((err: any) => {
-                console.log('프로젝트생성에러:', err);
+            toast.promise(callMyFunction, {
+                loading: "Loading...",
+                success: "프로젝트가 등록되었습니다.",
+                error: "프로젝트등록에 실패하였습니다.",
             });
+        }
     }
     const getProject = () => {
-        console.log(" getProject();호출")
         axios
             .get(apiUrl.project + `/${params.projectId}`)
             .then((result: { [key: string]: any }) => {
@@ -88,41 +128,35 @@ const ProjectDetail = () => {
             });
     }
     const modify = (body) => {
-        console.log("inputs", body);
         const formData = new FormData();
         for (let key in body) {
             formData.append(key, body[key as never]);
         }
+        console.log(body);
         axios
             .patch(apiUrl.project + `/${params.projectId}`, formData)
             .then((result: any) => {
                 console.log("프로젝트수정결과:", result);
+                toast.dismiss();
                 getProject();
             }).catch((err: any) => {
                 console.log('프로젝트수정에러:', err);
             });
     }
-    // 팀 리스트 조회
-    const getTeamList = (page, search) => {
-        return axios
-            .get(apiUrl.team + `?page=${page}&search=${search}&limit=20`)
-            .then((result: any) => {
-                console.log('팀리스트조회결과:', result);
-                return result.data
-            });
-    }
-    const selectBoxStyle = {
-        padding: '16px 0',
-    }
     useEffect(() => {
         if (pathname == "/projects/create") {
             setInputs({
                 versionId: 1,
-                project: {
-                    team: {
-                        title: ""
-                    }
-                }
+                countryId: null,
+                title: null,
+                teamId: null,
+                team: {
+                    id: null,
+                    title: null,
+                },
+                bannerImage: null,
+                description: "",
+                homepage: ""
             });
         } else {
             getProject();
@@ -145,17 +179,7 @@ const ProjectDetail = () => {
                 {/* 외부용 프로젝트 분류 */}
                 <section className="section1">
                     <h2 className="h3-title">프로젝트 정보</h2>
-                    <div className="row">
-                        <label htmlFor="teamId" className="team" >팀</label>
-                        <div className="select-box-wrap">
-                            <SelectBox
-                                style={selectBoxStyle}
-                                property="title"
-                                value="id"
-                                defaultValue={inputs.project?.team.title}
-                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, teamId: value, project: { team: { title: text } } }))} getList={getTeamList} />
-                        </div>
-                    </div>
+
                     <div className="row">
                         <label htmlFor="title" className="title">프로젝트 명</label>
                         <input type="text" placeholder="프로젝트 명 입력" id="title" defaultValue={inputs.title} onKeyUp={(e) => inputDebounce(e)} />
@@ -163,6 +187,7 @@ const ProjectDetail = () => {
                     <div className="row">
                         <label className="top">썸네일 이미지</label>
                         <DragDrop link={inputs.bannerImage} eventHandler={onChange} style={{ width: "calc(100% - 180px)", height: "495px" }} />
+                        <p className="warn-message">{businessImage}</p>
                     </div>
                     <div className="row">
                         <label className="top" htmlFor="description">설명</label>
@@ -172,6 +197,7 @@ const ProjectDetail = () => {
                     <div className="row">
                         <label htmlFor="homepage" className="homepage-link">홈페이지 주소</label>
                         <input type="text" placeholder="홈페이지 주소 입력" defaultValue={inputs.homepage} id="homepage" onKeyUp={(e) => inputDebounce(e)} />
+                        <p className="warn-message">{link}</p>
                     </div>
                     {
                         pathname == "/projects/create" && <div className="approve-btn-area">

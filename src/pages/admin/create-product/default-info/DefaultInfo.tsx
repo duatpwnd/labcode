@@ -2,7 +2,7 @@ import "./DefaultInfo.scoped.scss"
 import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import InternalUse from "./internal/InternalUse";
 import { useSelector } from "react-redux";
@@ -132,12 +132,13 @@ const DefaultInfo = () => {
             });
     }
     const apply = () => {
+        console.log("inputs", inputs);
         const formData = new FormData();
         for (let key in inputs) {
             formData.append(key, inputs[key as never]);
         }
         const homepageCheck = homePageReg.test(inputs.url);
-        if (inputs.projectId == null) {
+        if (inputs.project.id == null) {
             setSelectProject("프로젝트를 선택해주세요.");
         } else {
             setSelectProject("");
@@ -157,16 +158,12 @@ const DefaultInfo = () => {
         } else {
             setBusinessImage("")
         }
-        if (homepageCheck && inputs.projectId != null && inputs.project.team.id != null && homepageCheck && inputs.sourceImage != null) {
-            console.log("시작)");
+        if (homepageCheck && inputs.project.id != null && inputs.project.team.id != null && homepageCheck && inputs.sourceImage != null) {
             const callMyFunction = axios
                 .post(apiUrl.products, formData)
                 .then((result: any) => {
                     console.log("적용결과", result);
-                    setTimeout(() => {
-                        navigate(`/products/edit/${result.data.data.id}/defaultInfo`)
-
-                    }, 1000)
+                    navigate(`/products/edit/${result.data.data.id}/defaultInfo`)
                 }).catch((err: any) => {
                     console.log('기본정보적용에러:', err);
                 });
@@ -251,13 +248,24 @@ const DefaultInfo = () => {
                 alpha: 8
             });
         }
-    }, [pathname])
+    }, [pathname]);
+    const classificationId = useMemo(() => {
+        return {
+            versionId: inputs.project?.versionId,
+            countryId: inputs.project?.countryId,
+            industryId: inputs.project?.industryId,
+            mainCategoryId: inputs.project?.mainCategoryId,
+            mainCategory: inputs.project?.mainCategory,
+            subCategoryId: inputs.project?.subCategoryId,
+            subCategory: inputs.project?.subCategory
+        }
+    }, [inputs.project])
     const selectBoxStyle = {
         padding: '16px 0',
     }
     return (
         <>
-            <Classification isActive={false} inputs={{ versionId: 1, countryId: 1, industryId: 1, mainCategoryId: 1, subCategoryId: null }} />
+            <Classification isActive={false} inputs={{ ...classificationId }} />
             <section>
                 <h3 className="h3-title">기본 정보</h3>
                 <div className="form">
@@ -268,8 +276,8 @@ const DefaultInfo = () => {
                                 property="title"
                                 value="id"
                                 style={selectBoxStyle}
-                                defaultValue={inputs.project.team.title}
-                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, project: { title: prev.project.title, team: { id: value, title: text } } }))} getList={getTeamList} />
+                                defaultValue={inputs.project.team?.title}
+                                eventHandler={(value) => setInputs((prev) => ({ ...prev, project: { ...prev.project, team: { ...value } } }))} getList={getTeamList} />
                         </div>
                         <p className="warn-message">{isSelectTeam}</p>
                     </div>
@@ -281,22 +289,25 @@ const DefaultInfo = () => {
                                 value="id"
                                 style={selectBoxStyle}
                                 defaultValue={inputs.project.title}
-                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, projectId: value, project: { title: text, team: { id: prev.project.team.id, title: prev.project.team.title } } }))} getList={getProjectList} />
+                                eventHandler={(value) => setInputs((prev) => {
+                                    console.log("prev", { ...prev, project: { ...value, ...prev.project.team } });
+                                    return ({ ...prev, project: { ...value, team: { ...prev.project.team } } })
+                                })} getList={getProjectList} />
                         </div>
                         <p className="warn-message">{isSelectProject}</p>
                     </div>
                     <div className="row">
                         <label htmlFor="title" className="title" >제목</label>
-                        <input type="text" id="title" value={inputs.title} placeholder="제목을 입력해주세요." onChange={(e) => onChange(e)} />
+                        <input type="text" id="title" defaultValue={inputs.title} placeholder="제목을 입력해주세요." onChange={(e) => onChange(e)} />
                     </div>
                     <div className="row">
                         <label htmlFor="description">설명</label>
-                        <textarea id="description" value={inputs.description} onChange={(e) => onChange(e)}>
+                        <textarea id="description" defaultValue={inputs.description} onChange={(e) => onChange(e)}>
                         </textarea>
                     </div>
                     <div className="row">
                         <label htmlFor="url" className="link">링크</label>
-                        <input type="text" id="url" value={inputs.url} placeholder="링크를 입력해주세요." onChange={(e) => onChange(e)} />
+                        <input type="text" id="url" defaultValue={inputs.url} placeholder="링크를 입력해주세요." onChange={(e) => onChange(e)} />
                         <p className="warn-message">{link}</p>
                     </div>
                     <div className="row">

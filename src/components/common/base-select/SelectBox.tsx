@@ -1,6 +1,6 @@
 import "./SelectBox.scoped.scss"
 import _ from 'lodash'
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 const SelectBox = ({ inputs, property, value, eventHandler, getList, list, defaultValue, style }: any) => {
     const [infiniteList, setInfiniteList] = useState<{ [key: string]: any }[]>([]);
     const [selectedIndex, setIndex] = useState(null);
@@ -84,7 +84,8 @@ const SelectBox = ({ inputs, property, value, eventHandler, getList, list, defau
                                 infiniteList && infiniteList.map((elements, index) => {
                                     return (
                                         <div key={index} className={elements[value] == defaultValue ? "list selected" : "list"} onClick={(e) => {
-                                            select(String(elements[value]), (e.target as { [key: string]: any }).innerText);
+                                            console.log("ek", elements);
+                                            select(elements, (e.target as { [key: string]: any }).innerText);
                                         }}>
                                             <span className="type" style={style && style[index] || style}>{elements[property]}</span>
                                         </div>

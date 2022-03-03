@@ -24,6 +24,11 @@ main {
     line-height: 52px;
     .project-title {
       font-size: 36px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 361px;
+      display: inline-block;
     }
     .btn-wrap {
       position: absolute;
@@ -45,6 +50,8 @@ main {
     table {
       width: 100%;
       white-space: nowrap;
+      table-layout: fixed;
+      min-width: 1920px;
       th,
       td {
         text-align: left;
@@ -81,6 +88,7 @@ main {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          cursor: pointer;
           .labcodeImage,
           .sourceImage {
             width: 40px;

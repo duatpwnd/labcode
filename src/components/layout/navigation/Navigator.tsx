@@ -77,7 +77,7 @@ const Navigator = () => {
                     <ParentNavLink className={pathname.startsWith("/products") && "active"} to={`/products/list?currentPage=1&search=`} background="product_ico.svg">제품</ParentNavLink>
                     <ul>
                         <li>
-                            <ChildNavLink className={pathname.includes("/products/edit") && "active"} to={`/products/list?currentPage=1&search=`}>제품 목록</ChildNavLink>
+                            <ChildNavLink className={pathname.includes("/products/edit") && "active"} to={`/products/list?projectId=&currentPage=1&search=`}>제품 목록</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={"/products/create/defaultInfo"}>제품 등록</ChildNavLink>
