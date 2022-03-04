@@ -104,7 +104,7 @@ const TeamList = () => {
                                                 <>
                                                     <div className="mask" onClick={() => setActiveBsnImgModal(-1)}></div>
                                                     {
-                                                        teams.businessImage != null && <embed src={teams.businessImage} className="image-modal" />
+                                                        teams.businessImage != null && <embed src={teams.businessImage} className="image-modal" width="90%" height="90%" />
                                                     }
                                                 </>
                                             }
