@@ -290,7 +290,7 @@ const DefaultInfo = () => {
                                 property="title"
                                 value="id"
                                 style={selectBoxStyle}
-                                defaultValue={inputs.project.team && inputs.project.team.title}
+                                defaultValue={inputs.project && inputs.project.team && inputs.project.team.title}
                                 eventHandler={(value) => setInputs((prev) => {
                                     return { ...prev, project: { ...prev.project, team: { ...value } } }
                                 })} getList={getTeamList} />
@@ -298,7 +298,7 @@ const DefaultInfo = () => {
                         <p className="warn-message">{isSelectTeam}</p>
                     </div>
                     {
-                        inputs.project.team &&
+                        inputs.project && inputs.project.team &&
                         inputs.project.team.id != undefined && <div className="row">
                             <label htmlFor="projectId" className="project">프로젝트</label>
                             <div className="select-box-wrap">
