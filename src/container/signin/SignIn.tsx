@@ -26,6 +26,11 @@ const SignIn = ({ setData }) => {
         setPassword("");
         dispatch(signInFail(false))
     }
+    const onKeyPress = (e) => {
+        if (e.key == "Enter") {
+            signIn()
+        }
+    }
     const signIn = () => {
         console.log(email, password);
         if (email.trim().length == 0) {
@@ -77,6 +82,7 @@ const SignIn = ({ setData }) => {
                                     id="password"
                                     className="user-pw"
                                     placeholder="비밀번호"
+                                    onKeyPress={onKeyPress}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <p className="guide-message">{passwordValid}</p>
