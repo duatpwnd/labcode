@@ -98,7 +98,7 @@ const DefaultInfo = () => {
         title: "",
         description: "",
         labcodeImage: null,
-        sourceImage: params.productId == undefined ? null : {} as { [key: string]: any },
+        sourceImage: null,
         url: "",
         scale: 4,
         alpha: 8
@@ -217,7 +217,7 @@ const DefaultInfo = () => {
             .catch((err) => {
                 console.log("조회에러", err);
             })
-    }, [])
+    }, [pathname])
     useEffect(() => {
         // 수정페이지일때
         if (pathname.startsWith("/products/edit")) {
@@ -227,17 +227,16 @@ const DefaultInfo = () => {
                 projectId: null,
                 project: {
                     title: "",
+                    versionId: 1,
                     team: {
                         title: ""
                     }
                 },
                 teamId: null,
-                embedding: null,
-                channel: null,
                 title: "",
                 description: "",
                 labcodeImage: null,
-                sourceImage: params.productId == undefined ? null : {} as { [key: string]: any },
+                sourceImage: null,
                 url: "",
                 scale: 4,
                 alpha: 8

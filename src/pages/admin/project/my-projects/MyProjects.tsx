@@ -28,13 +28,21 @@ const MyProjects = () => {
     const isActive = searchParams.get('isActive');
     const search = searchParams.get('search');
     const deleteProject = (id) => {
+        console.log(id);
+        toast.dismiss();
         axios
             .delete(apiUrl.project + `/${id}`)
             .then((result: any) => {
                 console.log("프로젝트삭제결과:", result);
+                toast("삭제처리 되었습니다.", {
+                    style: {
+                        color: '#ff4b4b',
+                    }
+                });
                 getProjectList(1, search, isActive);
             }).catch((err: any) => {
                 console.log('프로젝트삭제에러:', err);
+                toast.error("관리자에게 문의해주세요")
             });
     }
     const setPosition = (el) => {
@@ -47,10 +55,12 @@ const MyProjects = () => {
         }
     }
     const isPossibleDelete = (isActive, id) => {
+        toast.dismiss();
         if (isActive) {
-            alert("관리자에게 문의해주세요");
+            toast.error("관리자에게 문의해주세요")
             menuIndexUpdate(-1)
         } else {
+
             deleteProject(id)
         }
     }
