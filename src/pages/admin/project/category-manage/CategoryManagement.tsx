@@ -215,7 +215,6 @@ const CategoryManagement = () => {
                 <h2 className="h2-title">카테고리 관리</h2>
                 <p className="guide-message">정보를 변경하면 자동으로 저장됩니다.</p>
                 <section>
-                    <h2 className="h3-title">프로젝트 분류</h2>
                     <Classification inputs={inputs} eventHandler={setProjectClassify} />
                 </section>
                 <section>

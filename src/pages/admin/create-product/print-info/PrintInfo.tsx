@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import { createGlobalStyle } from 'styled-components';
+import toast from 'react-hot-toast';
 const DatePickerWrapperStyles = createGlobalStyle`
     .react-datepicker-wrapper{
         width:200px;
@@ -54,10 +55,16 @@ const PrintInfo = () => {
         })
     }
     const modify = (data) => {
-        console.log('프린트:', data);
-        axios.patch(apiUrl.products + `/${params.productId}/product-print-infos`, data).then((result) => {
-            console.log("인쇄수정결과:", result);
-        })
+        toast.dismiss();
+        let check = /^[0-9]+$/;
+        const result = check.test(data.printOrder);
+        if (result) {
+            axios.patch(apiUrl.products + `/${params.productId}/product-print-infos`, data).then((result) => {
+                console.log("인쇄수정결과:", result);
+            })
+        } else {
+            toast.error("인쇄 차수는 숫자만 입력가능합니다.")
+        }
     }
     useEffect(() => {
         getPrintInfos();
