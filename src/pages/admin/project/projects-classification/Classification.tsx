@@ -66,11 +66,11 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
     }
 
     return (
-        <section style={isActive == false ? { pointerEvents: "none" } : { pointerEvents: "auto" }}>
+        <section>
             <h2 className="h3-title">프로젝트 분류</h2>
             <div className="row">
                 <label htmlFor="versionId">버전</label>
-                <div className="select-box-wrap">
+                <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#ccc", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                     <SelectBox
                         style={selectBoxStyle}
                         property="title"
@@ -83,7 +83,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             {
                 countries.length != 0 && <div className="row">
                     <label htmlFor="countryId">국가</label>
-                    <div className="select-box-wrap">
+                    <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#ccc", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                         <SelectBox
                             style={selectBoxStyle}
                             property="title"
@@ -96,7 +96,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             }
             <div className="row">
                 <label htmlFor="industryId" >산업군</label>
-                <div className="select-box-wrap">
+                <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#ccc", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                     <SelectBox
                         style={selectBoxStyle}
                         property="title"
@@ -109,7 +109,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             {
                 pathname.includes('defaultInfo') == false && <div className="row">
                     <label htmlFor="teamId" className="team" >팀</label>
-                    <div className="select-box-wrap">
+                    <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#ccc", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                         <SelectBox
                             style={selectBoxStyle}
                             property="title"
@@ -124,7 +124,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
                 inputs.industryId != null && inputs.teamId != null &&
                 <div className="row">
                     <label htmlFor="mainCategoryId" >대분류</label>
-                    <div className="select-box-wrap">
+                    <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#ccc", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                         <SelectBox
                             style={selectBoxStyle}
                             property="title"
@@ -140,7 +140,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
                 inputs.mainCategoryId != null &&
                 <div className="row">
                     <label htmlFor="subCategoryId" >소분류</label>
-                    <div className="select-box-wrap">
+                    <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#ccc", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                         <SelectBox
                             style={selectBoxStyle}
                             property="title"
