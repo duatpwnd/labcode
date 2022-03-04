@@ -69,7 +69,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
         <section style={isActive == false ? { pointerEvents: "none" } : { pointerEvents: "auto" }}>
             <h2 className="h3-title">프로젝트 분류</h2>
             <div className="row">
-                <label htmlFor="versionId">버전{String(inputs.versionId)}</label>
+                <label htmlFor="versionId">버전</label>
                 <div className="select-box-wrap">
                     <SelectBox
                         style={selectBoxStyle}
@@ -82,7 +82,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             </div>
             {
                 countries.length != 0 && <div className="row">
-                    <label htmlFor="countryId">국가{String(inputs.countryId)}</label>
+                    <label htmlFor="countryId">국가</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}
@@ -95,7 +95,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
                 </div>
             }
             <div className="row">
-                <label htmlFor="industryId" >산업군{String(inputs.industryId)}</label>
+                <label htmlFor="industryId" >산업군</label>
                 <div className="select-box-wrap">
                     <SelectBox
                         style={selectBoxStyle}
@@ -108,7 +108,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             </div>
             {
                 pathname.includes('defaultInfo') == false && <div className="row">
-                    <label htmlFor="teamId" className="team" >팀{String(inputs.teamId)}</label>
+                    <label htmlFor="teamId" className="team" >팀</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}
@@ -123,7 +123,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             {
                 inputs.industryId != null && inputs.teamId != null &&
                 <div className="row">
-                    <label htmlFor="mainCategoryId" >대분류{String(inputs.mainCategoryId)}</label>
+                    <label htmlFor="mainCategoryId" >대분류</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}
@@ -139,7 +139,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
             {
                 inputs.mainCategoryId != null &&
                 <div className="row">
-                    <label htmlFor="subCategoryId" >소분류{String(inputs.subCategoryId)}</label>
+                    <label htmlFor="subCategoryId" >소분류</label>
                     <div className="select-box-wrap">
                         <SelectBox
                             style={selectBoxStyle}

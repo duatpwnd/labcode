@@ -25,7 +25,9 @@ const ProjectDetail = () => {
     const { pathname } = useLocation();
     const params = useParams();
     const debounce = _.debounce;
-    const [inputs, setInputs] = useState<{ [key: string]: any }>({});
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({
+        versionId: 1
+    });
     const inputDebounce = debounce((e) => {
         onChange(e);
     }, 500);

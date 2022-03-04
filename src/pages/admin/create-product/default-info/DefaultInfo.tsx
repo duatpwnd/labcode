@@ -275,7 +275,6 @@ const DefaultInfo = () => {
                                 style={selectBoxStyle}
                                 defaultValue={inputs.project.team && inputs.project.team.title}
                                 eventHandler={(value) => setInputs((prev) => {
-                                    console.log('팀:', { ...prev, project: { ...prev.project, team: { ...value } } });
                                     return { ...prev, project: { ...prev.project, team: { ...value } } }
                                 })} getList={getTeamList} />
                         </div>
@@ -293,8 +292,7 @@ const DefaultInfo = () => {
                                     style={selectBoxStyle}
                                     defaultValue={inputs.project.title}
                                     eventHandler={(value) => setInputs((prev) => {
-                                        console.log("prev", value);
-                                        return ({ ...prev, project: { ...value, team: { ...prev.project.team } } })
+                                        return ({ ...prev, projectId: value.id, project: { ...value, team: { ...prev.project.team } } })
                                     })} getList={getProjectList} />
                             </div>
                             <p className="warn-message">{isSelectProject}</p>
