@@ -59,9 +59,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
     useEffect(() => {
         console.log(inputs);
         // 버전, 국가, 산업 조회
-        if (inputs.versionId != null) {
-            axios.all([getVersions(), getCountries(), getIndustries()]);
-        }
+        axios.all([getVersions(), getCountries(), getIndustries()]);
     }, [inputs.versionId]);
     const selectBoxStyle = {
         padding: '16px 0'

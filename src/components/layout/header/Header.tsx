@@ -124,12 +124,10 @@ const Header = () => {
 
                 <div className="header-contents">
                     <h1 className="logo">
-                        <Link to="/">
-                            <picture>
-                                <source media="(max-width: 479px)" srcSet={require("images/mobile_logo.svg").default} />
-                                <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />
-                            </picture>
-                        </Link>
+                        <picture>
+                            <source media="(max-width: 479px)" srcSet={require("images/mobile_logo.svg").default} />
+                            <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />
+                        </picture>
                     </h1>
                     <VersionIcon>{t('version')}</VersionIcon>
                     <div className="right-buttons" >

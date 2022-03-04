@@ -208,8 +208,13 @@ const ProjectDetail = () => {
                     {
                         <div className="approve-btn-area">
                             {
-                                isAdmin ? inputs.isActive == false && <button className="approve-btn" onClick={pathname == "/projects/create" ? createProject : () => { onChange({ target: { id: "isActive", value: true } }) }}>승인</button> :
-                                    pathname == "/projects/create" && <button className="approve-btn" onClick={createProject}>등록</button>
+                                isAdmin && inputs.isActive == false && <button className="approve-btn" onClick={pathname == "/projects/create" ? createProject : () => { onChange({ target: { id: "isActive", value: true } }) }}>승인</button>
+                            }
+                            {
+                                isAdmin && inputs.isActive == undefined && <button className="approve-btn" onClick={createProject}>등록</button>
+                            }
+                            {
+                                isAdmin == false && pathname == "/projects/create" && <button className="approve-btn" onClick={createProject}>등록</button>
                             }
                         </div>
                     }
