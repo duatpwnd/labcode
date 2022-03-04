@@ -71,6 +71,10 @@ const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
 }
 const DefaultInfo = () => {
     const { pathname } = useLocation();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const search = searchParams.get('search');
+    const projectId = searchParams.get('projectId');
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })
@@ -126,7 +130,7 @@ const DefaultInfo = () => {
             .patch(apiUrl.products + `/${params.productId}`, formData)
             .then((result: any) => {
                 console.log("수정결과:", result);
-                getProductDetail();
+                getProductDetail()
             }).catch((err: any) => {
                 console.log('수정에러:', err);
             });
@@ -188,6 +192,16 @@ const DefaultInfo = () => {
                 return result.data
             })
     }
+    const getProject = () => {
+        axios
+            .get(apiUrl.project + `/${projectId}`)
+            .then((result: { [key: string]: any }) => {
+                console.log(result);
+                setInputs((prev) => ({ ...prev, project: result.data.data }))
+            }).catch((err: any) => {
+                console.log('프로젝트조회에러:', err);
+            });
+    }
     // 팀 리스트 조회
     const getTeamList = (page, search) => {
         return axios
@@ -223,24 +237,28 @@ const DefaultInfo = () => {
         if (pathname.startsWith("/products/edit")) {
             getProductDetail();
         } else {
-            setInputs({
-                projectId: null,
-                project: {
+            if (projectId != undefined) {
+                getProject();
+            } else {
+                setInputs({
+                    projectId: null,
+                    project: {
+                        title: "",
+                        versionId: 1,
+                        team: {
+                            title: ""
+                        }
+                    },
+                    teamId: null,
                     title: "",
-                    versionId: 1,
-                    team: {
-                        title: ""
-                    }
-                },
-                teamId: null,
-                title: "",
-                description: "",
-                labcodeImage: null,
-                sourceImage: null,
-                url: "",
-                scale: 4,
-                alpha: 8
-            });
+                    description: "",
+                    labcodeImage: null,
+                    sourceImage: null,
+                    url: "",
+                    scale: 4,
+                    alpha: 8
+                });
+            }
         }
     }, [pathname]);
     const classificationId = useMemo(() => {
