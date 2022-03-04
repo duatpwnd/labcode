@@ -192,8 +192,8 @@ const Team = () => {
                 isActiveCancelApplyModal && <ConfirmModal title="신청 취소" contents="취소하시겠습니까?" cancelEvent={() => setActiveCancelApplyModal(false)} okEvent={ok} />
             }
             <main>
-                <h2 className="h2-title">정보 입력</h2>
-                <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>
+                <h2 className="h2-title">{pathname == "/teams/create" ? "신청하기" : "정보 입력"}</h2>
+                {pathname != "/teams/create" && <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>}
                 <section className="section1">
                     <h3 className="h3-title">회사 정보</ h3>
                     <div className="row">

@@ -6,6 +6,7 @@ import { RootState } from "src/reducers";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import SelectBox from "src/components/common/base-select/SelectBox";
+import Classification from "src/pages/admin/project/projects-classification/Classification";
 import PaginatedItems from "src/components/common/pagination/Paginate";
 // 소분류 생성
 const createSubCategories = ({ mainCategoryId }) => {
@@ -100,7 +101,9 @@ const ToggleList = ({ mainCategories, getCategories }) => {
     )
 }
 const CategoryManagement = () => {
-    const [inputs, setInputs] = useState<{ [key: string]: any }>({});
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({
+        versionId: 1
+    });
     const [versions, setVersions] = useState<{ [key: string]: any }[]>([]);
     const [teams, setTeams] = useState<{ [key: string]: any }[]>([]);
     const [industries, setIndustries] = useState<{ [key: string]: any }[]>([]);
@@ -132,8 +135,24 @@ const CategoryManagement = () => {
     const onChange = (e) => {
         setTitle(e.target.value);
     }
-
+    const setProjectClassify = (e) => {
+        setInputs((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+        if (e.target.id == "team") {
+            setInputs((prev) => ({ ...prev, teamId: e.target.value.id, mainCategory: null, subCategory: null, mainCategoryId: null, subCategoryId: null }))
+        }
+        if (e.target.id == "versionId") {
+            setInputs((prev) => ({ ...prev, ...{ countryId: null, industryId: null, mainCategoryId: null, subCategoryId: null } }));
+        } else if (e.target.id == "industryId") {
+            setInputs((prev) => ({ ...prev, ...{ mainCategory: null, subCategory: null, mainCategoryId: null, subCategoryId: null } }));
+        } else if (e.target.id == "mainCategoryId") {
+            setInputs((prev) => ({ ...prev, ...{ mainCategory: e.target.value, mainCategoryId: e.target.value.id, subCategoryId: null, subCategory: null } }));
+        }
+        else if (e.target.id == "subCategoryId") {
+            setInputs((prev) => ({ ...prev, ...{ subCategory: e.target.value, subCategoryId: e.target.value.id } }));
+        }
+    }
     const onKeyPress = (e) => {
+        console.log(inputs);
         if (e.key == "Enter") {
             createMainCategories({ teamId: inputs.teamId, title: title, order: data.length + 1, industryId: inputs.industryId }, false)
         }
@@ -197,43 +216,7 @@ const CategoryManagement = () => {
                 <p className="guide-message">정보를 변경하면 자동으로 저장됩니다.</p>
                 <section>
                     <h2 className="h3-title">프로젝트 분류</h2>
-                    <div className="row">
-                        <label htmlFor="versionId">버전{String(inputs.versionId)}</label>
-                        <div className="select-box-wrap">
-                            <SelectBox
-                                style={selectBoxStyle}
-                                property="title"
-                                value="id"
-                                defaultValue={inputs.versionId}
-                                eventHandler={(value) => setInputs((prev) => ({ ...prev, ...{ versionId: value, industryId: null } }))}
-                                list={versions} />
-                        </div>
-                    </div>
-                    {
-                        inputs.versionId != null && <div className="row">
-                            <label htmlFor="industryId" >산업군{String(inputs.industryId)}</label>
-                            <div className="select-box-wrap">
-                                <SelectBox
-                                    style={selectBoxStyle}
-                                    property="title"
-                                    value="id"
-                                    defaultValue={inputs.industryId}
-                                    eventHandler={(value) => setInputs((prev) => ({ ...prev, ...{ industryId: value } }))}
-                                    list={industries} />
-                            </div>
-                        </div>
-                    }
-                    <div className="row">
-                        <label htmlFor="teamId" className="team">팀{String(inputs.teamId)}</label>
-                        <div className="select-box-wrap">
-                            <SelectBox
-                                style={selectBoxStyle}
-                                property="title"
-                                value="id"
-                                defaultValue={inputs.project?.team.title}
-                                eventHandler={(value, text) => setInputs((prev) => ({ ...prev, teamId: value, project: { team: { title: text } } }))} getList={getTeamList} />
-                        </div>
-                    </div>
+                    <Classification inputs={inputs} eventHandler={setProjectClassify} />
                 </section>
                 <section>
                     <div className="add-area">
