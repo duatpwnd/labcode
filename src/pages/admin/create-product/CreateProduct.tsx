@@ -23,11 +23,11 @@ const CreateProduct = () => {
                             <li>
                                 <NavLink to={"defaultInfo"}>기본 정보</NavLink>
                             </li>
-                            <li>
+                            <li style={location.pathname.includes("/products/create") ? { pointerEvents: "none" } : { pointerEvents: "auto" }}>
                                 <NavLink to={"productInfo?currentPage=1&search="}>템플릿 정보</NavLink>
                             </li>
                             {
-                                isAdmin && <li>
+                                isAdmin && <li style={location.pathname.includes("/products/create") ? { pointerEvents: "none" } : { pointerEvents: "auto" }}>
                                     <NavLink to={"printInfo"}>인쇄 정보</NavLink>
                                 </li>
 
