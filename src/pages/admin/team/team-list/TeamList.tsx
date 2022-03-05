@@ -30,7 +30,7 @@ const TeamList = () => {
             });
     }
     const isExistBsnImg = (id, link) => {
-        if (link == null) {
+        if (link == null || link == "") {
             setActiveBsnImgModal(-1);
             toast.error('사업자 등록증이 첨부되지 않았습니다.', {
                 id: 'clipboard',
@@ -104,7 +104,7 @@ const TeamList = () => {
                                                 <>
                                                     <div className="mask" onClick={() => setActiveBsnImgModal(-1)}></div>
                                                     {
-                                                        teams.businessImage != null && <embed src={teams.businessImage} className="image-modal" width="90%" height="90%" />
+                                                        teams.businessImage != null && teams.businessImage != "" && <embed src={teams.businessImage} className="image-modal" width="90%" height="90%" />
                                                     }
                                                 </>
                                             }
