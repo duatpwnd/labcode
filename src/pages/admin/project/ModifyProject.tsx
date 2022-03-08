@@ -109,7 +109,7 @@ const ProjectDetail = () => {
                 setSelectTeam("");
             }
         }
-        if (homepageCheck && homepageCheck && inputs.bannerImage != null) {
+        if (homepageCheck && inputs.bannerImage != null) {
             const callMyFunction = axios
                 .post(apiUrl.project, formData)
                 .then((result: any) => {

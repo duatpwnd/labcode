@@ -73,7 +73,7 @@ const Navigator = () => {
                         </li>
                     </ul>
                 </li>
-                <li>
+                {/* <li>
                     <ParentNavLink className={pathname.startsWith("/products") && "active"} to={`/products/list?currentPage=1&search=`} background="product_ico.svg">제품</ParentNavLink>
                     <ul>
                         <li>
@@ -84,7 +84,7 @@ const Navigator = () => {
                         </li>
 
                     </ul>
-                </li>
+                </li> */}
             </ul>
         </nav>
     )

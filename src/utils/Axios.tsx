@@ -1,8 +1,8 @@
 import axios from "axios";
 import history from "src/utils/history";
+import store from "src/store";
 import { Cookies } from "react-cookie";
 import { signInFail } from "src/actions/signIn";
-import store from "src/store";
 import { useEffect } from "react";
 import toast from 'react-hot-toast';
 const cookies = new Cookies();

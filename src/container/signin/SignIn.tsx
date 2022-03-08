@@ -1,15 +1,13 @@
 import "./SignIn.scoped.scss"
+import _ from 'lodash'
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInRequest, signInFail } from "src/actions/signIn"
 import { RootState } from "src/reducers";
-import _ from 'lodash'
 import { emailReg } from 'src/utils/common';
 const SignIn = ({ setData }) => {
     const dispatch = useDispatch();
-    // snaptag_official@snaptag.co.kr
-    // Snaptag0911!
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailValid, setEmailValid] = useState("");
@@ -75,8 +73,6 @@ const SignIn = ({ setData }) => {
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <p className="guide-message">{emailValid}</p>
-
-
                                 <input
                                     type="password"
                                     id="password"
