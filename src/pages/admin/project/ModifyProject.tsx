@@ -26,7 +26,8 @@ const ProjectDetail = () => {
     const params = useParams();
     const debounce = _.debounce;
     const [inputs, setInputs] = useState<{ [key: string]: any }>({
-        versionId: 1
+        versionId: 1,
+        countryId: 1
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
@@ -155,7 +156,7 @@ const ProjectDetail = () => {
         if (pathname == "/projects/create") {
             setInputs({
                 versionId: 1,
-                countryId: null,
+                countryId: 1,
                 title: null,
                 teamId: null,
                 team: {
