@@ -2,7 +2,8 @@ import "./DefaultInfo.scoped.scss"
 import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import InternalUse from "./internal/InternalUse";
+import SingleSet from "./internal/SingleSet";
+import MultipleSet from "./internal/MultipleSet";
 import Classification from "../../project/projects-classification/Classification";
 import SelectBox from "src/components/common/base-select/SelectBox";
 import toast from 'react-hot-toast';
@@ -105,7 +106,8 @@ const DefaultInfo = () => {
         sourceImage: null,
         url: "",
         scale: 4,
-        alpha: 8
+        alpha: 8,
+        applyValue: "single"
     });
     const onChange = (e: { [key: string]: any }) => {
         if (e.target == undefined) {
@@ -322,7 +324,7 @@ const DefaultInfo = () => {
                     </div>
                     <div className="row">
                         <label htmlFor="description">설명</label>
-                        <textarea id="description" defaultValue={inputs.description} onChange={(e) => onChange(e)}>
+                        <textarea placeholder="최소 10자 ~ 최대 1000자 입력" id="description" defaultValue={inputs.description} onChange={(e) => onChange(e)}>
                         </textarea>
                     </div>
                     <div className="row">
@@ -351,7 +353,7 @@ const DefaultInfo = () => {
                     }
                     {isAdmin &&
                         <div className="row">
-                            <label htmlFor="channel">적용 기술{inputs.channel}</label>
+                            <label htmlFor="channel">적용 기술</label>
                             <div className="select-box-wrap">
                                 <SelectBox
                                     property="label"
@@ -363,16 +365,31 @@ const DefaultInfo = () => {
                             </div>
                         </div>
                     }
-                    <div className="row">
-                        <label htmlFor="scale" className="scale">코드 크기</label>
-                        <SlideBar id="scale" isAdmin={isAdmin} inputs={inputs} scales={scales} eventHandler={setInputs} />
+                    <div className="row apply-method-row">
+                        <label>적용 방법</label>
+                        <div className="apply-method-area">
+                            <input type="radio" checked={inputs.applyValue.includes('single') ? true : false} id="single" value="single" name="apply-method"
+                                onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "single" }))} />
+                            <label htmlFor="single"><span className="ball"></span><span className="title">단일 설정</span></label>
+                            <input type="radio" checked={inputs.applyValue.includes('multiple') ? true : false} id="multiple" value="multiple" name="apply-method" onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "multiple" }))} />
+                            <label htmlFor="multiple"><span className="ball"></span><span className="title">복수 설정</span></label>
+                        </div>
                     </div>
-                    <div className="row">
-                        <label htmlFor="alpha" className="alpha">적용 세기</label>
-                        <SlideBar id="alpha" isAdmin={isAdmin} inputs={inputs} scales={alphas} eventHandler={setInputs} />
-                    </div>
+
                     {/* 수정페이지에만 존재 */}
-                    <InternalUse />
+                    {
+                        inputs.applyValue == "single" ?
+                            <>
+                                <div className="row">
+                                    <label htmlFor="scale" className="scale">코드 크기</label>
+                                    <SlideBar id="scale" isAdmin={isAdmin} inputs={inputs} scales={scales} eventHandler={setInputs} />
+                                </div>
+                                <div className="row">
+                                    <label htmlFor="alpha" className="alpha">적용 세기</label>
+                                    <SlideBar id="alpha" isAdmin={isAdmin} inputs={inputs} scales={alphas} eventHandler={setInputs} />
+                                </div>
+                            </> : <MultipleSet eventHandler={setInputs} />
+                    }
                     {
                         inputs.labcodeImage !== null && <div className="row">
                             <label>변경 이미지</label>

@@ -35,14 +35,20 @@ section {
         box-sizing: border-box;
         background: #f6f7f8;
         width: calc(100% - 180px);
+        &::placeholder {
+          color: #9ea7ad;
+        }
       }
       input {
         padding: 16px;
         border-radius: 8px;
         background: #f6f7f8;
         box-sizing: border-box;
-        width: calc(100% - 180px);
         vertical-align: middle;
+        width: calc(100% - 180px);
+        &::placeholder {
+          color: #9ea7ad;
+        }
       }
       .warn-message {
         color: red;
@@ -90,6 +96,60 @@ section {
         .message {
           margin-top: 10px;
           color: red;
+        }
+      }
+      .scale-range,
+      .alpha-range {
+        display: inline-block;
+        width: calc(100% - 180px);
+        input {
+          width: calc(50% - 34px);
+        }
+        .wave-ico {
+          width: 20px;
+          color: #303538;
+          margin: 0 24px;
+          font-weight: 700;
+        }
+      }
+    }
+    .apply-method-row {
+      padding-top: 52px;
+      margin: 38px 0;
+      border-top: 1px solid #e6e8eb;
+      .apply-method-area {
+        display: inline-block;
+        vertical-align: middle;
+        width: calc(100% - 180px);
+        input[type="radio"] {
+          display: none;
+        }
+        input[type="radio"] + label {
+          cursor: pointer;
+          color: #303538;
+          font-weight: 700;
+          font-size: 18px;
+          vertical-align: middle;
+          width: 99px;
+          display: inline-block;
+        }
+
+        input[type="radio"] + label .ball {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin: -2px 12px 0 0;
+          vertical-align: middle;
+          background: url("~images/radio_check_off_ico.svg") no-repeat center /
+            20px 20px;
+        }
+
+        input[type="radio"]:checked + label .ball {
+          background: url("~images/radio_check_on_ico.svg") no-repeat center /
+            20px 20px;
+        }
+        label[for="single"] {
+          margin-right: 24px;
         }
       }
     }
