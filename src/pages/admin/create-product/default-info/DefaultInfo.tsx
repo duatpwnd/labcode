@@ -139,6 +139,7 @@ const DefaultInfo = () => {
     }
     const apply = () => {
         console.log("inputs", inputs);
+        toast.dismiss();
         const formData = new FormData();
         for (let key in inputs) {
             formData.append(key, inputs[key as never]);
@@ -160,14 +161,21 @@ const DefaultInfo = () => {
             setBusinessImage("")
         }
         if (homepageCheck && inputs.project.id != null && homepageCheck && inputs.sourceImage != null) {
+            if (inputs.applyValue == "multiple") {
+                if (inputs.alphaMin == undefined || inputs.alphaMax == undefined || inputs.scaleMin == undefined || inputs.scaleMax == undefined || inputs.scaleSkip == undefined || inputs.alphaSkip == undefined) {
+                    return false;
+                }
+            }
             const callMyFunction = axios
-                .post(apiUrl.products, formData)
+                .post(inputs.applyValue == "single" ? apiUrl.products : apiUrl.productsBulk, formData)
                 .then((result: any) => {
                     console.log("적용결과", result);
-                    navigate(`/products/edit/${result.data.data.id}/defaultInfo`)
-                }).catch((err: any) => {
-                    console.log('기본정보적용에러:', err);
-                });
+                    if (inputs.applyValue == "single") {
+                        navigate(`/products/edit/${result.data.data.id}/defaultInfo`)
+                    } else {
+                        navigate(`/products/list?projectId=${projectId}&currentPage=1&search=`)
+                    }
+                })
             toast.promise(callMyFunction, {
                 loading: "Loading...",
                 success: "제품이 등록되었습니다.",
@@ -199,7 +207,7 @@ const DefaultInfo = () => {
             .get(apiUrl.project + `/${projectId}`)
             .then((result: { [key: string]: any }) => {
                 console.log(result);
-                setInputs((prev) => ({ ...prev, project: result.data.data }))
+                setInputs((prev) => ({ ...prev, project: result.data.data, projectId: result.data.data.id }))
             }).catch((err: any) => {
                 console.log('프로젝트조회에러:', err);
             });

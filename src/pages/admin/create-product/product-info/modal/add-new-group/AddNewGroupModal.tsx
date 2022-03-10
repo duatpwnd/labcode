@@ -2,6 +2,7 @@ import "./AddNewGroupModal.scoped.scss"
 import _ from 'lodash';
 import axios from "axios";
 import apiUrl from "src/utils/api";
+import toast from 'react-hot-toast';
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -64,15 +65,22 @@ const AddNewGroupModal = ({ data, SearchBar, setPage, closeModal }) => {
     const params = useParams();
     const saveGroup = () => {
         console.log("checked", checked);
-        axios.post(apiUrl.productInfosGroups, {
-            teamId: userInfo?.user.teamId,
-            productId: params.productId,
-            title: title,
-            productInfoIds: checked,
-        }).then((result) => {
-            console.log("그룹저장결과:", result);
-            closeModal(false);
-        })
+        toast.dismiss();
+        if (checked.length == 0) {
+            toast.error("그룹을 선택해주세요.")
+        } else if (title.trim().length == 0) {
+            toast.error("제목을 입력해주세요.")
+        } else {
+            axios.post(apiUrl.productInfosGroups, {
+                teamId: userInfo?.user.teamId,
+                productId: params.productId,
+                title: title,
+                productInfoIds: checked,
+            }).then((result) => {
+                console.log("그룹저장결과:", result);
+                closeModal(false);
+            })
+        }
     }
     const elementScrollDetect = (element) => {
         const { target } = element;

@@ -1,8 +1,9 @@
 import "./BringtGroupModal.scoped.scss"
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import _ from 'lodash';
-import { Fragment, useEffect, useState } from "react";
+import toast from 'react-hot-toast';
+import { useEffect, useState } from "react";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import { ProductList } from "../../ProductInfo";
@@ -34,9 +35,10 @@ const SlideMenu = ({ list, index, getProductInfoGroups, setSelect }) => {
     const [isActiveSlideMenu, setSlideMenu] = useState(false);
     // 제품 정보 그룹 삭제
     const deleteProductGroupInfos = (id) => {
+        console.log("삭제id", id);
         axios.delete(apiUrl.productInfosGroups + `/${id}`).then((result) => {
             console.log('제품 정보 그룹 삭제 결과', result);
-            getProductInfoGroups();
+            getProductInfoGroups("");
         })
     }
 
@@ -66,12 +68,17 @@ const BringGroupModal = ({ setBringGroupModal, setProductList }) => {
     const [{ data, meta }, setGroupList] = useState<{ [key: string]: any }>({});
 
     const bringGroup = () => {
-        axios.post(apiUrl.productInfosGroups + `/${selectedValue}/transfer/${params.productId}`).then((result) => {
-            console.log("그룹불러오기결과", result);
-            setBringGroupModal(false);
-            // 불러온 그룹 추가시켜주기
-            setProductList((prev) => [...prev, ...result.data.data])
-        })
+        toast.dismiss();
+        if (selectedValue == "") {
+            toast.error("그룹을 선택해주세요.")
+        } else {
+            axios.post(apiUrl.productInfosGroups + `/${selectedValue}/transfer/${params.productId}`).then((result) => {
+                console.log("그룹불러오기결과", result);
+                setBringGroupModal(false);
+                // 불러온 그룹 추가시켜주기
+                setProductList((prev) => [...prev, ...result.data.data])
+            })
+        }
     }
     // 제품 정보 그룹 조회
     const getProductInfoGroups = (search) => {

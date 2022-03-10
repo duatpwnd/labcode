@@ -37,7 +37,7 @@
         border: 1px solid #f6f7f8;
         background: #f6f7f8;
         border-radius: 4px;
-        padding: 9px 16px;
+        padding: 9.5px 16px;
         box-sizing: border-box;
         width: 100%;
         caret-color: #5138e5;
@@ -90,6 +90,48 @@
             background: #5138e5;
             color: white;
           }
+        }
+        .attach {
+          display: inline-block;
+          vertical-align: middle;
+          background: #f6f7f8;
+          border-radius: 8px;
+          width: calc(100% - 89px);
+          margin-right: 12px;
+          padding: 0 16px;
+          box-sizing: border-box;
+          input[type="file"] {
+            display: none;
+          }
+          .input-file {
+            display: inline-block;
+            box-sizing: border-box;
+            width: 100%;
+            height: 42px;
+            line-height: 42px;
+            vertical-align: middle;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .delete-btn {
+            width: 36px;
+            height: 36px;
+            vertical-align: middle;
+            background: url("~images/delete_file_btn.svg") no-repeat center
+              center / 36px 36px;
+          }
+        }
+        .file {
+          display: inline-block;
+          background: #79828a;
+          color: white;
+          border-radius: 8px;
+          text-align: center;
+          padding: 14px 0;
+          width: 77px;
+          height: 42px;
+          line-height: 15px;
+          box-sizing: border-box;
         }
       }
       &:first-child {

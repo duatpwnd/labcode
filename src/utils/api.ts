@@ -3,6 +3,7 @@ const apiUrl = {
   project: "/adm/v1/projects", // 프로젝트 리스트 조회, 생성, 수정
   team: "/adm/v1/teams", // 팀 리스트 조회, 수정
   products: "/adm/v1/products", // 제품 생성, 수정, 조회
+  productsBulk: "/adm/v1/products/bulk", // 제품 범위 생성
   createInquiries: "/adm/v1/inquiries", // 문의 생성
   versions: "/adm/v1/versions", // 버전리스트
   countries: "/adm/v1/countries/all", // 귝가리스트

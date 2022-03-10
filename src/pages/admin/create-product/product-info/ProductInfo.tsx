@@ -55,7 +55,6 @@ const SearchButton = styled.button`
 export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, InputTitle, Checkbox, AllCheckbox }: any) => {
     // 제품정보수정
     const modifyProductInfos = (e, id) => {
-        console.log(e, id);
         let body;
         // e가 string이면 날짜임
         if (typeof e === "string") {
@@ -65,7 +64,11 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
         } else {
             body = { [e.target.id]: e.target.value }
         }
-        axios.patch(apiUrl.productInfos + `/${id}`, body).then((result) => {
+        const formData = new FormData();
+        for (let key in body) {
+            formData.append(key, body[key as never]);
+        }
+        axios.patch(apiUrl.productInfos + `/${id}`, formData).then((result) => {
             console.log("제품정보수정결과:", result);
             const filter = data.filter((el) => {
                 return el.id == id
@@ -176,6 +179,19 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                                         else if (list.type == "date") {
                                                             return <><CalendarComp id={list.id} defaultValue={list.date} eventHandler={modifyProductInfos} /><DatePickerWrapperStyles pointer-events={type == "modal" ? "none" : "auto"} /></>
                                                         }
+                                                        else if (list.type == "image") {
+                                                            return <>
+                                                                <div className="attach">
+                                                                    {
+                                                                        list.imageTitle == null ? <span className="input-file" >이미지 첨부</span>
+                                                                            : <span className="input-file" >{list.imageTitle + " (" + list.imageSize + ")"}</span>
+                                                                    }
+                                                                    <input type="file" disabled={type == "modal"} id="image" onChange={(e) => modifyProductInfos({ target: { id: "image", value: (e.target as { [key: string]: any }).files[0] } }, list.id
+                                                                    )} />
+                                                                </div>
+                                                                <label htmlFor="image" className="file">찾아보기</label>
+                                                            </>
+                                                        }
                                                     })()
                                                 }
                                             </td>
@@ -236,7 +252,7 @@ const ProductInfo = () => {
             axios.get(apiUrl.productInfos + `?page=${page}&limit=20&search=${keyword}&productId=${params.productId}`).then((result) => {
                 setMeta(result.data.meta);
                 setProductList((prev) => [...prev, ...result.data.data]);
-                console.log("제품조회결과:", result.data.data, result.data.meta, page);
+                console.log("제품조회결과:", result, result.data.meta, page);
             });
         }
     }, [page])
