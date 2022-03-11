@@ -10,11 +10,12 @@ import toast from 'react-hot-toast';
 import axios from "axios";
 import apiUrl from "src/utils/api";
 const StatusText = styled.strong`
-    font-size:14px;
+    font-size:13px;
     text-align:center;
     color:${(props) => props.color};
     background:${(props) => props.background};
-    padding:9px 8px;
+    padding:4px 6px;
+    line-height:24px;
     border-radius:4px;
 `
 const MyProjects = () => {
@@ -110,7 +111,7 @@ const MyProjects = () => {
 
                             }
                             <div className="bottom">
-                                <dl>
+                                <dl className="bottom-dl">
                                     <dt>{list.title}</dt>
                                     <dd>{list.description}</dd>
                                 </dl>
@@ -124,7 +125,10 @@ const MyProjects = () => {
                                 {
                                     menuIndex == list.id &&
                                     <div className="menu" ref={el => { if (el != null) { setPosition(el); (menu as { [key: string]: any }).current = el; } }}>
-                                        <h3 className="h3-title">{list.title}</h3>
+                                        <dl className="menu-dl">
+                                            <dt>프로젝트</dt>
+                                            <dd>{list.title}</dd>
+                                        </dl>
                                         <ul >
                                             <li className="manage" onClick={() => navigate(`/projects/edit/${list.id}`)}>
                                                 프로젝트 관리

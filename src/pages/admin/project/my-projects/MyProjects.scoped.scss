@@ -60,17 +60,26 @@ main {
           font-weight: 700;
           overflow: hidden;
           z-index: 3;
-          .h3-title {
+          .menu-dl {
             padding: 15px 18px;
             font-size: 14px;
             border-bottom: 1px solid #f2f4f5;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            dt {
+              color: #9ea7ad;
+              font-weight: 700;
+              font-size: 13px;
+            }
+            dd {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              margin-top: 8px;
+              font-size: 14px;
+            }
           }
           ul {
             li {
-              padding: 12px 50px;
+              padding: 15px 18px;
               box-sizing: border-box;
               font-size: 14px;
               height: 48px;
@@ -78,14 +87,6 @@ main {
               &:hover {
                 background-color: #eeebfc;
               }
-            }
-            .manage {
-              background: url("~images/manage_ico.svg") no-repeat left 18px
-                center / 24px 24px;
-            }
-            .delete {
-              background: url("~images/delete_ico.svg") no-repeat left 18px
-                center / 24px 24px;
             }
           }
         }
@@ -99,7 +100,7 @@ main {
           display: flex;
           justify-content: space-between;
         }
-        dl {
+        .bottom-dl {
           width: 100%;
           margin-bottom: 22px;
           dt,

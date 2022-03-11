@@ -26,10 +26,9 @@ const Project = () => {
             <div className="category">
                 <span className="main-category">프로젝트</span><b className="sub-category">프로젝트 목록</b>
             </div>
-
             <div className="top-menu">
                 {
-                    location.pathname == "/projects/list/my" && <div className="filter-wrap">
+                    <div className="filter-wrap" style={{ visibility: location.pathname == "/projects/list/my" ? 'visible' : 'hidden' }}>
                         <div className="filter-menu filter-menu1">
                             <span className="filter-title">등록 상태</span>
                             <div className="select-box-wrap">
