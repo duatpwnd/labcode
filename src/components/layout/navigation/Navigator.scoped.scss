@@ -5,6 +5,14 @@ nav {
   height: 100%;
   padding: 0 24px;
   box-sizing: border-box;
+  .sub-category {
+    li {
+      margin-top: 14px;
+      &:last-child {
+        margin-bottom: 14px;
+      }
+    }
+  }
 }
 @media all and (max-width: 1199px) {
   nav {

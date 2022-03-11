@@ -72,6 +72,8 @@ main {
         box-sizing: border-box;
         vertical-align: middle;
         color: #9ea7ad;
+        text-overflow: ellipsis;
+        overflow: hidden;
         &::placeholder {
           color: #9ea7ad;
         }

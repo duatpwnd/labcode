@@ -277,7 +277,7 @@ const Team = () => {
                     <div className="row">
                         <label htmlFor="apiSecret">Secret</label>
                         <div className="secret-area">
-                            <input type="text" readOnly defaultValue="asdkmjaslkdnasklndakljsndkljasndkjnaskdn" id="apiSecret" onChange={debounce((e) => notCheck(e), 500)} />
+                            <input type="text" readOnly defaultValue="asdkmjaslkdnasklndakljsndkljasndkjnaskdnasdkmjaslkdnasklndakljsndkljasndkjnaskdnasdkmjaslkdnasklndakljsndkljasndkjnaskdnasdkmjaslkdnasklndakljsndkljasndkjnaskdn" id="apiSecret" onChange={debounce((e) => notCheck(e), 500)} />
                             <CopyToClipboard text="asdkmjaslkdnasklndakljsndkljasndkjnaskdn">
                                 <button className="copy-btn" onClick={copy}></button>
                             </CopyToClipboard>

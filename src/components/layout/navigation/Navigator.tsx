@@ -29,7 +29,7 @@ const ChildNavLink = styled(NavLink)`
     color: #9EA7AD;
     box-sizing: border-box;
     display: block;
-    padding: 11px 0px 11px 90px;
+    padding: 5px 0px 5px 90px;
     font-size: 14px;
     font-weight: 700;
     &.active{
@@ -47,9 +47,9 @@ const Navigator = () => {
                 <li>
                     <ParentNavLink to="/dashboard" background="dashboard_ico.svg">대시보드</ParentNavLink>
                 </li>
-                <li>
+                <li className="main-category">
                     <ParentNavLink className={pathname.startsWith("/teams") && "active"} to={`/teams/list?currentPage=1&search=`} background="team_ico.svg">팀 정보</ParentNavLink>
-                    <ul>
+                    <ul className="sub-category">
                         <li>
                             <ChildNavLink className={pathname.startsWith(`/teams/detail`) && "active"} to={`/teams/detail/${userInfo?.user.teamId}`}>상세 정보</ChildNavLink>
                         </li>
@@ -59,9 +59,9 @@ const Navigator = () => {
 
                     </ul>
                 </li>
-                <li>
+                <li className="main-category">
                     <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true`} background="project_ico.svg">프로젝트</ParentNavLink>
-                    <ul>
+                    <ul className="sub-category">
                         <li>
                             <ChildNavLink className={pathname.includes(`/projects/edit`) && "active" || pathname.includes(`/projects/list`) && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true`}>프로젝트 목록</ChildNavLink>
                         </li>
