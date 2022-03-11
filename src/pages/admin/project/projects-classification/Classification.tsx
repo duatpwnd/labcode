@@ -66,7 +66,6 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
     const selectBoxStyle = {
         padding: '16px 0'
     }
-
     return (
         <section>
             <h2 className="h3-title">프로젝트 분류</h2>

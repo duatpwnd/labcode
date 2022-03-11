@@ -183,7 +183,6 @@ const ProjectDetail = () => {
                 {/* 내부용 프로젝트 분류 */}
                 {
                     isAdmin && <Classification inputs={inputs} eventHandler={onChange} />
-
                 }
                 {/* 외부용 프로젝트 분류 */}
                 <section className="section1">

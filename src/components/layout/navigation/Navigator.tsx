@@ -5,17 +5,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 const ParentNavLink = styled(NavLink)`
     width: 100%;
-    padding: 25px 35px 25px 58px;
+    padding: 21px 35px 21px 64px;
     box-sizing: border-box;
     display: block;
     font-weight: 700;
     color: #9EA7AD;
     font-size: 18px;
-    background: url(${props => require("images/" + props.background).default}) no-repeat left 19px top 20px/ 24px 24px;
+    background: url(${props => require("images/" + props.background).default}) no-repeat left 19px top 17px/ 24px 24px;
     &.active{
         color: black;
         border-radius: 12px;
-        background: url(${props => require("images/active_" + props.background).default}) #F6F7F8 no-repeat left 19px top 20px/ 24px 24px;
+        background: url(${props => require("images/active_" + props.background).default}) #F6F7F8 no-repeat left 19px top 17px/ 24px 24px;
     }
     @media all and (max-width: 1199px) {
         background: unset;
@@ -29,7 +29,7 @@ const ChildNavLink = styled(NavLink)`
     color: #9EA7AD;
     box-sizing: border-box;
     display: block;
-    padding: 18px 0px 18px 80px;
+    padding: 11px 0px 11px 90px;
     font-size: 14px;
     font-weight: 700;
     &.active{

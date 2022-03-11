@@ -1,5 +1,7 @@
 import axios from "axios";
 import apiUrl from "src/utils/api";
+import "./Team.scoped.scss"
+import toast from 'react-hot-toast';
 import { useEffect, useState, useMemo } from "react"
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
@@ -7,7 +9,7 @@ import _ from 'lodash'
 import {
     useLocation
 } from "react-router-dom";
-import "./Team.scoped.scss"
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { checkCorporateRegistrationNumber, homePageReg, phoneReg, emailReg } from 'src/utils/common';
 import ConfirmModal from "src/components/common/confirm-modal/ConfirmModal";
 const debounce = _.debounce;
@@ -177,6 +179,10 @@ const Team = () => {
         setActiveCancelApplyModal(false);
         navigate(-1);
     }
+    const copy = () => {
+        toast.dismiss();
+        toast.success('복사되었습니다.')
+    }
     useEffect(() => {
         // 수정페이지만 조회
         if (pathname != "/teams/create") {
@@ -192,7 +198,7 @@ const Team = () => {
                 isActiveCancelApplyModal && <ConfirmModal title="신청 취소" contents="취소하시겠습니까?" cancelEvent={() => setActiveCancelApplyModal(false)} okEvent={ok} />
             }
             <main>
-                <h2 className="h2-title">{pathname == "/teams/create" ? "신청하기" : "정보 입력"}</h2>
+                <h2 className="h2-title">{pathname == "/teams/create" ? "신청하기" : "상세 정보"}</h2>
                 {pathname != "/teams/create" && <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>}
                 <section className="section1">
                     <h3 className="h3-title">회사 정보</ h3>
@@ -258,6 +264,24 @@ const Team = () => {
                         <label htmlFor="managerEmail">이메일</label>
                         <input type="text" placeholder="이메일 입력" defaultValue={inputs.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
                         <p className="warn-message">{emailMsg}</p>
+                    </div>
+                    <div className="row">
+                        <label htmlFor="apiKey">Key</label>
+                        <div className="key-area">
+                            <input type="text" readOnly defaultValue="asdkmjaslkdnasklndakljsndkljasndkjnaskdn" id="apiKey" onChange={debounce((e) => notCheck(e), 500)} />
+                            <CopyToClipboard text="asdkmjaslkdnasklndakljsndkljasndkjnaskdn">
+                                <button className="copy-btn" onClick={copy}></button>
+                            </CopyToClipboard>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <label htmlFor="apiSecret">Secret</label>
+                        <div className="secret-area">
+                            <input type="text" readOnly defaultValue="asdkmjaslkdnasklndakljsndkljasndkjnaskdn" id="apiSecret" onChange={debounce((e) => notCheck(e), 500)} />
+                            <CopyToClipboard text="asdkmjaslkdnasklndakljsndkljasndkjnaskdn">
+                                <button className="copy-btn" onClick={copy}></button>
+                            </CopyToClipboard>
+                        </div>
                     </div>
                     {/* 팀생성일때만 존재 */}
                     {

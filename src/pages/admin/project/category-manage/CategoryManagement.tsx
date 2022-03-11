@@ -3,6 +3,7 @@ import _ from 'lodash'
 import "./CategoryManagement.scoped.scss"
 import { useEffect, useState } from "react";
 import { RootState } from "src/reducers";
+import toast from 'react-hot-toast';
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import SelectBox from "src/components/common/base-select/SelectBox";
@@ -23,9 +24,12 @@ const ToggleList = ({ mainCategories, getCategories }) => {
     const debounce = _.debounce;
     // 소분류 추가
     const addSubCategories = ({ mainCategoryId }) => {
+        toast.dismiss();
         createSubCategories({ mainCategoryId }).then((result) => {
             getCategories(currentPage);
             setInput(result.id);
+        }).catch((err) => {
+            toast.error("소분류를 더이상 추가 할 수 없습니다.")
         })
     }
     // 소분류 삭제
@@ -152,7 +156,7 @@ const CategoryManagement = () => {
         }
     }
     const onKeyPress = (e) => {
-        console.log(inputs);
+        console.log(inputs, data.length);
         if (e.key == "Enter") {
             createMainCategories({ teamId: inputs.teamId, title: title, order: data.length + 1, industryId: inputs.industryId }, false)
         }

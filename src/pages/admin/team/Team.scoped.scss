@@ -71,6 +71,7 @@ main {
         padding: 15px 16px;
         box-sizing: border-box;
         vertical-align: middle;
+        color: #9ea7ad;
         &::placeholder {
           color: #9ea7ad;
         }
@@ -128,6 +129,25 @@ main {
         margin-top: 10px;
         margin-left: 180px;
       }
+      .key-area,
+      .secret-area {
+        background: #f6f7f8;
+        border-radius: 8px;
+        display: inline-block;
+        width: calc(100% - 180px);
+        box-sizing: border-box;
+        input {
+          width: calc(100% - 44px);
+        }
+        .copy-btn {
+          width: 36px;
+          height: 36px;
+          margin-right: 8px;
+          vertical-align: middle;
+          background: url("~images/copy_ico.svg") no-repeat center center / 36px
+            36px;
+        }
+      }
     }
   }
   section {
@@ -171,7 +191,9 @@ main {
     section {
       .row {
         input,
-        .business-image-area {
+        .business-image-area,
+        .key-area,
+        .secret-area {
           width: 100%;
           margin-top: 10px;
           .attach {
