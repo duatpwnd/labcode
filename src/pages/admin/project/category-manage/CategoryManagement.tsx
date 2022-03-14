@@ -79,7 +79,7 @@ const ToggleList = ({ mainCategories, getCategories }) => {
                 <div className="sub-categories-wrap">
                     {
 
-                        mainCategories.subCategories.map((subCategories, index) => {
+                        mainCategories.subCategories.sort((a, b) => a.order > b.order ? 1 : -1).map((subCategories, index) => {
                             return (
                                 //  소분류
                                 <div className="sub-category-list" key={subCategories.id}>
@@ -158,7 +158,7 @@ const CategoryManagement = () => {
     const onKeyPress = (e) => {
         console.log(inputs, data.length);
         if (e.key == "Enter") {
-            createMainCategories({ teamId: inputs.teamId, title: title, order: data.length + 1, industryId: inputs.industryId }, false)
+            createMainCategories({ teamId: inputs.teamId, title: title, industryId: inputs.industryId }, false)
         }
     }
     // 대분류 & 소분류 조회
@@ -236,7 +236,7 @@ const CategoryManagement = () => {
                     </div>
                     {
                         data &&
-                        data.map((mainCategories, index) => {
+                        data.sort((a, b) => a.order > b.order ? 1 : -1).map((mainCategories, index) => {
                             return (
                                 <ToggleList key={index} mainCategories={mainCategories} getCategories={getCategories} />
                             )
@@ -247,7 +247,7 @@ const CategoryManagement = () => {
                         addCategoryInput && <div className="main-category-input-area">
                             <span className="arrow-ico"></span>
                             <input type="text" value={title} autoFocus className="main-category-input" onKeyPress={onKeyPress} onChange={(e) => onChange(e)} />
-                            <button className="btn add-btn" onClick={() => createMainCategories({ teamId: inputs.teamId, title: title, order: data.length + 1, industryId: inputs.industryId }, true)}>추가</button>
+                            <button className="btn add-btn" onClick={() => createMainCategories({ teamId: inputs.teamId, title: title, industryId: inputs.industryId }, true)}>추가</button>
                             <button className="btn" onClick={(e) => {
                                 setCategoryInput(false)
                             }}>삭제</button>

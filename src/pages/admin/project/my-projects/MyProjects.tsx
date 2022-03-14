@@ -28,6 +28,8 @@ const MyProjects = () => {
     const currentPage = searchParams.get('currentPage');
     const isActive = searchParams.get('isActive');
     const search = searchParams.get('search');
+    const teamId = searchParams.get('teamId');
+    const teamTitle = searchParams.get('teamTitle');
     const deleteProject = (id) => {
         console.log(id);
         toast.dismiss();
@@ -75,10 +77,10 @@ const MyProjects = () => {
     const getProjectList = (page, search, isActive) => {
         toast.dismiss();
         history.push({
-            search: `?currentPage=${page}&search=${search}&isActive=${isActive}`,
+            search: `?currentPage=${page}&search=${search}&isActive=${isActive}&teamId=${teamId}&teamTitle=${teamTitle}`,
         });
         axios
-            .get(apiUrl.project + `?search=${search}&page=${page}&isActive=${isActive}&limit=16`)
+            .get(apiUrl.project + `?search=${search}&page=${page}&isActive=${isActive}&limit=16&teamId=${teamId}&teamTitle=${teamTitle}`)
             .then((result: any) => {
                 console.log('프로젝트리스트:', result);
                 if (result.data.data.length == 0) {

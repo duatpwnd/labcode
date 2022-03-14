@@ -90,10 +90,10 @@ const Product = () => {
             <div className="nav-area">
                 <strong className="project-title">{product && product.title}</strong>
                 <div className="btn-wrap">
-                    {
+                    {/* {
                         projectId != "" && <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61" onClick={addSamples}>샘플 데이터 추가</Btn>
 
-                    }
+                    } */}
                     <Btn background="#5138E5" color="#FFFFFF" onClick={() => navigate(`/products/create/defaultInfo?projectId=${projectId}`)}>제품 등록</Btn>
                 </div>
             </div>
@@ -140,7 +140,7 @@ const Product = () => {
                                     </td>
                                     <td>{products.title}</td>
                                     <td>{products.description}</td>
-                                    <td><a href={products.sourceImage} download><img src={products.sourceImage} className="sourceImage" /></a><span className="convert-ico"></span><img src={products.labcodeImage} className="labcodeImage" /></td>
+                                    <td><a href={products.sourceImage} download><img src={products.sourceImage} className="sourceImage" /></a><span className="convert-ico"></span><a href={products.labcodeImage} download><img src={products.labcodeImage} className="labcodeImage" /></a></td>
                                     <td>{products.channel}</td>
                                     <td>{products.scale}</td>
                                     <td>{products.alpha}</td>

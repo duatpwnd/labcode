@@ -60,10 +60,10 @@ const Navigator = () => {
                     </ul>
                 </li>
                 <li className="main-category">
-                    <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true`} background="project_ico.svg">프로젝트</ParentNavLink>
+                    <ParentNavLink className={pathname.startsWith("/projects") && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true&teamId=`} background="project_ico.svg">프로젝트</ParentNavLink>
                     <ul className="sub-category">
                         <li>
-                            <ChildNavLink className={pathname.includes(`/projects/edit`) && "active" || pathname.includes(`/projects/list`) && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true`}>프로젝트 목록</ChildNavLink>
+                            <ChildNavLink className={pathname.includes(`/projects/edit`) && "active" || pathname.includes(`/projects/list`) && "active"} to={`/projects/list/my?currentPage=1&search=&isActive=true&teamId=`}>프로젝트 목록</ChildNavLink>
                         </li>
                         <li>
                             <ChildNavLink to={`/projects/create`}>프로젝트 등록</ChildNavLink>

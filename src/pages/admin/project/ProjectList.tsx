@@ -12,6 +12,7 @@ const Project = () => {
     const queryParams = qs.parse(location.search);
     const searchParams = new URLSearchParams(location.search);
     const isActive = searchParams.get('isActive');
+    const teamTitle = searchParams.get('teamTitle');
     const changeUrlQuery = (value) => {
         const newQueries = { ...queryParams, "isActive": value };
         history.push({ search: qs.stringify(newQueries) });
@@ -22,9 +23,9 @@ const Project = () => {
     return (
         <div className="wrap">
 
-            <SearchInput placeholder="원하는 프로젝트를 검색해보세요." />
+            <SearchInput placeholder={location.pathname == "/projects/list/my" ? "원하는 프로젝트를 검색해보세요." : "원하는 팀을 검색해보세요."} />
             <div className="category">
-                <span className="main-category">프로젝트</span><b className="sub-category">프로젝트 목록</b>
+                <span className="main-category">프로젝트</span><b className="sub-category">{location.pathname == "/projects/list/my" ? "프로젝트 목록" : teamTitle || "팀별 프로젝트 목록"}</b>
             </div>
             <div className="top-menu">
                 {
