@@ -51,6 +51,18 @@ const TeamList = () => {
             {
                 data && data.length != 0 && <div className="team-list">
                     <table>
+                        <colgroup>
+                            <col width="140px" />
+                            <col width="140px" />
+                            <col width="140px" />
+                            <col width="149px" />
+                            <col width="168px" />
+                            <col width="144px" />
+                            <col width="236px" />
+                            <col width="140px" />
+                            <col width="154px" />
+                            <col width="87px" />
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>
