@@ -265,24 +265,30 @@ const Team = () => {
                         <input type="text" placeholder="이메일 입력" defaultValue={inputs.managerEmail} id="managerEmail" onChange={debounce((e) => emailValueCheck(e), 500)} />
                         <p className="warn-message">{emailMsg}</p>
                     </div>
-                    <div className="row">
-                        <label htmlFor="apiKey">Key</label>
-                        <div className="key-area">
-                            <input type="text" readOnly defaultValue="asdkmjaslkdnasklndakljsndkljasndkjnaskdn" id="apiKey" onChange={debounce((e) => notCheck(e), 500)} />
-                            <CopyToClipboard text="asdkmjaslkdnasklndakljsndkljasndkjnaskdn">
-                                <button className="copy-btn" onClick={copy}></button>
-                            </CopyToClipboard>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <label htmlFor="apiSecret">Secret</label>
-                        <div className="secret-area">
-                            <input type="text" readOnly defaultValue="asdkmjaslkdnasklndakljsndkljasndkjnaskdnasdkmjaslkdnasklndakljsndkljasndkjnaskdnasdkmjaslkdnasklndakljsndkljasndkjnaskdnasdkmjaslkdnasklndakljsndkljasndkjnaskdn" id="apiSecret" onChange={debounce((e) => notCheck(e), 500)} />
-                            <CopyToClipboard text="asdkmjaslkdnasklndakljsndkljasndkjnaskdn">
-                                <button className="copy-btn" onClick={copy}></button>
-                            </CopyToClipboard>
-                        </div>
-                    </div>
+                    {
+
+                        pathname != "/teams/create" &&
+                        <>
+                            <div className="row">
+                                <label htmlFor="apiKey">Key</label>
+                                <div className="key-area">
+                                    <input type="text" readOnly defaultValue={inputs.apiKey} id="apiKey" onChange={debounce((e) => notCheck(e), 500)} />
+                                    <CopyToClipboard text={inputs.apiKey}>
+                                        <button className="copy-btn" onClick={copy}></button>
+                                    </CopyToClipboard>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <label htmlFor="apiSecret">Secret</label>
+                                <div className="secret-area">
+                                    <input type="text" readOnly defaultValue={inputs.apiSecret} id="apiSecret" onChange={debounce((e) => notCheck(e), 500)} />
+                                    <CopyToClipboard text={inputs.apiSecret}>
+                                        <button className="copy-btn" onClick={copy}></button>
+                                    </CopyToClipboard>
+                                </div>
+                            </div>
+                        </>
+                    }
                     {/* 팀생성일때만 존재 */}
                     {
                         pathname == "/teams/create" &&
