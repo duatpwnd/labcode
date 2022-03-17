@@ -17,12 +17,15 @@ const debounce = _.debounce;
 const Team = () => {
     const [isActiveCancelApplyModal, setActiveCancelApplyModal] = useState(false); // 신청 취소 모달
     const [isActiveApplyModal, setActiveApplyModal] = useState(false); // 신청 모달
-    const [inputs, setInputs] = useState<{ [key: string]: any }>({}); // 기본값
+    const [inputs, setInputs] = useState<{ [key: string]: any }>({
+        businessNumber: ""
+    }); // 기본값
     const [numberMsg, setNumberMsg] = useState(""); // 사업자 등록번호 유효성 메세지
     const [link, setLinkMsg] = useState(""); // 홈페이지 주소 유효성 메세지
-    const [businessImage, setBusinessImage] = useState(""); // 사업자 등록증 유효성 메세지
-    const [isActiveImageModal, setActiveImageModal] = useState(false);
-    const [fileLink, setFileLink] = useState("");
+    const [isActiveImageModal1, setActiveImageModal1] = useState(false); // 사업자 등록증 이미지 모달
+    const [isActiveImageModal2, setActiveImageModal2] = useState(false); // 팀 로고 이미지 모달
+    const [fileLink1, setFileLink1] = useState(""); // 사업자 등록증 이미지
+    const [fileLink2, setFileLink2] = useState(""); // 로고 이미지
     const [phoneMsg, setPhoneMsg] = useState(""); // 연락처 유효성 메세지
     const [emailMsg, setEmailMsg] = useState(""); // 이메일 유효성 메세지
     const { pathname } = useLocation();
@@ -58,6 +61,7 @@ const Team = () => {
         if (homepageCheck == false) {
             setLinkMsg("올바른 주소가 아닙니다.")
         }
+        console.log(inputs);
         if (phoneCheck && emailCheck && inputs.businessNumber.trim().length == 0 && homepageCheck) {
             toast.dismiss();
             const formData = new FormData();
@@ -141,19 +145,22 @@ const Team = () => {
         }
     }
     const notCheck = (e) => {
-        let data = { ...inputs, [e.target.id]: e.target.id == "businessImage" ? e.target.files[0] : e.target.value }
-        if (e.target.id == "businessImageUrl") {
+        let data = { ...inputs, [e.target.id]: e.target.id == "businessImage" || e.target.id == "logoImage" ? e.target.files[0] : e.target.value }
+        // 이미지 삭제
+        if (e.target.id == "businessImageUrl" || e.target.id == "logoImageUrl") {
             data = {
                 ...data,
-                businessImage: null
+                [e.target.id.slice(0, e.target.id.length - 3)]: null
             }
+            console.log(data);
         }
         if (e.target.id == "businessImage" && e.target.files[0] != "") {
-            setBusinessImage("");
-            setFileLink(URL.createObjectURL(e.target.files[0]))
+            setFileLink1(URL.createObjectURL(e.target.files[0]))
+        }
+        if (e.target.id == "logoImage" && e.target.files[0] != "") {
+            setFileLink2(URL.createObjectURL(e.target.files[0]))
         }
         setInputs(data);
-
         if (pathname != "/teams/create") {
             modify(data, params.teamId)
         }
@@ -210,11 +217,11 @@ const Team = () => {
                     </div>
                     <div className="row">
                         {
-                            isActiveImageModal && <>
-                                <div className="mask" onClick={() => setActiveImageModal(false)}>
+                            isActiveImageModal1 && <>
+                                <div className="mask" onClick={() => setActiveImageModal1(false)}>
                                 </div>
                                 {
-                                    fileCheck == "PDF" || fileCheck == "pdf" ? <embed src={fileLink || inputs.businessImage} width="90%" height="90%" /> : <img src={fileLink || inputs.businessImage} className="image-modal" />
+                                    fileCheck == "PDF" || fileCheck == "pdf" ? <embed src={fileLink1 || inputs.businessImage} width="90%" height="90%" /> : <img src={fileLink1 || inputs.businessImage} className="image-modal" />
 
                                 }
                             </>
@@ -225,7 +232,7 @@ const Team = () => {
                         <div className="business-image-area">
                             <div className="attach">
                                 {
-                                    inputs.businessImage == null || inputs.businessImage == "" ? <span className="input-file" >사업자등록증 첨부</span> : <span onClick={() => setActiveImageModal(true)} className="input-file" >{inputs.businessImage.name || inputs.businessImageTitle + " (" + inputs.businessImageSize + ")"}</span>
+                                    inputs.businessImage == null || inputs.businessImage == "" ? <span className="input-file" >사업자등록증 첨부</span> : <span onClick={() => setActiveImageModal1(true)} className="input-file" >{inputs.businessImage.name || inputs.businessImageTitle + " (" + inputs.businessImageSize + ")"}</span>
 
                                 }
                                 <input type="file" defaultValue={inputs.businessImage} id="businessImage" onChange={(e) => notCheck(e)} />
@@ -236,9 +243,35 @@ const Team = () => {
                             </div>
                             <label htmlFor="businessImage" className="file">찾아보기</label>
                         </div>
-                        <p className="warn-message">{businessImage}</p>
                     </div>
+                    {/* 로고 이미지 :: S */}
+                    <div className="row">
+                        {
+                            isActiveImageModal2 &&
+                            <>
+                                <div className="mask" onClick={() => setActiveImageModal2(false)}>
+                                </div>
+                                <img src={fileLink2 || inputs.logoImage} className="image-modal" />
+                            </>
 
+                        }
+                        <label htmlFor="logoImage">로고 이미지
+                        </label>
+                        <div className="business-image-area">
+                            <div className="attach">
+                                {
+                                    inputs.logoImage == null || inputs.logoImage == "" ? <span className="input-file" >로고 이미지 첨부</span> : <span onClick={() => setActiveImageModal2(true)} className="input-file" >{inputs.logoImage.name || inputs.logoImageTitle + " (" + inputs.logoImageSize + ")"}</span>
+                                }
+                                <input type="file" defaultValue={inputs.logoImage} id="logoImage" onChange={(e) => notCheck(e)} />
+                                {
+                                    inputs.logoImage != null && inputs.logoImage != "" && <button className="delete-btn" onClick={() => { notCheck({ target: { id: "logoImageUrl", value: "" } }); }}></button>
+
+                                }
+                            </div>
+                            <label htmlFor="logoImage" className="file">찾아보기</label>
+                        </div>
+                    </div>
+                    {/* 로고 이미지 :: E */}
                     <div className="row">
                         <label htmlFor="homepage">홈페이지 주소</label>
                         <input type="text" placeholder="홈페이지 주소 입력" defaultValue={inputs.homepage} id="homepage" onChange={debounce((e) => homePageValueCheck(e), 500)} />
