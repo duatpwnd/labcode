@@ -61,8 +61,8 @@ const Team = () => {
         if (homepageCheck == false) {
             setLinkMsg("올바른 주소가 아닙니다.")
         }
-        console.log(inputs);
-        if (phoneCheck && emailCheck && inputs.businessNumber.trim().length == 0 && homepageCheck) {
+        console.log(inputs, inputs.businessNumber.trim().length);
+        if (phoneCheck && emailCheck && numberMsg == "" && homepageCheck) {
             toast.dismiss();
             const formData = new FormData();
             for (let key in inputs) {
@@ -126,7 +126,11 @@ const Team = () => {
             setNumberMsg("");
             modify(data, params.teamId)
         } else if (result == false) {
-            setNumberMsg("올바른 번호의 형식이 아닙니다.");
+            if (e.target.value.trim().length == 0) {
+                setNumberMsg("");
+            } else {
+                setNumberMsg("올바른 번호의 형식이 아닙니다.");
+            }
         } else {
             setNumberMsg("");
         }
