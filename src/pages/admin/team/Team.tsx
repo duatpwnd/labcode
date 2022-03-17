@@ -46,7 +46,6 @@ const Team = () => {
     }
     // 팀생성
     const createTeam = (inputs) => {
-        console.log(inputs);
         const phoneCheck = phoneReg.test(inputs.managerPhone)
         const emailCheck = emailReg.test(inputs.managerEmail)
         const homepageCheck = homePageReg.test(inputs.homepage);
@@ -60,15 +59,16 @@ const Team = () => {
             setLinkMsg("올바른 주소가 아닙니다.")
         }
         if (phoneCheck && emailCheck && inputs.businessNumber.trim().length == 0 && homepageCheck) {
+            toast.dismiss();
             const formData = new FormData();
             for (let key in inputs) {
                 formData.append(key, inputs[key as never]);
             }
-            console.log("팀생성:", inputs);
             axios
                 .post(apiUrl.team, formData)
                 .then((result: any) => {
                     console.log("팀생성결과:", result);
+                    toast.success('팀 신청이 완료되었습니다.')
                     navigate("/");
                 }).catch((err: any) => {
                     console.log('팀생성에러:', err);
