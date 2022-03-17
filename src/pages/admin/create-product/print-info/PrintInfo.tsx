@@ -117,7 +117,7 @@ const PrintInfo = () => {
                 </div>
                 <div className="btn-wrap">
                     <button className="cancel-btn" onClick={() => navigate(-1)}>취소</button>
-                    <button type="button" className="submit-btn" onClick={() => modify(inputs)}>수정</button>
+                    <button type="button" className="submit-btn" onClick={() => modify(inputs)}>저장</button>
                 </div>
             </div>
         </section>
