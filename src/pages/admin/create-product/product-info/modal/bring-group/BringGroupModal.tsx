@@ -82,7 +82,7 @@ const BringGroupModal = ({ setBringGroupModal, setProductList }) => {
     }
     // 제품 정보 그룹 조회
     const getProductInfoGroups = (search) => {
-        axios.get(apiUrl.productInfosGroups + `?page=1&search=${search}&productId=${params.productId}`).then((result) => {
+        axios.get(apiUrl.productInfosGroups + `?page=1&search=${search}&teamId=${params.teamId}`).then((result) => {
             console.log("제품정보그룹리스트:", result);
             setGroupList(result.data);
         })

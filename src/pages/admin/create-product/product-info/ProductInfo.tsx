@@ -225,7 +225,7 @@ const SearchBar = ({ searchProductList }) => {
             onClick={(e) => {
                 e.currentTarget.style.border = "1px solid #5138e5";
             }}>
-            <SearchInput defaultValue={keyword} placeholder="제품 검색"
+            <SearchInput defaultValue={keyword} placeholder="제목 검색"
 
                 onChange={debounce((e) => searchProductList(e.target.value), 300)}
             />

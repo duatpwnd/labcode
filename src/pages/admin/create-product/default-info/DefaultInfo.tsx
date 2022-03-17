@@ -171,7 +171,7 @@ const DefaultInfo = () => {
                 .then((result: any) => {
                     console.log("적용결과", result);
                     if (inputs.applyValue == "single") {
-                        navigate(`/products/edit/${result.data.data.id}/defaultInfo`)
+                        navigate(`/products/edit/${result.data.data.id}/${result.data.data.project.teamId}/defaultInfo`)
                     } else {
                         navigate(`/products/list?projectId=${projectId}&currentPage=1&search=`)
                     }
