@@ -49,7 +49,6 @@ const Team = () => {
         console.log(inputs);
         const phoneCheck = phoneReg.test(inputs.managerPhone)
         const emailCheck = emailReg.test(inputs.managerEmail)
-        const numberCheck = checkCorporateRegistrationNumber((inputs.businessNumber || "").replaceAll("-", ""))
         const homepageCheck = homePageReg.test(inputs.homepage);
         if (phoneCheck == false) {
             setPhoneMsg("올바른 번호의 형식이 아닙니다.");
@@ -57,13 +56,10 @@ const Team = () => {
         if (emailCheck == false) {
             setEmailMsg("올바른 형식의 이메일 주소가 아닙니다.");
         }
-        if (numberCheck == false) {
-            setNumberMsg("올바른 번호의 형식이 아닙니다.");
-        }
         if (homepageCheck == false) {
             setLinkMsg("올바른 주소가 아닙니다.")
         }
-        if (phoneCheck && emailCheck && numberCheck && homepageCheck) {
+        if (phoneCheck && emailCheck && inputs.businessNumber.trim().length == 0 && homepageCheck) {
             const formData = new FormData();
             for (let key in inputs) {
                 formData.append(key, inputs[key as never]);

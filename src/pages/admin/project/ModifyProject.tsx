@@ -21,7 +21,6 @@ const ProjectDetail = () => {
     const navigate = useNavigate();
     const [link, setLinkMsg] = useState(""); // 홈페이지 주소 유효성 메세지
     const [businessImage, setBusinessImage] = useState(""); // 사업자 등록증 유효성 메세지
-    const [isSelectTeam, setSelectTeam] = useState(""); // 팀 선택 여부
     const { pathname } = useLocation();
     const params = useParams();
     const debounce = _.debounce;
@@ -84,7 +83,7 @@ const ProjectDetail = () => {
             ...inputs,
             isActive: isAdmin
         }
-        console.log(body);
+        console.log(body, "관리자계졍인지?:", isAdmin);
         for (let key in body) {
             formData.append(key, body[key as never]);
         }
@@ -100,15 +99,6 @@ const ProjectDetail = () => {
             setLinkMsg("올바른 주소가 아닙니다.")
         } else {
             setLinkMsg("")
-        }
-        // 내부용일때
-        if (isAdmin) {
-            if (inputs.team?.id == null) {
-                setSelectTeam("팀을 선택해주세요.");
-                return false;
-            } else {
-                setSelectTeam("");
-            }
         }
         if (homepageCheck && inputs.bannerImage != null) {
             const callMyFunction = axios

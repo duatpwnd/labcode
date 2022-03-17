@@ -64,6 +64,7 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
         } else {
             body = { [e.target.id]: e.target.value }
         }
+        console.log("body", body);
         const formData = new FormData();
         for (let key in body) {
             formData.append(key, body[key as never]);
