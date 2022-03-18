@@ -52,6 +52,7 @@ export default function CreateRoutes() {
             </Route>
             {/* 제품 :: E */}
             <Route path="/inquiries/create" element={<Inquiries />}></Route>
+            <Route path='*' element={<Dashboard />} />
         </Routes>
 
     );
