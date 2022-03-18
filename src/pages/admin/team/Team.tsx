@@ -49,6 +49,22 @@ const Team = () => {
     }
     // 팀생성
     const createTeam = (inputs) => {
+        toast.dismiss();
+        const formData = new FormData();
+        for (let key in inputs) {
+            formData.append(key, inputs[key as never]);
+        }
+        axios
+            .post(apiUrl.team, formData)
+            .then((result: any) => {
+                console.log("팀생성결과:", result);
+                toast.success('팀 신청이 완료되었습니다.')
+                navigate("/");
+            }).catch((err: any) => {
+                console.log('팀생성에러:', err);
+            });
+    }
+    const validationCheck = () => {
         const phoneCheck = phoneReg.test(inputs.managerPhone)
         const emailCheck = emailReg.test(inputs.managerEmail)
         const homepageCheck = homePageReg.test(inputs.homepage);
@@ -61,24 +77,8 @@ const Team = () => {
         if (homepageCheck == false) {
             setLinkMsg("올바른 주소가 아닙니다.")
         }
-        console.log(inputs, inputs.businessNumber.trim().length);
         if (phoneCheck && emailCheck && numberMsg == "" && homepageCheck) {
-            toast.dismiss();
-            const formData = new FormData();
-            for (let key in inputs) {
-                formData.append(key, inputs[key as never]);
-            }
-            axios
-                .post(apiUrl.team, formData)
-                .then((result: any) => {
-                    console.log("팀생성결과:", result);
-                    toast.success('팀 신청이 완료되었습니다.')
-                    navigate("/");
-                }).catch((err: any) => {
-                    console.log('팀생성에러:', err);
-                });
-        } else {
-            setActiveApplyModal(false)
+            setActiveApplyModal(true);
         }
     }
     // 팀조회
@@ -335,7 +335,7 @@ const Team = () => {
                 {
                     pathname == "/teams/create" && <div className="btn-wrap">
                         <button type="button" className="cancel-btn" onClick={() => setActiveCancelApplyModal(true)}>취소</button>
-                        <button type="button" className="submit-btn" onClick={() => setActiveApplyModal(true)}>신청</button>
+                        <button type="button" className="submit-btn" onClick={validationCheck}>신청</button>
                     </div>
                 }
             </main>
