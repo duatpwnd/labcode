@@ -74,24 +74,21 @@ export const homePageRegExp = (data, property, stateHandler, validation) => {
 };
 // 사업자번호 정규식
 export const checkCorporateRegistrationNumber = (value) => {
-  console.log("value", value);
   const valueMap = value
     .replace(/-/gi, "")
     .split("")
     .map((item) => {
       return parseInt(item, 10);
     });
-  console.log(valueMap.length);
-  if (valueMap.length === 10) {
-    const multiply = new Array(1, 3, 7, 1, 3, 7, 1, 3, 5);
+  if (valueMap.length == 10) {
+    const multiply = [1, 3, 7, 1, 3, 7, 1, 3, 5];
     let checkSum = 0;
     for (let i = 0; i < multiply.length; ++i) {
       checkSum += multiply[i] * valueMap[i];
     }
     checkSum += parseInt(String((multiply[8] * valueMap[8]) / 10), 10);
-    return Math.floor(valueMap[9]) === 10 - (checkSum % 10);
+    return Math.floor(valueMap[9]) === (10 - (checkSum % 10)) % 10;
   }
-
   return false;
 };
 export const registerNumberRegExp = (

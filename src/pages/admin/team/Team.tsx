@@ -120,12 +120,14 @@ const Team = () => {
     };
     const businessNumberValueCheck = (e) => {
         const data = { ...inputs, [e.target.id]: e.target.value }
-        const result = checkCorporateRegistrationNumber(e.target.value.replaceAll("-", ""))
+        const result = checkCorporateRegistrationNumber(e.target.value.replace(/-/gi, ""))
+        console.log(result);
         setInputs(data);
         if (result && pathname != "/teams/create") {
             setNumberMsg("");
             modify(data, params.teamId)
         } else if (result == false) {
+            console.log(e.target.value, e.target.value.trim().length);
             if (e.target.value.trim().length == 0) {
                 setNumberMsg("");
             } else {
