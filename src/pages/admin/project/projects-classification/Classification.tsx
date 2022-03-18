@@ -122,7 +122,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
 
             }
             {
-                inputs.industryId != null && inputs.teamId != null && pathname.startsWith("/projects/manage") == false &&
+                inputs.industryId != null && inputs.teamId != null && inputs.versionId != "1" && pathname.startsWith("/projects/manage") == false &&
                 <div className="row">
                     <label htmlFor="mainCategoryId" >대분류</label>
                     <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
@@ -138,7 +138,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
                 </div>
             }
             {
-                inputs.mainCategoryId != null &&
+                inputs.mainCategoryId != null && inputs.versionId != "1" &&
                 <div className="row">
                     <label htmlFor="subCategoryId" >소분류</label>
                     <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
