@@ -124,11 +124,12 @@ const DefaultInfo = () => {
     };
     const modify = () => {
         console.log("modify", inputs);
+        toast.dismiss();
         const formData = new FormData();
         for (let key in inputs) {
             formData.append(key, inputs[key as never]);
         }
-        axios
+        const callMyFunction = axios
             .patch(apiUrl.products + `/${params.productId}`, formData)
             .then((result: any) => {
                 console.log("수정결과:", result);
@@ -136,6 +137,11 @@ const DefaultInfo = () => {
             }).catch((err: any) => {
                 console.log('수정에러:', err);
             });
+        toast.promise(callMyFunction, {
+            loading: "Loading...",
+            success: "제품이 수정되었습니다.",
+            error: "제품수정에 실패하였습니다.",
+        });
     }
     const apply = () => {
         console.log("inputs", inputs);
