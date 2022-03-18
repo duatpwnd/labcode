@@ -385,8 +385,13 @@ const DefaultInfo = () => {
                             <input type="radio" checked={inputs.applyValue.includes('single') ? true : false} id="single" value="single" name="apply-method"
                                 onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "single" }))} />
                             <label htmlFor="single"><span className="ball"></span><span className="title">단일 설정</span></label>
-                            <input type="radio" checked={inputs.applyValue.includes('multiple') ? true : false} id="multiple" value="multiple" name="apply-method" onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "multiple" }))} />
-                            <label htmlFor="multiple"><span className="ball"></span><span className="title">복수 설정</span></label>
+                            {
+                                pathname.startsWith("/products/create") && <>
+                                    <input type="radio" checked={inputs.applyValue.includes('multiple') ? true : false} id="multiple" value="multiple" name="apply-method" onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "multiple" }))} />
+                                    <label htmlFor="multiple"><span className="ball"></span><span className="title">복수 설정</span></label>
+
+                                </>
+                            }
                         </div>
                     </div>
 
