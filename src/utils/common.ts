@@ -61,7 +61,8 @@ export const phoneRegExp = (data, property, stateHandler, validation) => {
   }
 };
 // 홈페이지 정규식
-export const homePageReg = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/;
+export const homePageReg =
+  /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 export const homePageRegExp = (data, property, stateHandler, validation) => {
   stateHandler(data);
   if (homePageReg.test(data[property]) == false) {

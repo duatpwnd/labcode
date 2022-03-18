@@ -122,7 +122,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
 
             }
             {
-                inputs.industryId != null && inputs.teamId != null &&
+                inputs.industryId != null && inputs.teamId != null && pathname.startsWith("/projects/manage") == false &&
                 <div className="row">
                     <label htmlFor="mainCategoryId" >대분류</label>
                     <div className="select-box-wrap" style={isActive == false ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
