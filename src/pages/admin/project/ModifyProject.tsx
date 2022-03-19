@@ -147,7 +147,7 @@ const ProjectDetail = () => {
             setInputs({
                 versionId: 1,
                 countryId: 1,
-                title: null,
+                title: "",
                 teamId: null,
                 team: {
                     id: null,
