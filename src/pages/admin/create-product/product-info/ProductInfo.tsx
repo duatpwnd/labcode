@@ -64,7 +64,7 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
         } else {
             body = { [e.target.id]: e.target.value }
         }
-        console.log("body", body);
+        console.log("body", body, id);
         const formData = new FormData();
         for (let key in body) {
             formData.append(key, body[key as never]);
@@ -91,6 +91,7 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
     // 제품정보삭제
     const deleteProductInfos = (id) => {
         axios.delete(apiUrl.productInfos + `/${id}`).then((result) => {
+            console.log('삭제결과', result);
             const filter = data.filter((el) => {
                 return el.id != id
             })
@@ -187,10 +188,13 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                                                         list.imageTitle == null ? <span className="input-file" >이미지 첨부</span>
                                                                             : <span className="input-file" >{list.imageTitle + " (" + list.imageSize + ")"}</span>
                                                                     }
-                                                                    <input type="file" disabled={type == "modal"} id="image" onChange={(e) => modifyProductInfos({ target: { id: "image", value: (e.target as { [key: string]: any }).files[0] } }, list.id
-                                                                    )} />
+                                                                    <input type="file" disabled={type == "modal"} id={'image' + index} onChange={(e) =>
+                                                                        modifyProductInfos(
+                                                                            { target: { id: "image", value: (e.target as { [key: string]: any }).files[0] } }, list.id
+                                                                        )
+                                                                    } />
                                                                 </div>
-                                                                <label htmlFor="image" className="file">찾아보기</label>
+                                                                <label htmlFor={'image' + index} className="file">찾아보기</label>
                                                             </>
                                                         }
                                                     })()
