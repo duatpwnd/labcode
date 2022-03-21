@@ -3,6 +3,13 @@ import "./Navigator.scoped.scss"
 import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
+import { useEffect } from "react";
+import InActiveDashBoardIco from "images/dashboard_ico.svg"
+import ActiveDashBoardIco from "images/active_dashboard_ico.svg"
+import InActiveTeamIco from "images/team_ico.svg"
+import ActiveTeamIco from "images/active_team_ico.svg"
+import InActiveProjectIco from "images/project_ico.svg"
+import ActiveProjectIco from "images/active_project_ico.svg"
 const ParentNavLink = styled(NavLink)`
     width: 100%;
     padding: 21px 35px 21px 64px;
@@ -41,6 +48,13 @@ const Navigator = () => {
         return state.signIn.userInfo
     })
     const { pathname } = useLocation();
+    useEffect(() => {
+        const images = [InActiveDashBoardIco, ActiveDashBoardIco, InActiveTeamIco, ActiveTeamIco, InActiveProjectIco, ActiveProjectIco]
+        images.map(image => {
+            const img = new Image();
+            img.src = image;
+        })
+    }, [])
     return (
         <nav>
             <ul>
