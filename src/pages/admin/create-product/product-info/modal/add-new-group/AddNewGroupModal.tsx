@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import { ProductList } from "../../ProductInfo";
+import "images/checkbox_ico_off.svg"
+import "images/checkbox_ico_on.svg"
 // 전체 체크 박스
 const AllCheckbox = ({ data, checked, setChecked }) => {
     const allCheck = (e) => {

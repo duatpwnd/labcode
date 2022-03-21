@@ -95,9 +95,6 @@
       display: none;
     }
     input[type="checkbox"] + label {
-      -webkit-backface-visibility: hidden;
-      -moz-backface-visibility: hidden;
-      -ms-backface-visibility: hidden;
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -108,9 +105,6 @@
       vertical-align: middle;
     }
     input[type="checkbox"]:checked + label {
-      -webkit-backface-visibility: hidden;
-      -moz-backface-visibility: hidden;
-      -ms-backface-visibility: hidden;
       background: url("~images/checkbox_ico_on.svg") no-repeat center center /
         100%;
     }
