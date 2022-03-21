@@ -30,7 +30,7 @@ const ProjectDetail = () => {
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
-    }, 500);
+    }, 200);
     const onChange = (e: { [key: string]: any }) => {
         if (pathname == "/projects/create") {
             if (e.target == undefined) {
@@ -52,8 +52,6 @@ const ProjectDetail = () => {
                 }
             }
         } else {
-            toast.dismiss();
-            toast.loading('Waiting...');
             let data;
             if (e.target.id == "team") {
                 data = {
@@ -127,20 +125,34 @@ const ProjectDetail = () => {
             });
     }
     const modify = (body) => {
+        toast.dismiss();
         const formData = new FormData();
         for (let key in body) {
             formData.append(key, body[key as never]);
         }
-        console.log(body);
-        axios
+        if (body.homepage != undefined) {
+            const homepageCheck = homePageReg.test(body.homepage);
+            // 외부용 내부용일때 공통
+            if (homepageCheck == false) {
+                setLinkMsg("올바른 주소가 아닙니다.");
+                return false;
+            } else {
+                setLinkMsg("")
+            }
+        }
+        const callMyFunction = axios
             .patch(apiUrl.project + `/${params.projectId}`, formData)
             .then((result: any) => {
                 console.log("프로젝트수정결과:", result);
-                toast.dismiss();
                 getProject();
             }).catch((err: any) => {
                 console.log('프로젝트수정에러:', err);
             });
+        toast.promise(callMyFunction, {
+            loading: "Loading...",
+            success: "프로젝트가 수정되었습니다.",
+            error: "프로젝트 수정에 실패하였습니다.",
+        });
     }
     useEffect(() => {
         if (pathname == "/projects/create") {
