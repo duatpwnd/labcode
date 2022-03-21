@@ -146,3 +146,9 @@ export const elementScrollDetect = (element, stateHandler, getList) => {
     });
   }
 };
+export const preloadImg = (images) => {
+  images.map((image) => {
+    const img = new Image();
+    img.src = image;
+  });
+};
