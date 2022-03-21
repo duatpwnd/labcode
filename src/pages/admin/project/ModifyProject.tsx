@@ -30,7 +30,7 @@ const ProjectDetail = () => {
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
-    }, 200);
+    }, 500);
     const onChange = (e: { [key: string]: any }) => {
         if (pathname == "/projects/create") {
             if (e.target == undefined) {
