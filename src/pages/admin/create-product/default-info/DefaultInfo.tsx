@@ -129,14 +129,19 @@ const DefaultInfo = () => {
         for (let key in inputs) {
             formData.append(key, inputs[key as never]);
         }
+        const homepageCheck = homePageReg.test(inputs.url);
+        if (homepageCheck == false) {
+            setLinkMsg("올바른 주소가 아닙니다.")
+            return false;
+        } else {
+            setLinkMsg("")
+        }
         const callMyFunction = axios
             .patch(apiUrl.products + `/${params.productId}`, formData)
             .then((result: any) => {
                 console.log("수정결과:", result);
                 getProductDetail()
-            }).catch((err: any) => {
-                console.log('수정에러:', err);
-            });
+            })
         toast.promise(callMyFunction, {
             loading: "Loading...",
             success: "제품이 수정되었습니다.",
