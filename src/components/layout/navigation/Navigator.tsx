@@ -4,6 +4,9 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 const ParentNavLink = styled(NavLink)`
+-webkit-backface-visibility: hidden;
+-moz-backface-visibility:    hidden;
+-ms-backface-visibility:     hidden;
     width: 100%;
     padding: 21px 35px 21px 64px;
     box-sizing: border-box;
