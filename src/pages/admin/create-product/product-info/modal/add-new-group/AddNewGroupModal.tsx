@@ -3,13 +3,13 @@ import _ from 'lodash';
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import toast from 'react-hot-toast';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import { ProductList } from "../../ProductInfo";
-import "images/checkbox_ico_off.svg"
-import "images/checkbox_ico_on.svg"
+import CheckBoxOnIco from "images/checkbox_ico_on.svg"
+import CheckBoxOffIco from "images/checkbox_ico_off.svg"
 // 전체 체크 박스
 const AllCheckbox = ({ data, checked, setChecked }) => {
     const allCheck = (e) => {
@@ -90,6 +90,13 @@ const AddNewGroupModal = ({ data, SearchBar, setPage, closeModal }) => {
             setPage(prevState => prevState + 1)
         }
     }
+    useEffect(() => {
+        const images = [CheckBoxOnIco, CheckBoxOffIco]
+        images.map(image => {
+            const img = new Image();
+            img.src = image;
+        })
+    }, [])
     return (
         <>
             <div className="mask"></div>
