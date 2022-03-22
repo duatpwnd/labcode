@@ -8,7 +8,10 @@ const ConfirmModal = ({ title, contents, cancelEvent, okEvent }: any) => {
                 <h2 className="h2-title">{title}</h2>
                 <p className="contents">{contents}</p>
                 <div className="btn-wrap">
-                    <button className="cancel-btn" onClick={() => cancelEvent()}>취소</button>
+                    {
+                        cancelEvent && <button className="cancel-btn" onClick={() => cancelEvent()}>취소</button>
+
+                    }
                     <button className="confirm-btn" onClick={() => { okEvent(); }}>확인</button>
                 </div>
             </div>

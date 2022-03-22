@@ -19,7 +19,7 @@ const AllCheckbox = ({ data, checked, setChecked }) => {
         }
     }
     return (
-        <th>
+        <th className="check-box-th">
             <input type="checkbox" id="allCheck" checked={data && data.length == checked.length ? true : false} onChange={(e) => allCheck(e)} />
             <label htmlFor="allCheck"></label>
         </th>

@@ -33,7 +33,7 @@
       font-size: 44px;
     }
     .guide-message {
-      margin-top: 8px;
+      margin-top: 12px;
       color: #9ea7ad;
     }
   }
@@ -86,6 +86,19 @@
       color: #9ea7ad;
       font-size: 14px;
       padding: 18px 24px;
+    }
+    .check-box-th {
+      position: relative;
+      &:after {
+        content: "|";
+        color: #e6e8eb;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        height: 12px;
+      }
     }
     td {
       background-color: white;

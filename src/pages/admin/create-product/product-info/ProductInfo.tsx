@@ -10,7 +10,6 @@ import AddNewGroupModal from "./modal/add-new-group/AddNewGroupModal";
 import "./ProductInfo.scoped.scss"
 import _ from 'lodash';
 import SelectBox from "src/components/common/base-select/SelectBox";
-
 import history from "src/utils/history";
 const debounce = _.debounce;
 const DatePickerWrapperStyles = createGlobalStyle`
@@ -119,19 +118,18 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                 {
                                     AllCheckbox && React.cloneElement(AllCheckbox)
                                 }
-                                <th>
+                                <th className="title-th">
                                     제목
                                 </th>
-                                <th>
+                                <th className="type-th">
                                     타입
                                 </th>
-                                <th>
+                                <th className={type == "modal" ? "" : "value-th"}>
                                     값
                                 </th>
                                 {
                                     type != "modal" && <th>
                                     </th>
-
                                 }
                             </tr>
                         </thead>

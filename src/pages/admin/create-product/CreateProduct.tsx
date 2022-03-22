@@ -2,10 +2,11 @@ import { Outlet, NavLink, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import "./CreateProduct.scoped.scss"
+import { useEffect } from "react";
 const CreateProduct = () => {
     const location = useLocation();
     const params = useParams();
-    const split = location.pathname.split(`/projects/${params.projectId}/products/${params.productId}/`)
+    const split = location.pathname.split(`/products/edit/${params.productId}/${params.teamId}/`)
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
     })

@@ -28,10 +28,11 @@
     color: #79828a;
   }
   .btn-wrap {
+    column-gap: 12px;
     display: flex;
     justify-content: space-between;
     button {
-      width: 48%;
+      width: 100%;
       font-size: 18px;
       font-weight: 700;
       padding: 21px 0;

@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import { createGlobalStyle } from 'styled-components';
+import ConfirmModal from "src/components/common/confirm-modal/ConfirmModal";
 import toast from 'react-hot-toast';
 const DatePickerWrapperStyles = createGlobalStyle`
     .react-datepicker-wrapper{
@@ -30,6 +31,7 @@ const DatePickerWrapperStyles = createGlobalStyle`
 `;
 const PrintInfo = () => {
     const navigate = useNavigate();
+    const [isSavePrintInfo, setSavePrintInfo] = useState(false);
     const [printInfos, setPrintInfos] = useState<{ [key: string]: any }>({});
     const params = useParams();
     const [inputs, setInputs] = useState({
@@ -64,6 +66,7 @@ const PrintInfo = () => {
         if (result) {
             axios.patch(apiUrl.products + `/${params.productId}/product-print-infos`, data).then((result) => {
                 console.log("인쇄수정결과:", result);
+                setSavePrintInfo(true);
             })
         } else {
             toast.error("인쇄 차수는 숫자만 입력가능합니다.")
@@ -73,8 +76,10 @@ const PrintInfo = () => {
         getPrintInfos();
     }, [])
     return (
-
         <section>
+            {
+                isSavePrintInfo && <ConfirmModal title="저장 완료" contents="정보 저장이 완료되었습니다." okEvent={() => setSavePrintInfo(false)} />
+            }
             <h3 className="h3-title">인쇄 정보</h3>
             <div className="form">
                 <div className="row">
