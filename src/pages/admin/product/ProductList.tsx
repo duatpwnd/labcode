@@ -140,12 +140,12 @@ const Product = () => {
                                     </td>
                                     <td>{products.title}</td>
                                     <td>{products.description}</td>
-                                    <td><a href={products.sourceImage} download><img src={products.sourceImage} className="sourceImage" /></a><span className="convert-ico"></span><a href={products.labcodeImage} download><img src={products.labcodeImage} className="labcodeImage" /></a></td>
+                                    <td onClick={(e) => { e.stopPropagation(); }}><a href={products.sourceImage} download ><img src={products.sourceImage} className="sourceImage" /></a><span className="convert-ico"></span><a href={products.labcodeImage} download><img src={products.labcodeImage} className="labcodeImage" /></a></td>
                                     <td>{products.channel}</td>
                                     <td>{products.scale}</td>
                                     <td>{products.alpha}</td>
                                     <td>{products.created.split("T")[0]}</td>
-                                    <td>{products.url}</td>
+                                    <td onClick={(e) => { e.stopPropagation(); window.open(products.url, '_blank') }}>{products.url}</td>
                                 </tr>)
                             }
                         </tbody>
