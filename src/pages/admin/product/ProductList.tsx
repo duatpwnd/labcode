@@ -100,6 +100,17 @@ const Product = () => {
             {
                 data && data.length != 0 && <div className="product-list">
                     <table>
+                        <colgroup>
+                            <col width="100px" />
+                            <col width="140px" />
+                            <col width="392px" />
+                            <col width="245px" />
+                            <col width="140px" />
+                            <col width="141px" />
+                            <col width="141px" />
+                            <col width="140px" />
+                            <col width="100px" />
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>
@@ -126,7 +137,7 @@ const Product = () => {
                                 <th className="created">
                                     생성일
                                 </th>
-                                <th>
+                                <th className="link-th">
                                     링크
                                 </th>
                             </tr>
@@ -145,7 +156,7 @@ const Product = () => {
                                     <td>{products.scale}</td>
                                     <td>{products.alpha}</td>
                                     <td>{products.created.split("T")[0]}</td>
-                                    <td onClick={(e) => { e.stopPropagation(); window.open(products.url, '_blank') }}>{products.url}</td>
+                                    <td className="link" onClick={(e) => { e.stopPropagation(); window.open(products.url, '_blank') }}></td>
                                 </tr>)
                             }
                         </tbody>

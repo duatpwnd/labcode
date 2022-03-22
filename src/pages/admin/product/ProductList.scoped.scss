@@ -51,7 +51,7 @@ main {
       width: 100%;
       white-space: nowrap;
       table-layout: fixed;
-      min-width: 1920px;
+      min-width: 1520px;
       th,
       td {
         text-align: left;
@@ -59,10 +59,6 @@ main {
         color: #9ea7ad;
         font-size: 14px;
         background: white;
-      }
-      .created {
-        background: url("~images/arrow_bottom.svg") white no-repeat center right
-          24px / 16px 16px;
       }
       th {
         position: relative;
@@ -76,6 +72,9 @@ main {
             z-index: 1;
           }
         }
+      }
+      .link-th {
+        text-align: center;
       }
       tbody:before {
         content: "@";
@@ -91,6 +90,7 @@ main {
           cursor: pointer;
           .labcodeImage,
           .sourceImage {
+            object-fit: cover;
             width: 40px;
             height: 40px;
           }
@@ -101,6 +101,12 @@ main {
             background: url("~images/convert_ico.svg") no-repeat center center /
               18px 6px;
           }
+        }
+        .link {
+          width: 14px;
+          height: 14px;
+          background: url("~images/link_ico.svg") white no-repeat center center /
+            14px 14px;
         }
       }
     }
