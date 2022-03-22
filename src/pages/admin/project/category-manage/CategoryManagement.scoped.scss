@@ -28,12 +28,6 @@ main {
       margin-top: 8px;
     }
     section {
-      .h3-title {
-        margin-top: 50px;
-        margin-bottom: 40px;
-        padding-bottom: 14px;
-        border-bottom: 1px solid #e6e8eb;
-      }
       .row {
         margin-top: 16px;
         label {
@@ -51,7 +45,7 @@ main {
         }
       }
       .add-area {
-        margin-top: 56px;
+        margin-top: 80px;
         position: relative;
         .title-area {
           display: inline-block;
@@ -100,9 +94,10 @@ main {
           }
         }
         .main-category-list {
-          margin-bottom: 16px;
-          padding-bottom: 16px;
+          margin-bottom: 20px;
+          padding: 16px 0;
           border-bottom: 1px solid #e6e8eb;
+          border-top: 1px solid #e6e8eb;
           line-height: 32px;
           height: 32px;
           position: relative;
@@ -115,16 +110,25 @@ main {
           .main-category-title {
             vertical-align: middle;
             font-family: "Poppins";
-            width: calc(100% - 148px);
+            font-weight: bold;
+            width: calc(100% - 181px);
             padding-left: 16px;
+            .title {
+              margin-right: 12px;
+            }
             .current-count {
               color: #5138e5;
+            }
+            .total {
+              font-weight: 400;
+              color: #9ea7ad;
             }
           }
           .btn {
             width: 53px;
             height: 28px;
             border: 1px solid #e6e8eb;
+            color: #525a61;
             background: white;
             line-height: 28px;
             font-size: 12px;
@@ -132,6 +136,7 @@ main {
           }
           .add-btn {
             margin-right: 10px;
+            width: 86px;
           }
         }
         .sub-category-list {

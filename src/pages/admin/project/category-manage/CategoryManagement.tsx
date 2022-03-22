@@ -68,10 +68,10 @@ const ToggleList = ({ mainCategories, getCategories }) => {
             {/* 대분류 */}
             <div className="main-category-list" >
                 <span className="toggle-btn" style={{ backgroundImage: toggle ? `url(${require("images/active_arrow_top.svg").default})` : `url(${require("images/arrow_bottom.svg").default})` }} onClick={() => setToggle(!toggle)}></span>
-                <span className="main-category-title">{mainCategories.title} <strong className="current-count">{mainCategories.subCategories.length}</strong>/8</span>
+                <span className="main-category-title"><span className="title">{mainCategories.title} </span><strong className="current-count">{mainCategories.subCategories.length}</strong><span className="total">/8</span></span>
                 <button className="btn add-btn" onClick={() => {
                     addSubCategories({ mainCategoryId: mainCategories.id });
-                }}>추가</button>
+                }}>소분류 추가</button>
                 <button className="btn" onClick={() => deleteMainCategories(mainCategories.id)}>삭제</button>
             </div>
             {

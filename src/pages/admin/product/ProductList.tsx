@@ -13,8 +13,8 @@ import toast from 'react-hot-toast';
 const Btn = styled.button`
     background:${props => props.background};
     border-radius:8px;
-    width:160px;
-    padding:14px 0;
+    width:114px;
+    padding:15px 0;
     font-weight:700;
     color:${props => props.color};
     @media all and (max-width: 767px) {
@@ -86,7 +86,10 @@ const Product = () => {
     }, [projectId, currentPage, search])
     return (
         <main>
-            <SearchInput placeholder="제목 검색" />
+            <SearchInput placeholder="제품명 검색" />
+            <div className="category">
+                <span className="main-category">프로젝트</span><b className="sub-category">프로젝트 목록</b>
+            </div>
             <div className="nav-area">
                 <strong className="project-title">{product && product.title}</strong>
                 <div className="btn-wrap">
