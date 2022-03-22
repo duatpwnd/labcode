@@ -21,13 +21,11 @@ main {
         font-size: 36px;
       }
       .lnb {
-        max-width: 264px;
+        max-width: 283px;
         width: 100%;
         ul {
+          display: flex;
           li {
-            width: 33.333%;
-            display: inline-block;
-            position: relative;
             a {
               display: inline-block;
               text-align: center;
@@ -41,6 +39,12 @@ main {
             .active {
               color: #5138e5;
             }
+          }
+          .bar {
+            width: 33px;
+            align-self: center;
+            text-align: center;
+            color: #e6e8eb;
           }
         }
       }
