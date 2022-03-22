@@ -1,7 +1,5 @@
 .select-box {
   padding: 0 16px;
-  border-radius: 4px;
-  border: 1px solid #e6e8eb;
   .tab {
     background: url("~images/arrow_bottom.svg") no-repeat right center / 16px
       16px;
@@ -17,8 +15,9 @@
   //   border: 1px solid #5138e5;
   // }
   .list-wrap {
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.04);
     border: 1px solid #e6e8eb;
-    border-radius: 4px;
+    border-radius: 8px;
     width: 100%;
     box-sizing: border-box;
     position: absolute;

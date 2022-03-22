@@ -208,7 +208,7 @@ const Team = () => {
             }
             <main>
                 <h2 className="h2-title">{pathname == "/teams/create" ? "신청하기" : "상세 정보"}</h2>
-                {pathname != "/teams/create" && <p className="message">정보를 변경하면 자동으로 저장됩니다.</p>}
+                <p className="message">{pathname != "/teams/create" ? "정보를 변경하면 자동으로 저장됩니다." : "담당자가 2~3일 내로 연락드릴 예정입니다."}</p>
                 <section className="section1">
                     <h3 className="h3-title">회사 정보</ h3>
                     <div className="row">

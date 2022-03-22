@@ -12,6 +12,7 @@ const SignIn = ({ setData }) => {
     const [password, setPassword] = useState("");
     const [emailValid, setEmailValid] = useState("");
     const [passwordValid, setPasswordValid] = useState("");
+    const [isShowPassword, setShowPassword] = useState(false)
     const signinError = useSelector((state: RootState) => {
         return state.signIn.signinError
     })
@@ -32,19 +33,19 @@ const SignIn = ({ setData }) => {
     const signIn = () => {
         console.log(email, password);
         if (email.trim().length == 0) {
-            setEmailValid("아이디를 입력해주세요.");
+            setEmailValid("올바른 이메일 주소를 입력해주세요.");
             return;
         } else {
             setEmailValid("");
         }
         if (emailReg.test(email) == false) {
-            setEmailValid("아이디가 올바르지 않습니다.");
+            setEmailValid("올바른 이메일 주소를 입력해주세요.");
             return;
         } else {
             setEmailValid("");
         }
         if (password.trim().length == 0) {
-            setPasswordValid("비밀번호를 입력해주세요.");
+            setPasswordValid("8자리 이상 입력해주세요.");
             return;
         } else {
             setPasswordValid("");
@@ -65,26 +66,37 @@ const SignIn = ({ setData }) => {
                         <form className="form">
                             <fieldset>
                                 <legend>로그인정보</legend>
-                                <input
-                                    type="text"
-                                    id="email"
-                                    className="user-id"
-                                    placeholder="이메일"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
+                                <div className="input-area">
+                                    <input
+                                        type="text"
+                                        value={email}
+                                        id="email"
+                                        className="user-id"
+                                        placeholder="이메일"
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                    {
+                                        email.length > 0 && <button type="button" onClick={() => setEmail("")} className="delete-btn"></button>
+                                    }
+                                </div>
                                 <p className="guide-message">{emailValid}</p>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    className="user-pw"
-                                    placeholder="비밀번호"
-                                    onKeyPress={onKeyPress}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
+                                <div className="input-area">
+                                    <input
+                                        type={isShowPassword ? "text" : "password"}
+                                        id="password"
+                                        className="user-pw"
+                                        placeholder="비밀번호"
+                                        onKeyPress={onKeyPress}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                    {
+                                        password.length > 0 && <button type="button" onClick={() => setShowPassword(!isShowPassword)} className={isShowPassword ? "show-password-btn" : "hide-password-btn"}></button>
+                                    }
+                                </div>
                                 <p className="guide-message">{passwordValid}</p>
                                 {/* 서버검증 */}
                                 {emailValid == "" && passwordValid == "" && <p className="guide-message">{signinError}</p>}
-                                <button type="button" onClick={() => signIn()}>로그인</button>
+                                <button type="button" className="submit-btn" onClick={() => signIn()}>로그인</button>
                             </fieldset>
                         </form>
                         <div className="sub-area">

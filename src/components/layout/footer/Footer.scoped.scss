@@ -1,49 +1,66 @@
 footer {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 7.2vh 20px 6.4vh 20px;
-  box-sizing: border-box;
-  display: flex;
-  .col1 {
-    width: 90%;
-    height: 213px;
-    address {
-      font-family: "Poppins";
-      white-space: pre-wrap;
-      font-style: normal;
-      font-size: 13px;
-      color: #79828a;
-      margin-top: 14px;
-      line-height: 26px;
-    }
-    .copyright {
-      font-family: "Poppins";
-      color: #79828a;
-      font-size: 13px;
-      margin: 10px 0 18px 0;
-    }
-    .policy {
-      a {
+  background: #f0f1f2;
+  padding: 7.2vh 0px 6.4vh 0px;
+  .footer-wrap {
+    display: flex;
+    box-sizing: border-box;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    .col1 {
+      width: 90%;
+      height: 213px;
+      .snaptag {
+        font-size: 18px;
+        color: #303538;
+      }
+      address {
+        font-family: "Poppins";
+        white-space: pre-wrap;
+        font-style: normal;
+        font-size: 13px;
+        color: #79828a;
+        margin-top: 14px;
+        line-height: 26px;
+      }
+      .copyright {
         font-family: "Poppins";
         color: #79828a;
         font-size: 13px;
-        font-weight: 700;
-        &:not(:last-child) {
-          &::after {
-            color: #b8bfc4;
-            content: "｜";
-            vertical-align: 1px;
+        margin: 10px 0 18px 0;
+      }
+      .policy {
+        a {
+          font-family: "Poppins";
+          color: #79828a;
+          font-size: 13px;
+          font-weight: 700;
+          &:not(:last-child) {
+            &::after {
+              color: #b8bfc4;
+              content: "｜";
+              vertical-align: 1px;
+            }
           }
+        }
+        .create-team-link {
+          color: #525a61;
         }
       }
     }
-  }
-  .col2 {
-    .select-box-wrap {
-      width: 315px;
-      margin-top: 12px;
-      position: relative;
-      cursor: pointer;
+    .col2 {
+      b {
+        font-size: 14px;
+        color: #303538;
+      }
+      .select-box-wrap {
+        background: white;
+        width: 315px;
+        margin-top: 12px;
+        position: relative;
+        cursor: pointer;
+        border-radius: 8px;
+      }
     }
   }
 }

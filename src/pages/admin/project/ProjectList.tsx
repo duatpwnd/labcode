@@ -19,6 +19,7 @@ const Project = () => {
     }
     const selectBoxStyle = {
         padding: '12px 0',
+        color: "#303538"
     }
     return (
         <div className="wrap">

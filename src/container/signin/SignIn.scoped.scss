@@ -30,39 +30,69 @@
     .signin-title {
       text-align: center;
       line-height: 45px;
-      font-size: 32px;
+      font-size: 36px;
       margin-bottom: 24px;
       strong {
         color: #5138e5;
       }
     }
     .form {
-      input,
-      button {
+      .input-area {
+        border-radius: 12px;
+        background: #f0f1f2;
+        padding: 0 20px;
+        input {
+          background: #f0f1f2;
+          vertical-align: middle;
+          width: calc(100% - 24px);
+          height: 56px;
+          color: #303538;
+          font-family: "Poppins";
+          font-weight: bold;
+          &::placeholder {
+            color: #9ea7ad;
+          }
+        }
+        .user-pw {
+          width: calc(100% - 28px);
+        }
+        .delete-btn {
+          width: 24px;
+          height: 20px;
+          vertical-align: middle;
+          background: url("~src/assets/images/input_delete_ico.svg") no-repeat
+            center right / 20px 20px;
+        }
+        .show-password-btn {
+          width: 28px;
+          height: 24px;
+          vertical-align: middle;
+          background: url("~src/assets/images/show_password_ico.svg") no-repeat
+            center right / 24px 24px;
+        }
+        .hide-password-btn {
+          width: 28px;
+          height: 24px;
+          vertical-align: middle;
+          background: url("~src/assets/images/hide_password_ico.svg") no-repeat
+            center right / 24px 24px;
+        }
+      }
+
+      .guide-message {
+        color: red;
+        padding-left: 20px;
+        margin: 16px 0;
+        font-size: 12px;
+      }
+      .submit-btn {
+        background: #5138e5;
+        color: #ffffff;
+        font-weight: 700;
         display: block;
         width: 100%;
         height: 56px;
         border-radius: 12px;
-      }
-      input {
-        background: #f2f4f5;
-        color: #999999;
-        padding: 0 20px;
-        box-sizing: border-box;
-      }
-      .user-pw {
-        margin-top: 12px;
-        margin-bottom: 16px;
-      }
-      .guide-message {
-        color: red;
-        margin: 16px 0;
-        text-align: center;
-      }
-      button {
-        background: #5138e5;
-        color: #ffffff;
-        font-weight: 700;
       }
     }
     .sub-area {

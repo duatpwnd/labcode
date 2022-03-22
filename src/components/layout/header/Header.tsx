@@ -51,6 +51,7 @@ const LangIcon = styled.button`
     height: 44px;
     padding:0 20px;
     font-family: Poppins;
+    font-size:14px;
     text-align:left;
     font-weight:700;
     margin-left:8px;
