@@ -5,19 +5,19 @@ const navigate = (link) => {
     window.open(link, '_blank')
 }
 const selectBoxStyle1 = {
-    padding: '22px 0 22px 40px',
+    padding: '22px 0 22px 44px',
     width: "calc(100% - 60px)",
     color: "#79828a",
     fontWeight: 700,
-    background: `url(${require("images/onme_logo_ico.svg").default}) no-repeat left center / 24px
+    background: `url(${require("images/onme_logo_ico.svg").default}) no-repeat left 4px center / 24px
           24px`
 }
 const selectBoxStyle2 = {
-    padding: '22px 0 22px 40px',
+    padding: '22px 0 22px 44px',
     width: "calc(100% - 60px)",
     color: "#79828a",
     fontWeight: 700,
-    background: `url(${require("images/labcode_logo_ico.svg").default}) no-repeat left center / 24px
+    background: `url(${require("images/labcode_logo_ico.svg").default}) no-repeat left 4px center / 24px
     24px`
 }
 export default function Footer() {

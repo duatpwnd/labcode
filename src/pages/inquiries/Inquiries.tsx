@@ -62,6 +62,7 @@ const Inquiries = () => {
             }
             <div className="wrap">
                 <h2 className="h2-title">문의하기</h2>
+                <p className="message" data-v-0165fbc5="">담당자가 2~3일 내로 연락드릴 예정입니다.</p>
                 <form>
                     <fieldset></fieldset>
                     <legend>문의하기</legend>
@@ -72,7 +73,7 @@ const Inquiries = () => {
                         </span>
                         <span className="row-span email-field">
                             <label htmlFor="phone">연락처</label>
-                            <input type="text" id="phone" placeholder="“-” 없이 전화번호 입력" onChange={debounce((e) => phoneValueCheck(e), 500)} />
+                            <input type="text" id="phone" placeholder="연락처 입력" onChange={debounce((e) => phoneValueCheck(e), 500)} />
                             <p className="warn-message">{phoneMsg}</p>
                         </span>
                     </div>

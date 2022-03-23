@@ -15,15 +15,15 @@ const SignIndButton = styled.button`
     border-radius: 8px;
     font-size: 13px;
     color: #525A61;
-    background: #D1D6DB;
+    background: #DBDFE1;
     font-weight: 700;
     height: 44px;
     width: 111px;
-    @media all and (min-width: 480px) {
-        &:hover {
-        background: #D1D6DB;
-        }
-    }
+    // @media all and (min-width: 480px) {
+    //     &:hover {
+    //     background: #D1D6DB;
+    //     }
+    // }
     @media all and (max-width:360px){
         width: 30vw;
     }
@@ -45,6 +45,7 @@ const VersionIcon = styled.span`
     }
 `
 const LangIcon = styled.button`
+    color:#525A61;
     vertical-align: middle;
     border-radius: 8px;
     width:84px;
@@ -55,17 +56,17 @@ const LangIcon = styled.button`
     text-align:left;
     font-weight:700;
     margin-left:8px;
-    background: url(${require('src/assets/images/lang_ico.svg').default}) #D1D6DB no-repeat center right 20px /
+    background: url(${require('src/assets/images/lang_ico.svg').default}) #DBDFE1 no-repeat center right 20px /
     16px 16px;
-    @media all and (min-width: 480px) {
-        &:hover {
-            background-color:#D1D6DB;
-        }
-    }
+    // @media all and (min-width: 480px) {
+    //     &:hover {
+    //         background-color:#DBDFE1;
+    //     }
+    // }
      @media all and (max-width:330px){
         padding:0;
         width:16vw;
-        background:#D1D6DB;
+        background:#DBDFE1;
         text-align:center;
     }
 `

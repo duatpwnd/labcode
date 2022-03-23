@@ -4,7 +4,11 @@
   padding: 80px 40px;
   .h2-title {
     font-size: 36px;
-    margin-bottom: 40px;
+  }
+  .message {
+    color: #9ea7ad;
+    margin-top: 14px;
+    margin-bottom: 52px;
   }
   form {
     label {
@@ -14,6 +18,7 @@
       display: inline-block;
     }
     input {
+      color: #303538;
       border-radius: 8px;
       background: #f6f7f8;
       padding: 10px 16px;
@@ -24,9 +29,9 @@
       }
     }
     .warn-message {
-      width: 100%;
+      line-height: 20px;
       margin-top: 10px;
-      margin-left: 110px;
+      margin-left: 126px;
       color: red;
     }
     .email-warn-message {
@@ -53,7 +58,11 @@
     }
     .row4 {
       margin-top: 32px;
+      label {
+        padding-top: 14px;
+      }
       textarea {
+        color: #303538;
         background: #f6f7f8;
         width: calc(100% - 110px);
         padding: 20px;
@@ -119,7 +128,7 @@
         width: 100%;
       }
       .warn-message {
-        margin-left: 0;
+        margin-left: 16px;
       }
       .row4 {
         textarea {
