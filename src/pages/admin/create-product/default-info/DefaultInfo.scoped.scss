@@ -18,6 +18,9 @@ section {
         vertical-align: middle;
       }
       .select-box-wrap {
+        border: 1px solid #e6e8eb;
+        box-sizing: border-box;
+        border-radius: 8px;
         display: inline-block;
         width: calc(100% - 180px);
         cursor: pointer;

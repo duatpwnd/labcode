@@ -15,7 +15,7 @@ const SignIndButton = styled.button`
     border-radius: 8px;
     font-size: 13px;
     color: #525A61;
-    background: #E5E5E5;
+    background: #D1D6DB;
     font-weight: 700;
     height: 44px;
     width: 111px;
@@ -55,7 +55,7 @@ const LangIcon = styled.button`
     text-align:left;
     font-weight:700;
     margin-left:8px;
-    background: url(${require('src/assets/images/lang_ico.svg').default}) #E5E5E5 no-repeat center right 20px /
+    background: url(${require('src/assets/images/lang_ico.svg').default}) #D1D6DB no-repeat center right 20px /
     16px 16px;
     @media all and (min-width: 480px) {
         &:hover {
@@ -65,7 +65,7 @@ const LangIcon = styled.button`
      @media all and (max-width:330px){
         padding:0;
         width:16vw;
-        background:#E5E5E5;
+        background:#D1D6DB;
         text-align:center;
     }
 `

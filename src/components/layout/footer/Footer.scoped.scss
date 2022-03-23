@@ -66,15 +66,17 @@ footer {
 }
 @media all and (max-width: 767px) {
   footer {
-    flex-direction: column;
-    .col1 {
-      height: auto;
-    }
-    .col2 {
-      margin-top: 36px;
-      height: 213px;
-      .select-box-wrap {
-        width: 100%;
+    .footer-wrap {
+      flex-direction: column;
+      .col1 {
+        height: auto;
+      }
+      .col2 {
+        margin-top: 36px;
+        height: 213px;
+        .select-box-wrap {
+          width: 100%;
+        }
       }
     }
   }

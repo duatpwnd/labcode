@@ -93,6 +93,7 @@ const BounceBalls = ({ bg }) => {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, 360);
             ctx.fill();
+            ctx.globalCompositeOperation = 'difference';
             ctx.shadowOffsetX = -(this.radius - 10);
             ctx.shadowOffsetY = this.radius - 10;
             ctx.shadowColor = "rgba(0,0,0,0.05)";

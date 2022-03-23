@@ -192,7 +192,7 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                                                         )
                                                                     } />
                                                                 </div>
-                                                                <label htmlFor={'image' + index} className="file">찾아보기</label>
+                                                                <label htmlFor={'image' + index} className={type == "modal" ? "file disabled-file" : "file"}>찾아보기</label>
                                                             </>
                                                         }
                                                     })()

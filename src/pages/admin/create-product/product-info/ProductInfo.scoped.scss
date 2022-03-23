@@ -2,6 +2,8 @@
   cursor: pointer;
   position: relative;
   background: white;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
 }
 
 .h3-title {
@@ -147,9 +149,13 @@
           padding: 14px 0;
           width: 77px;
           height: 42px;
+          font-size: 13px;
           line-height: 15px;
           box-sizing: border-box;
           cursor: pointer;
+        }
+        .disabled-file {
+          background: #b8bfc4;
         }
       }
       &:first-child {
