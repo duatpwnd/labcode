@@ -1,12 +1,11 @@
 footer {
   background: #f0f1f2;
-  padding: 7.2vh 0px 6.4vh 0px;
+  padding: 7.2vh 20px 6.4vh 20px;
   .footer-wrap {
     display: flex;
     box-sizing: border-box;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 20px;
     .col1 {
       width: 90%;
       height: 213px;
@@ -17,6 +16,7 @@ footer {
       address {
         font-family: "Poppins";
         white-space: pre-wrap;
+        word-spacing: -0.8px;
         font-style: normal;
         font-size: 13px;
         color: #79828a;

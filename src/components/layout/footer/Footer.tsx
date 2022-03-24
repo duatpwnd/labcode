@@ -13,20 +13,20 @@ const GlobalSelectBoxStyle = createGlobalStyle`
     }
 `;
 const selectBoxStyle1 = {
-    padding: '22px 0 22px 44px',
+    padding: '22px 0 22px 46px',
     width: "calc(100% - 60px)",
     color: "#79828a",
     fontWeight: 700,
-    background: `url(${require("images/onme_logo_ico.svg").default}) no-repeat left 4px center / 24px
+    background: `url(${require("images/onme_logo_ico.svg").default}) no-repeat left 10px center / 24px
           24px`
 }
 const selectBoxStyle2 = {
-    padding: '22px 0 22px 44px',
+    padding: '22px 0 22px 46px',
     width: "calc(100% - 60px)",
     color: "#79828a",
     fontWeight: 700,
-    background: `url(${require("images/labcode_logo_ico.svg").default}) no-repeat left 4px center / 24px
-    24px`
+    background: `url(${require("images/labcode_logo_ico.svg").default}) no-repeat left 10px center / 24px
+          24px`
 }
 export default function Footer() {
     return (
@@ -34,7 +34,7 @@ export default function Footer() {
             <div className="footer-wrap">
                 <div className="col1">
                     <strong className="snaptag">(주)스냅태그</strong>
-                    <address><span>경기 성남시 분당구 서현1동 황새울로 354,  8F (13591)</span>     <span>대표이사 : 민경웅, 김정희</span>     <span>대표번호 : <strong>031-628-4350</strong></span>     <span>이메일 : <strong>funny@snaptag.co.kr</strong>
+                    <address><span>경기 성남시 분당구 서현1동 황새울로 354,  8F (13591)</span>    <span>대표이사 : 민경웅, 김정희</span>    <span>대표번호 : <strong>031-628-4350</strong></span>    <span>이메일 : <strong>funny@snaptag.co.kr</strong>
                     </span>
                     </address>
                     <p className="copyright">

@@ -14,7 +14,7 @@ const ParentNavLink = styled(NavLink)`
     font-size: 18px;
     background: url(${props => require("images/" + props.background).default}) no-repeat left 19px top 14px/ 24px 24px;
     &.active{
-        color: black;
+        color: black; 
         border-radius: 12px;
         background: url(${props => require("images/active_" + props.background).default}) #F6F7F8 no-repeat left 19px top 14px/ 24px 24px;
     }
@@ -30,7 +30,7 @@ const ChildNavLink = styled(NavLink)`
     color: #9EA7AD;
     box-sizing: border-box;
     display: block;
-    padding: 5px 0px 5px 90px;
+    padding: 6px 0px 6px 90px;
     font-size: 14px;
     font-weight: 700;
     &.active{
