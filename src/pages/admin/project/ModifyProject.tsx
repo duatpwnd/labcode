@@ -52,26 +52,31 @@ const ProjectDetail = () => {
                 }
             }
         } else {
-            let data;
-            if (e.target.id == "team") {
+            let data: { [key: string]: any } = {
+                teamId: inputs.team.id
+            };
+            if (e.target == undefined) {
+                data = {
+                    ...data,
+                    bannerImage: e
+                }
+            }
+            else if (e.target.id == "team") {
                 data = {
                     teamId: e.target.value.id
                 }
             }
             else if (e.target.id == "mainCategoryId" || e.target.id == "subCategoryId") {
                 data = {
+                    ...data,
                     [e.target.id]: e.target.value.id
-                }
-            } else if (e.target == undefined) {
-                data = {
-                    bannerImage: e
                 }
             } else {
                 data = {
+                    ...data,
                     [e.target.id]: e.target.value
                 }
             }
-            console.log("data data data data data", data);
             modify(data);
         }
     };
@@ -125,6 +130,7 @@ const ProjectDetail = () => {
             });
     }
     const modify = (body) => {
+        console.log("body", body);
         toast.dismiss();
         const formData = new FormData();
         for (let key in body) {
