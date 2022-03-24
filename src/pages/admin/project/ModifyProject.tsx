@@ -52,12 +52,9 @@ const ProjectDetail = () => {
                 }
             }
         } else {
-            let data: { [key: string]: any } = {
-                teamId: inputs.team.id
-            };
+            let data;
             if (e.target == undefined) {
                 data = {
-                    ...data,
                     bannerImage: e
                 }
             }
@@ -68,12 +65,10 @@ const ProjectDetail = () => {
             }
             else if (e.target.id == "mainCategoryId" || e.target.id == "subCategoryId") {
                 data = {
-                    ...data,
                     [e.target.id]: e.target.value.id
                 }
             } else {
                 data = {
-                    ...data,
                     [e.target.id]: e.target.value
                 }
             }
