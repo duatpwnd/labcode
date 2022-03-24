@@ -1,9 +1,17 @@
 import "./Footer.scoped.scss"
 import { Link } from "react-router-dom";
 import SelectBox from "src/components/common/base-select/SelectBox";
+import { createGlobalStyle } from 'styled-components';
 const navigate = (link) => {
     window.open(link, '_blank')
 }
+const GlobalSelectBoxStyle = createGlobalStyle`
+    .select-box{
+        .tab{
+            background-position: right 4px center !important;
+        }
+    }
+`;
 const selectBoxStyle1 = {
     padding: '22px 0 22px 44px',
     width: "calc(100% - 60px)",
@@ -47,6 +55,7 @@ export default function Footer() {
                             value="value"
                             style={[selectBoxStyle1, selectBoxStyle2]}
                             list={[{ label: "안전하고 쉬운 투자, 온미", value: "https://onme.gallery/" }, { label: "LAB Code 솔루션 구축하는, 스냅태그", value: "https://snaptag.co.kr/" }]} defaultValue="https://onme.gallery/" eventHandler={navigate} />
+                        <GlobalSelectBoxStyle />
                     </div>
                 </div>
             </div>
