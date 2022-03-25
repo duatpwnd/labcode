@@ -317,6 +317,10 @@ const ProductInfo = () => {
             }
             <section>
                 <h3 className="h3-title">제품 정보</h3>
+                <div className="btn-wrap">
+                    <button className="import-group-btn" onClick={() => setBringGroupModal(true)}>그룹 불러오기</button>
+                    <button className="add-group-btn" onClick={() => setAddNewGroupModal(true)}>새 그룹 추가</button>
+                </div>
                 <ProductList {...{
                     ...props, ...{
                         type: "", colgroup: <colgroup>
@@ -330,10 +334,6 @@ const ProductInfo = () => {
                 />
             </section>
             <button className="add-info-btn" onClick={addProductInfos}>제품 정보 추가</button>
-            <div className="btn-wrap">
-                <button className="import-group-btn" onClick={() => setBringGroupModal(true)}>그룹 불러오기</button>
-                <button className="add-group-btn" onClick={() => setAddNewGroupModal(true)}>새 그룹 추가</button>
-            </div>
         </>
     )
 }

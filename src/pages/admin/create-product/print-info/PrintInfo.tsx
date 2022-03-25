@@ -38,7 +38,7 @@ const PrintInfo = () => {
         printDate: getFormatDate(new Date())
     });
     const onChange = (e) => {
-        if (e.target.id == "printOrder") {
+        if (e.target && e.target.id == "printOrder") {
             e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')
         }
         if (typeof e === "string") {
