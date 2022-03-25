@@ -306,7 +306,7 @@ const DefaultInfo = () => {
                 <div className="form">
                     <div className="row">
                         <label htmlFor="teamId" className="team">팀</label>
-                        <div className="select-box-wrap" style={pathname.includes('/products/edit') ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
+                        <div className="select-box-wrap" style={pathname.includes('/defaultInfo') ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                             <SelectBox
                                 property="title"
                                 value="id"
@@ -322,7 +322,7 @@ const DefaultInfo = () => {
                         inputs.project && inputs.project.team &&
                         inputs.project.team.id != undefined && <div className="row">
                             <label htmlFor="projectId" className="project">프로젝트</label>
-                            <div className="select-box-wrap" style={pathname.includes('/products/edit') ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
+                            <div className="select-box-wrap" style={pathname.includes('/defaultInfo') ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                                 <SelectBox
                                     property="title"
                                     value="id"

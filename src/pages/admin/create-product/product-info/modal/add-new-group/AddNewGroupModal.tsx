@@ -72,7 +72,7 @@ const AddNewGroupModal = ({ data, SearchBar, setPage, closeModal }) => {
             toast.error("제목을 입력해주세요.")
         } else {
             axios.post(apiUrl.productInfosGroups, {
-                teamId: userInfo?.user.teamId,
+                teamId: params.teamId,
                 productId: params.productId,
                 title: title,
                 productInfoIds: checked,

@@ -29,11 +29,11 @@ const isMobile = () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 const LinkButtons = () => {
-    const uesrAgent = navigator.userAgent.toLowerCase();
+    const userAgent = navigator.userAgent.toLowerCase();
     if (isMobile()) {
         return <div className="btn-wrap">
             {
-                uesrAgent.match("iphone") ?
+                userAgent.match("iphone") ?
                     <button onClick={() => window.open('https://apps.apple.com/kr/app/lab-code-scanner/id1597455005?app=itunes&ign-mpt=uo%3D4', '_blank')}
                         className={isMobile() ? "btn mobile-apple-download-btn" : "btn apple-download-btn"}
 

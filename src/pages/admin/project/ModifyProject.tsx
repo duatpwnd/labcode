@@ -93,12 +93,7 @@ const ProjectDetail = () => {
         } else {
             setBusinessImage("")
         }
-        if (homepageCheck == false) {
-            setLinkMsg("올바른 주소가 아닙니다.")
-        } else {
-            setLinkMsg("")
-        }
-        if (homepageCheck && inputs.bannerImage != null) {
+        if (inputs.bannerImage != null) {
             const callMyFunction = axios
                 .post(apiUrl.project, formData)
                 .then((result: any) => {
