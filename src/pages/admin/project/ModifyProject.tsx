@@ -98,7 +98,6 @@ const ProjectDetail = () => {
                 .post(apiUrl.project, formData)
                 .then((result: any) => {
                     console.log("프로젝트생성결과:", result);
-                    navigate(`/projects/edit/${result.data.data.id}`)
                 }).catch((err: any) => {
                     console.log('프로젝트생성에러:', err);
                 });
