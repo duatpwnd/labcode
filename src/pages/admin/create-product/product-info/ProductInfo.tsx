@@ -11,6 +11,7 @@ import "./ProductInfo.scoped.scss"
 import _ from 'lodash';
 import SelectBox from "src/components/common/base-select/SelectBox";
 import history from "src/utils/history";
+import { homePageReg } from 'src/utils/common';
 const debounce = _.debounce;
 const DatePickerWrapperStyles = createGlobalStyle`
     .react-datepicker-wrapper{
@@ -52,6 +53,8 @@ const SearchButton = styled.button`
     24px 24px;
 `
 export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, InputTitle, Checkbox, AllCheckbox }: any) => {
+    const [urlCheckMessage, setUrlCheckMessage] = useState(-1);
+    const [isActiveImageModal, setActiveImageModal] = useState(-1);
     // 제품정보수정
     const modifyProductInfos = (e, id) => {
         let body;
@@ -97,6 +100,20 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
             setProductList([]);
             setProductList(filter);
         })
+    }
+    const urlValidationCheck = (url, id) => {
+        const homepageCheck = homePageReg.test(url);
+        console.log('id:', id, "url", url, url.length, homepageCheck);
+        if (homepageCheck == false && url.length > 0) {
+            if (url.length == 0) {
+                setUrlCheckMessage(-1)
+            } else {
+                setUrlCheckMessage(id)
+            }
+        } else {
+            setUrlCheckMessage(-1);
+            modifyProductInfos({ target: { id: 'url', value: url } }, id);
+        }
     }
     const selectBoxStyle = {
         padding: '12px 0',
@@ -173,8 +190,10 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                                                 <button className={list.boolean == false ? "false-btn selected" : "false-btn"} disabled={type == "modal"} onClick={() => modifyProductInfos({ target: { id: 'boolean', value: false } }, list.id)}>거짓</button>
                                                             </div>
                                                         } else if (list.type == "url") {
-                                                            return <input type="text" disabled={type == "modal"} defaultValue={list.url} id="url" placeholder="URL 입력" onBlur={(e) => inActiveInput(e)} onClick={(e) => activeInput(e)} onChange={debounce((e) => modifyProductInfos(e, list.id
-                                                            ), 200)} />
+                                                            return <>
+                                                                <input type="text" disabled={type == "modal"} defaultValue={list.url} id="url" placeholder="URL 입력" onBlur={(e) => inActiveInput(e)} onClick={(e) => activeInput(e)} onChange={debounce((e) => urlValidationCheck(e.target.value.trim(), list.id), 500)} />
+                                                                {urlCheckMessage == list.id && <p className="warn-message">올바르지 않은 주소입니다.</p>}
+                                                            </>
                                                         }
                                                         else if (list.type == "date") {
                                                             return <><CalendarComp id={list.id} defaultValue={list.date} eventHandler={modifyProductInfos} /><DatePickerWrapperStyles pointer-events={type == "modal" ? "none" : "auto"} /></>
@@ -182,11 +201,13 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                                         else if (list.type == "image") {
                                                             return <>
                                                                 <div className="attach">
+                                                                    {isActiveImageModal == list.id && <> <div className="mask" onClick={() => setActiveImageModal(-1)}>
+                                                                    </div><img src={list.image} className="image-modal" onClick={() => setActiveImageModal(-1)} /></>}
                                                                     {
                                                                         list.imageTitle == null ? <span className="input-file" >이미지 첨부</span>
-                                                                            : <span className="input-file" >{list.imageTitle + " (" + list.imageSize + ")"}</span>
+                                                                            : <span className="input-file" onClick={() => setActiveImageModal(list.id)}>{list.imageTitle + " (" + list.imageSize + ")"}</span>
                                                                     }
-                                                                    <input type="file" disabled={type == "modal"} id={'image' + index} onChange={(e) =>
+                                                                    <input type="file" accept="image/png, image/jpeg" disabled={type == "modal"} id={'image' + index} onChange={(e) =>
                                                                         modifyProductInfos(
                                                                             { target: { id: "image", value: (e.target as { [key: string]: any }).files[0] } }, list.id
                                                                         )

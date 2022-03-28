@@ -30,7 +30,7 @@ const ProjectDetail = () => {
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
-    }, 500);
+    }, 400);
     const onChange = (e: { [key: string]: any }) => {
         if (pathname == "/projects/create") {
             if (e.target == undefined) {
@@ -76,37 +76,48 @@ const ProjectDetail = () => {
         }
     };
     const createProject = () => {
+        toast.dismiss();
         const formData = new FormData();
-        const body = {
+        const body: { [key: string]: any } = {
             ...inputs,
             isActive: isAdmin
         }
-        console.log(body, "관리자계졍인지?:", isAdmin);
-        for (let key in body) {
-            formData.append(key, body[key as never]);
+        const homepageCheck = homePageReg.test(body.homepage);
+        if (body.industryId == "13" || body.industryId == "14" || body.industryId == "15" || body.industryId == "16" || body.industryId == "19" || body.industryId == "20") {
+            if (body.mainCategoryId == null || body.subCategoryId == null) {
+                toast.error("카테고리를 선택해주세요.");
+                return false;
+            }
         }
-        const homepageCheck = homePageReg.test(inputs.homepage);
-
+        // 외부용 내부용일때 공통
+        if (homepageCheck == false && body.homepage.trim().length > 0) {
+            setLinkMsg("올바른 주소가 아닙니다.");
+            return false;
+        } else {
+            setLinkMsg("")
+        }
         // 외부용 내부용일때 공통
         if (inputs.bannerImage == null) {
             setBusinessImage("이미지를 첨부해주세요.")
+            return false;
         } else {
             setBusinessImage("")
         }
-        if (inputs.bannerImage != null) {
-            const callMyFunction = axios
-                .post(apiUrl.project, formData)
-                .then((result: any) => {
-                    console.log("프로젝트생성결과:", result);
-                }).catch((err: any) => {
-                    console.log('프로젝트생성에러:', err);
-                });
-            toast.promise(callMyFunction, {
-                loading: "Loading...",
-                success: "프로젝트가 등록되었습니다.",
-                error: "프로젝트등록에 실패하였습니다.",
-            });
+        for (let key in body) {
+            formData.append(key, body[key as never]);
         }
+        const callMyFunction = axios
+            .post(apiUrl.project, formData)
+            .then((result: any) => {
+                console.log("프로젝트생성결과:", result);
+            }).catch((err: any) => {
+                console.log('프로젝트생성에러:', err);
+            });
+        toast.promise(callMyFunction, {
+            loading: "Loading...",
+            success: "프로젝트가 등록되었습니다.",
+            error: "프로젝트등록에 실패하였습니다.",
+        });
     }
     const getProject = () => {
         axios
