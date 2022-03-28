@@ -227,7 +227,7 @@ const Team = () => {
                                 <div className="mask" onClick={() => setActiveImageModal1(false)}>
                                 </div>
                                 {
-                                    fileCheck == "PDF" || fileCheck == "pdf" ? <embed src={fileLink1 || inputs.businessImage} width="90%" height="90%" /> : <img src={fileLink1 || inputs.businessImage} className="image-modal" />
+                                    fileCheck == "PDF" || fileCheck == "pdf" ? <embed src={fileLink1 || inputs.businessImage} width="90%" height="90%" /> : <img src={fileLink1 || inputs.businessImage} className="image-modal" onClick={() => setActiveImageModal1(false)} />
 
                                 }
                             </>
@@ -257,7 +257,7 @@ const Team = () => {
                             <>
                                 <div className="mask" onClick={() => setActiveImageModal2(false)}>
                                 </div>
-                                <img src={fileLink2 || inputs.logoImage} className="image-modal" />
+                                <img src={fileLink2 || inputs.logoImage} className="image-modal" onClick={() => setActiveImageModal2(false)} />
                             </>
 
                         }
@@ -268,7 +268,7 @@ const Team = () => {
                                 {
                                     inputs.logoImage == null || inputs.logoImage == "" ? <span className="input-file" >로고 이미지 첨부</span> : <span onClick={() => setActiveImageModal2(true)} className="input-file" >{inputs.logoImage.name || inputs.logoImageTitle + " (" + inputs.logoImageSize + ")"}</span>
                                 }
-                                <input type="file" defaultValue={inputs.logoImage} id="logoImage" onChange={(e) => notCheck(e)} />
+                                <input type="file" accept="image/png, image/jpeg" defaultValue={inputs.logoImage} id="logoImage" onChange={(e) => notCheck(e)} />
                                 {
                                     inputs.logoImage != null && inputs.logoImage != "" && <button className="delete-btn" onClick={() => { notCheck({ target: { id: "logoImageUrl", value: "" } }); }}></button>
 
