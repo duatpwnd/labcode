@@ -38,6 +38,7 @@
     }
   }
   .product-info-container {
+    overscroll-behavior: contain;
     padding: 0 40px;
     overflow: auto;
     flex: 1;
