@@ -125,7 +125,7 @@ const Header = () => {
             <header>
 
                 <div className="header-contents">
-                    <h1 className="logo" onClick={() => navigate("/")}>
+                    <h1 className="logo" onClick={() => userInfo == null ? "" : navigate("/projects/list/my?currentPage=1&search=&isActive=true&teamId=&teamTitle=null")}>
                         <picture>
                             <source media="(max-width: 479px)" srcSet={require("images/mobile_logo.svg").default} />
                             <img src={require("images/logo.svg").default} alt="LABCODE" title="LABCODE" />

@@ -72,6 +72,7 @@ const BringGroupModal = ({ setBringGroupModal, setProductList }) => {
         if (selectedValue == "") {
             toast.error("그룹을 선택해주세요.")
         } else {
+            console.log(selectedValue);
             axios.post(apiUrl.productInfosGroups + `/${selectedValue}/transfer/${params.productId}`).then((result) => {
                 console.log("그룹불러오기결과", result);
                 setBringGroupModal(false);

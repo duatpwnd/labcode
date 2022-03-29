@@ -27,7 +27,7 @@ const Product = () => {
     const currentPage = searchParams.get('currentPage');
     const search = searchParams.get('search');
     const projectId = searchParams.get('projectId');
-    const params = useParams();
+    const [isActiveImageModal, setActiveImageModal] = useState("");
     const navigate = useNavigate();
     const [{ data, meta, product }, setList] = useState<{ [key: string]: any }>({});
     const getProductList = (page, search) => {
@@ -154,7 +154,25 @@ const Product = () => {
                                     </td>
                                     <td>{products.title}</td>
                                     <td>{products.description}</td>
-                                    <td onClick={(e) => { e.stopPropagation(); }}><a href={products.sourceImage} download ><img src={products.sourceImage} className="sourceImage" /></a><span className="convert-ico"></span><a href={products.labcodeImage} download><img src={products.labcodeImage} className="labcodeImage" /></a></td>
+                                    <td >
+                                        {
+                                            "sourceImage" + products.id == isActiveImageModal &&
+                                            <span onClick={(e) => { e.stopPropagation(); setActiveImageModal("") }}>
+                                                <img src={products.sourceImage} className="active-sourceImage" />
+                                                <span className="active-mask"></span>
+                                            </span>
+                                        }
+                                        {
+                                            "labcodeImage" + products.id == isActiveImageModal &&
+                                            <span onClick={(e) => { e.stopPropagation(); setActiveImageModal("") }}>
+                                                <img src={products.labcodeImage} className="active-sourceImage" />
+                                                <span className="active-mask"></span>
+                                            </span>
+                                        }
+                                        <img src={products.sourceImage} onClick={(e) => { e.stopPropagation(); setActiveImageModal('sourceImage' + products.id) }} className="sourceImage" />
+                                        <span className="convert-ico"></span>
+                                        <img src={products.labcodeImage} onClick={(e) => { e.stopPropagation(); setActiveImageModal('labcodeImage' + (products.id)) }} className="labcodeImage" />
+                                    </td>
                                     <td>{products.channel}</td>
                                     <td>{products.scale}</td>
                                     <td>{products.alpha}</td>
