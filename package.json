@@ -58,6 +58,7 @@
     "react-spinners": "^0.11.0",
     "react-svg": "^14.1.5",
     "react-svg-map": "^2.2.0",
+    "react-tooltip": "^4.2.21",
     "react-transition-group": "^4.4.2",
     "react-type-animation": "^1.1.2",
     "react-typing-animation": "^1.6.2",
