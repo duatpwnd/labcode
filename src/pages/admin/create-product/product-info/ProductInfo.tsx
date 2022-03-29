@@ -163,9 +163,12 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                             <td>
                                                 <input type="text" data-tip data-for={'title' + index} disabled={type == "modal"} placeholder="제목 입력" id="title" defaultValue={list.title} onBlur={(e) => inActiveInput(e)} onClick={(e) => activeInput(e)} onChange={debounce((e) => modifyProductInfos(e, list.id
                                                 ), 200)} />
-                                                <ReactTooltip id={'title' + index} type="dark" effect="float" font-size="122px">
-                                                    <span className="tooltip">{list.title}</span>
-                                                </ReactTooltip>
+                                                {
+                                                    list.title && <ReactTooltip id={'title' + index} type="dark" effect="float" font-size="122px">
+                                                        <span className="tooltip">{list.title}</span>
+                                                    </ReactTooltip>
+
+                                                }
                                             </td>
                                             <td style={type == "modal" ? { pointerEvents: "none", color: "#9ea7ad" } : { pointerEvents: "auto" }}>
                                                 <div className="select-box-wrap">
