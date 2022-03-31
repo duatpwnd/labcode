@@ -30,7 +30,7 @@ const ProjectDetail = () => {
     });
     const inputDebounce = debounce((e) => {
         onChange(e);
-    }, 400);
+    }, 500);
     const onChange = (e: { [key: string]: any }) => {
         if (pathname == "/projects/create") {
             if (e.target == undefined) {
@@ -138,6 +138,7 @@ const ProjectDetail = () => {
         }
         if (body.homepage != undefined) {
             const homepageCheck = homePageReg.test(body.homepage);
+            console.log("homepageCheck", homepageCheck);
             // 외부용 내부용일때 공통
             if (homepageCheck == false) {
                 setLinkMsg("올바른 주소가 아닙니다.");
