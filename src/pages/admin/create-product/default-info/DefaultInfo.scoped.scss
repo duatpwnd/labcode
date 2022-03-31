@@ -61,7 +61,7 @@ section {
       .labcodeImage {
         border-radius: 8px;
         width: calc(100% - 180px);
-        object-fit: cover;
+        object-fit: contain;
         max-height: 459px;
       }
       .slide-bar-container {
