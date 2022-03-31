@@ -92,7 +92,7 @@ const ProjectDetail = () => {
         // 외부용 내부용일때 공통
         if (homepageCheck == false && body.homepage.trim().length > 0) {
             setLinkMsg("올바른 주소가 아닙니다.");
-            return false;
+            return;
         } else {
             setLinkMsg("")
         }
@@ -137,12 +137,10 @@ const ProjectDetail = () => {
             formData.append(key, body[key as never]);
         }
         if (body.homepage != undefined) {
-            const homepageCheck = homePageReg.test(body.homepage);
-            console.log("homepageCheck", homepageCheck);
             // 외부용 내부용일때 공통
-            if (homepageCheck == false) {
+            if (homePageReg.test(body.homepage) == false) {
                 setLinkMsg("올바른 주소가 아닙니다.");
-                return false;
+                return;
             } else {
                 setLinkMsg("")
             }
@@ -213,7 +211,7 @@ const ProjectDetail = () => {
                     </div>
                     <div className="row">
                         <label htmlFor="homepage" className="homepage-link">홈페이지 주소</label>
-                        <input type="text" placeholder="홈페이지 주소 입력" defaultValue={inputs.homepage} id="homepage" onKeyUp={(e) => inputDebounce(e)} />
+                        <input type="text" placeholder="홈페이지 주소 입력" defaultValue={inputs.homepage} id="homepage" onChange={(e) => inputDebounce(e)} />
                         <p className="warn-message">{link}</p>
                     </div>
                     {
