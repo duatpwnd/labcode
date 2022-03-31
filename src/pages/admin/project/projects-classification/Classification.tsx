@@ -96,7 +96,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
                 </div>
             }
             <div className="row">
-                <label htmlFor="industryId">산업군{inputs.industryId}</label>
+                <label htmlFor="industryId">산업군</label>
                 <div className="select-box-wrap" style={isActive == false || inputs.versionId == 1 || pathname.startsWith("/projects/edit") ? { pointerEvents: "none", background: "#E6E8EB", color: "#9EA7AD", borderRadius: "4px" } : { pointerEvents: "auto" }}>
                     <SelectBox
                         style={selectBoxStyle}

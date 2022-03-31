@@ -417,7 +417,7 @@ const DefaultInfo = () => {
                     {
                         inputs.labcodeImage !== null && <div className="row">
                             <label>변경 이미지</label>
-                            <img src={inputs.labcodeImage} alt="labcodeImage" title="labcodeImage" className="labcodeImage" />
+                            <a href={inputs.labcodeImage} target="_blank"><img src={inputs.labcodeImage} alt="labcodeImage" title="labcodeImage" className="labcodeImage" /></a>
                         </div>
 
                     }
