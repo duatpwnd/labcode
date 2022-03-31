@@ -75,6 +75,7 @@
     .infinite-list-wrap {
       @extend .list-wrap;
       position: unset;
+      width: 100%;
       max-height: 410px;
       overflow: auto;
       border-radius: 0;
