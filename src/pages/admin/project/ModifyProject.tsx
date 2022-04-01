@@ -197,7 +197,7 @@ const ProjectDetail = () => {
 
                     <div className="row">
                         <label htmlFor="title" className="title">프로젝트 명</label>
-                        <input type="text" placeholder="프로젝트 명 입력" id="title" defaultValue={inputs.title} onKeyUp={(e) => inputDebounce(e)} />
+                        <input type="text" placeholder="프로젝트 명 입력" id="title" defaultValue={inputs.title} onChange={(e) => inputDebounce(e)} />
                     </div>
                     <div className="row">
                         <label className="top">썸네일 이미지</label>
@@ -206,7 +206,7 @@ const ProjectDetail = () => {
                     </div>
                     <div className="row">
                         <label className="top" htmlFor="description">설명</label>
-                        <textarea id="description" defaultValue={inputs.description} onKeyUp={(e) => inputDebounce(e)} placeholder="최소 10자 ~ 최대 1000자 입력">
+                        <textarea id="description" defaultValue={inputs.description} onChange={(e) => inputDebounce(e)} placeholder="최소 10자 ~ 최대 1000자 입력">
                         </textarea>
                     </div>
                     <div className="row">
