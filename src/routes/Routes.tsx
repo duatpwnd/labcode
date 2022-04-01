@@ -45,7 +45,7 @@ export default function CreateRoutes() {
                 <Route path="printInfo" element={<PrintInfo />} />
                 <Route path="productInfo" element={<ProductInfo />} />
             </Route>
-            <Route path="/products/edit/:productId/:teamId" element={<CreateProduct />}>
+            <Route path="/products/edit/:productId/:teamId/:industryId" element={<CreateProduct />}>
                 <Route path="defaultInfo" element={<DefaultInfo />} />
                 <Route path="printInfo" element={<PrintInfo />} />
                 <Route path="productInfo" element={<ProductInfo />} />

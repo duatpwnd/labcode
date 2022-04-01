@@ -56,6 +56,8 @@ const SearchButton = styled.button`
 export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, InputTitle, Checkbox, AllCheckbox }: any) => {
     const [urlCheckMessage, setUrlCheckMessage] = useState(-1);
     const [isActiveImageModal, setActiveImageModal] = useState(-1);
+    const params = useParams();
+    const industryId = params.industryId;
     // 제품정보수정
     const modifyProductInfos = (e, id) => {
         let body;
@@ -161,7 +163,7 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
                                                 Checkbox && React.cloneElement(Checkbox, { id: list.id, index: index })
                                             }
                                             <td>
-                                                <input type="text" data-tip data-for={'title' + index} disabled={type == "modal"} placeholder="제목 입력" id="title" defaultValue={list.title} onBlur={(e) => inActiveInput(e)} onClick={(e) => activeInput(e)} onChange={debounce((e) => modifyProductInfos(e, list.id
+                                                <input type="text" data-tip data-for={'title' + index} disabled={type == "modal" || industryId == "13" || industryId == "14" || industryId == "15" || industryId == "16"} placeholder="제목 입력" id="title" defaultValue={list.title} onBlur={(e) => inActiveInput(e)} onClick={(e) => activeInput(e)} onChange={debounce((e) => modifyProductInfos(e, list.id
                                                 ), 200)} />
                                                 {
                                                     list.title && <ReactTooltip id={'title' + index} type="dark" effect="float" font-size="122px">
@@ -170,7 +172,7 @@ export const ProductList = ({ data, type, colgroup, setProductList, SearchBar, I
 
                                                 }
                                             </td>
-                                            <td style={type == "modal" ? { pointerEvents: "none", color: "#9ea7ad" } : { pointerEvents: "auto" }}>
+                                            <td style={type == "modal" || industryId == "13" || industryId == "14" || industryId == "15" || industryId == "16" ? { pointerEvents: "none", color: "#9ea7ad" } : { pointerEvents: "auto" }}>
                                                 <div className="select-box-wrap">
                                                     <SelectBox
                                                         style={selectBoxStyle}

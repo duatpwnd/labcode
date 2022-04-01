@@ -148,7 +148,7 @@ const Product = () => {
                         <tbody>
                             {
                                 data != undefined &&
-                                data.map((products, index) => <tr key={index} onClick={() => navigate(`/products/edit/${products.id}/${product.teamId}/defaultInfo`)}>
+                                data.map((products, index) => <tr key={index} onClick={() => navigate(`/products/edit/${products.id}/${product.teamId}/${product.industryId}/defaultInfo`)}>
                                     <td>
                                         {products.key}
                                     </td>
