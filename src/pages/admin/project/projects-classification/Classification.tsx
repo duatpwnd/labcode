@@ -39,7 +39,7 @@ const Classification = ({ eventHandler, inputs, isActive }: any) => {
     }
     // 대분류 조회
     const getMainCategories = (page, search) => {
-        return axios.get(apiUrl.mainCategories + `?industryId=${inputs.industryId}&teamId=${inputs.teamId}&page=${page}&limit=10&search=${search}`).then((result) => {
+        return axios.get(apiUrl.mainCategories + `?industryId=${inputs.industryId}&page=${page}&limit=10&search=${search}`).then((result) => {
             console.log('대분류조회:', result.data, inputs.mainCategoryId);
             return result.data
         })
