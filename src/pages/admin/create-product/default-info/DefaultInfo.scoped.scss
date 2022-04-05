@@ -8,17 +8,11 @@ section {
   .form {
     margin-top: 40px;
     .row {
-      .message {
-        font-size: 12px;
-        margin-top: 8px;
-        margin-left: 16px;
-        color: #EF284C;
-      }
       &:not(:first-child, :last-child) {
         margin-top: 24px;
       }
       label {
-        color: #79828A;
+        color: #79828a;
         width: 180px;
         font-weight: 700;
         display: inline-block;
@@ -62,7 +56,7 @@ section {
       }
       .warn-message {
         font-size: 12px;
-        color: #EF284C;
+        color: #ef284c;
         margin-top: 8px;
         margin-left: 196px;
       }
@@ -71,39 +65,6 @@ section {
         width: calc(100% - 180px);
         object-fit: contain;
         max-height: 459px;
-      }
-      .slide-bar-container {
-        display: inline-block;
-        width: calc(100% - 180px);
-        vertical-align: middle;
-        .numeric-input {
-          background: #f6f7f8;
-          width: 100px;
-          border-radius: 8px;
-          margin-bottom: 10px;
-          font-weight: 700;
-        }
-        .slide-bar {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          button {
-            flex-basis: 124px;
-            box-sizing: border-box;
-            color: #79828a;
-            background: transparent;
-            padding: 15px 0;
-            border-radius: 8px;
-            border: 1px solid #e6e8eb;
-            height: 52px;
-          }
-
-          .selected {
-            font-weight: 700;
-            border: 1px solid #5138e5;
-            color: #5138e5;
-          }
-        }
       }
       .scale-range,
       .alpha-range {
@@ -156,27 +117,6 @@ section {
         }
         label[for="single"] {
           margin-right: 24px;
-        }
-      }
-    }
-    .variable-range-setting-row {
-      margin-top: 52px;
-      padding-bottom: 30px;
-      border-bottom: 1px solid #e6e8eb;
-      .variable-range-setting {
-        display: inline-flex;
-        justify-content: space-between;
-        vertical-align: top;
-        width: calc(100% - 180px);
-        dl{
-          display: inline-block;
-          width: 45%;
-          dd{
-            margin-top: 8px;
-            input{
-              width: 100%;
-            }
-          }
         }
       }
     }

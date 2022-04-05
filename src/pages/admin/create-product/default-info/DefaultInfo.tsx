@@ -1,8 +1,10 @@
 import "./DefaultInfo.scoped.scss"
+import VariableRangeSetting from "./variable-range-setting/VariableRangeSetting";
 import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
 import MultipleSet from "./internal/MultipleSet";
+import SingleSet from "./internal/SingleSet";
 import Classification from "../../project/projects-classification/Classification";
 import SelectBox from "src/components/common/base-select/SelectBox";
 import toast from 'react-hot-toast';
@@ -13,63 +15,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import { homePageReg } from 'src/utils/common';
-import ReactTooltip from 'react-tooltip';
-const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
-    const [message, setMessage] = useState("");
-    const onChange = (e) => {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-        if (Number(e.target.value) > scales.range.max || Number(e.target.value) < scales.range.min) {
-            setMessage(scales.range.min + " 이상 " + scales.range.max + " 이하의 숫자를 입력해주세요.")
-        } else {
-            setMessage("");
-        }
-        eventHandler({ ...inputs, [id]: e.target.value })
-    }
-    return (
-        <div className="slide-bar-container">
-            {
-                isAdmin &&
-                <input type="tel" className="numeric-input" value={inputs[id]} maxLength={3} onChange={(e) => onChange(e)} />
-            }
-            <div className="slide-bar">
-                {
-                    scales.options && scales.options.map((obj, index) => {
-                        return (
-                            (() => {
-                                if (index === 0)
-                                    return (
-                                        <button key={index}
-                                            onClick={() => { eventHandler({ ...inputs, [id]: obj.value }); }}
-                                            className={inputs[id] >= scales.range.min && inputs[id] <= obj.value ? "selected" : ""}>
-                                            {obj.label}{obj.value}
-                                        </button>
-                                    );
-                                else if (index > 0 && index < scales.options.length - 1)
-                                    return (
-                                        <button
-                                            key={index}
-                                            onClick={() => { eventHandler({ ...inputs, [id]: obj.value }); }}
-                                            className={inputs[id] >= ((scales.options[index - 1].value + obj.value) / 2) && inputs[id] < ((scales.options[index + 1].value + obj.value) / 2) ? "selected" : ""}>
-                                            {obj.label}{obj.value}
-                                        </button>
-                                    )
-                                else {
-                                    return (
-                                        <button key={index} onClick={() => { eventHandler({ ...inputs, [id]: obj.value }); }}
-                                            className={inputs[id] >= ((scales.options[index - 1].value + obj.value) / 2) && inputs[id] <= scales.range.max ? "selected" : ""}>
-                                            {obj.label}{obj.value}
-                                        </button>
-                                    )
-                                }
-                            })()
-                        )
-                    })
-                }
-            </div>
-            <p className="message">{message}</p>
-        </div>
-    )
-}
 const DefaultInfo = () => {
     const { pathname } = useLocation();
     const location = useLocation();
@@ -423,45 +368,12 @@ const DefaultInfo = () => {
                             }
                         </div>
                     </div>
-                    {
-                        (pathname.startsWith("/products/create") && inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23) &&
-                        <div className="row variable-range-setting-row">
-                            <label>가변 범위 설정</label>
-                            <div className="variable-range-setting">
-                                <dl>
-                                    <dt><strong>폴더당 갯수</strong></dt>
-                                    <dd><input type="tel" id="unit" data-tip data-for="numberPerFolder" placeholder="숫자 입력" onChange={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); onChange(e) }} /></dd>
-                                    <p className="message" style={{ visibility: inputs.unit === null || (inputs.unit == 0 && inputs.unit.length > 0) ? 'visible' : 'hidden' }}>숫자 ‘0’, ‘- (마이너스)’가 포함되어 있습니다.</p>
-                                    <ReactTooltip id="numberPerFolder" type="dark" place="bottom" effect="solid" font-size="122px">
-                                        <span className="tooltip">1개 폴더에 넣을 수 있는 최대 이미지 수입니다.</span>
-                                    </ReactTooltip>
-                                </dl>
-
-                                <dl>
-                                    <dt><strong>총 갯수</strong></dt>
-                                    <dd><input type="tel" id="amount" data-tip data-for="totalCount" placeholder="숫자 입력" onChange={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); onChange(e) }} /></dd>
-                                    <p className="message" style={{ visibility: inputs.amount === null || (inputs.unit > inputs.amount && inputs.unit.length > 0) ? 'visible' : 'hidden' }}>총 갯수의 수가 폴더 당 개수보다 작습니다.</p>
-                                    <ReactTooltip id="totalCount" type="dark" place="bottom" effect="solid" font-size="122px">
-                                        <span className="tooltip">전체 파일에 넣을 수 있는 총 이미지 수입니다.</span>
-                                    </ReactTooltip>
-
-                                </dl>
-                            </div>
-                        </div>
-                    }
-                    {/* 수정페이지에만 존재 */}
+                    {/* 가변 범위 설정 */}
+                    <VariableRangeSetting inputs={inputs} eventHandler={onChange} />
                     {
                         inputs.applyValue == "single" ?
-                            <>
-                                <div className="row">
-                                    <label htmlFor="scale" className="scale">코드 크기</label>
-                                    <SlideBar id="scale" isAdmin={isAdmin} inputs={inputs} scales={scales} eventHandler={setInputs} />
-                                </div>
-                                <div className="row">
-                                    <label htmlFor="alpha" className="alpha">적용 세기</label>
-                                    <SlideBar id="alpha" isAdmin={isAdmin} inputs={inputs} scales={alphas} eventHandler={setInputs} />
-                                </div>
-                            </> : <MultipleSet eventHandler={setInputs} />
+                            <SingleSet isAdmin={isAdmin} inputs={inputs} scales={scales} alphas={alphas} eventHandler={setInputs} />
+                            : <MultipleSet eventHandler={setInputs} />
                     }
                     {
                         inputs.labcodeImage !== null && <div className="row">
