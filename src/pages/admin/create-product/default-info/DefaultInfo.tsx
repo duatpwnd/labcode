@@ -2,7 +2,6 @@ import "./DefaultInfo.scoped.scss"
 import DragDrop from "components/common/drag-drop/DragDrop";
 import axios from "axios";
 import apiUrl from "src/utils/api";
-import SingleSet from "./internal/SingleSet";
 import MultipleSet from "./internal/MultipleSet";
 import Classification from "../../project/projects-classification/Classification";
 import SelectBox from "src/components/common/base-select/SelectBox";
@@ -14,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/reducers";
 import { homePageReg } from 'src/utils/common';
+import ReactTooltip from 'react-tooltip';
 const SlideBar = ({ inputs, id, scales, eventHandler, isAdmin }) => {
     const [message, setMessage] = useState("");
     const onChange = (e) => {
@@ -74,7 +74,6 @@ const DefaultInfo = () => {
     const { pathname } = useLocation();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const search = searchParams.get('search');
     const projectId = searchParams.get('projectId');
     const isAdmin = useSelector((state: RootState) => {
         return state.signIn.userInfo?.user.isAdmin
@@ -170,6 +169,30 @@ const DefaultInfo = () => {
             setBusinessImage("원본 이미지를 첨부해주세요.")
         } else {
             setBusinessImage("")
+        }
+        // 가변 산업군일때마 유효성 체크
+        if (pathname.startsWith("/products/create") && inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23) {
+            if (inputs.unit == undefined || inputs.unit == 0) {
+                setInputs({
+                    ...inputs,
+                    unit: null,
+                })
+                return false;
+            }
+            if (inputs.amount == undefined) {
+                setInputs({
+                    ...inputs,
+                    amount: null,
+                })
+                return false;
+            }
+            if (inputs.unit > inputs.amount) {
+                setInputs({
+                    ...inputs,
+                    amount: null,
+                })
+                return false;
+            }
         }
         if (homepageCheck && inputs.project.id != null && homepageCheck && inputs.sourceImage != null) {
             if (inputs.applyValue == "multiple") {
@@ -298,6 +321,7 @@ const DefaultInfo = () => {
     const selectBoxStyle = {
         padding: '16px 0',
     }
+
     return (
         <>
             <Classification isActive={false} inputs={{ ...classificationId }} />
@@ -391,7 +415,7 @@ const DefaultInfo = () => {
                                 onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "single" }))} />
                             <label htmlFor="single"><span className="ball"></span><span className="title">단일 설정</span></label>
                             {
-                                pathname.startsWith("/products/create") && <>
+                                pathname.startsWith("/products/create") && inputs.project.industryId != 14 && inputs.project.industryId != 16 && inputs.project.industryId != 20 && inputs.project.industryId != 23 && <>
                                     <input type="radio" checked={inputs.applyValue.includes('multiple') ? true : false} id="multiple" value="multiple" name="apply-method" onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "multiple" }))} />
                                     <label htmlFor="multiple"><span className="ball"></span><span className="title">복수 설정</span></label>
 
@@ -399,7 +423,32 @@ const DefaultInfo = () => {
                             }
                         </div>
                     </div>
+                    {
+                        (pathname.startsWith("/products/create") && inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23) &&
+                        <div className="row variable-range-setting-row">
+                            <label>가변 범위 설정</label>
+                            <div className="variable-range-setting">
+                                <dl>
+                                    <dt><strong>폴더당 갯수</strong></dt>
+                                    <dd><input type="tel" id="unit" data-tip data-for="numberPerFolder" placeholder="숫자 입력" onChange={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); onChange(e) }} /></dd>
+                                    <p className="message" style={{ visibility: inputs.unit === null || (inputs.unit == 0 && inputs.unit.length > 0) ? 'visible' : 'hidden' }}>숫자 ‘0’, ‘- (마이너스)’가 포함되어 있습니다.</p>
+                                    <ReactTooltip id="numberPerFolder" type="dark" place="bottom" effect="solid" font-size="122px">
+                                        <span className="tooltip">1개 폴더에 넣을 수 있는 최대 이미지 수입니다.</span>
+                                    </ReactTooltip>
+                                </dl>
 
+                                <dl>
+                                    <dt><strong>총 갯수</strong></dt>
+                                    <dd><input type="tel" id="amount" data-tip data-for="totalCount" placeholder="숫자 입력" onChange={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ''); onChange(e) }} /></dd>
+                                    <p className="message" style={{ visibility: inputs.amount === null || (inputs.unit > inputs.amount && inputs.unit.length > 0) ? 'visible' : 'hidden' }}>총 갯수의 수가 폴더 당 개수보다 작습니다.</p>
+                                    <ReactTooltip id="totalCount" type="dark" place="bottom" effect="solid" font-size="122px">
+                                        <span className="tooltip">전체 파일에 넣을 수 있는 총 이미지 수입니다.</span>
+                                    </ReactTooltip>
+
+                                </dl>
+                            </div>
+                        </div>
+                    }
                     {/* 수정페이지에만 존재 */}
                     {
                         inputs.applyValue == "single" ?
