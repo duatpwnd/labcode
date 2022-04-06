@@ -8,12 +8,13 @@ const MultipleSet = ({ eventHandler }) => {
     const [alphaRangeMax, setAlphaRangeMax] = useState(false);
     const [alphaJump, setAlphaJump] = useState(false);
     const setRange = (e) => {
+        console.log(e.target.id);
         e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
         eventHandler((prev) => {
             return ({ ...prev, [e.target.id]: e.target.value })
         })
         if (e.target.id == "alphaMin") {
-            if (Number(e.target.value) < 2) {
+            if (Number(e.target.value) > 100 || Number(e.target.value) < 2) {
                 setAlphaRangeMin(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
@@ -23,7 +24,7 @@ const MultipleSet = ({ eventHandler }) => {
             }
         }
         if (e.target.id == "alphaMax") {
-            if (Number(e.target.value) > 100) {
+            if (Number(e.target.value) > 100 || Number(e.target.value) < 2) {
                 setAlphaRangeMax(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
@@ -33,7 +34,7 @@ const MultipleSet = ({ eventHandler }) => {
             }
         }
         if (e.target.id == "scaleMin") {
-            if (Number(e.target.value) < 1) {
+            if (Number(e.target.value) < 1 || Number(e.target.value) > 100) {
                 setScaleRangeMin(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
@@ -43,7 +44,7 @@ const MultipleSet = ({ eventHandler }) => {
             }
         }
         if (e.target.id == "scaleMax") {
-            if (Number(e.target.value) > 100) {
+            if (Number(e.target.value) < 1 || Number(e.target.value) > 100) {
                 setScaleRangeMax(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
