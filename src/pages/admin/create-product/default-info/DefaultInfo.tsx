@@ -51,6 +51,7 @@ const DefaultInfo = () => {
         url: "",
         scale: 4,
         alpha: 8,
+        dpi: 300,
         applyValue: "single"
     });
     const onChange = (e: { [key: string]: any }) => {
@@ -245,6 +246,7 @@ const DefaultInfo = () => {
                     sourceImage: null,
                     url: "",
                     scale: 4,
+                    dpi: 300,
                     alpha: 8
                 });
             }
@@ -326,32 +328,36 @@ const DefaultInfo = () => {
                         <p className="warn-message">{businessImage}</p>
                     </div>
                     {isAdmin &&
-                        <div className="row">
-                            <label htmlFor="embedding">임베딩 버전</label>
-                            <div className="select-box-wrap">
-                                <SelectBox
-                                    property="label"
-                                    value="value"
-                                    style={selectBoxStyle}
-                                    list={embeddingTypes}
-                                    defaultValue={inputs.embedding}
-                                    eventHandler={(value) => setInputs((prev) => ({ ...prev, embedding: value }))} />
+                        <>
+                            <div className="row">
+                                <label htmlFor="embedding">임베딩 버전</label>
+                                <div className="select-box-wrap">
+                                    <SelectBox
+                                        property="label"
+                                        value="value"
+                                        style={selectBoxStyle}
+                                        list={embeddingTypes}
+                                        defaultValue={inputs.embedding}
+                                        eventHandler={(value) => setInputs((prev) => ({ ...prev, embedding: value }))} />
+                                </div>
                             </div>
-                        </div>
-                    }
-                    {isAdmin &&
-                        <div className="row">
-                            <label htmlFor="channel">적용 기술</label>
-                            <div className="select-box-wrap">
-                                <SelectBox
-                                    property="label"
-                                    value="value"
-                                    style={selectBoxStyle}
-                                    list={channelTypes}
-                                    defaultValue={inputs.channel}
-                                    eventHandler={(value) => setInputs((prev) => ({ ...prev, channel: value }))} />
+                            <div className="row">
+                                <label htmlFor="channel">적용 기술</label>
+                                <div className="select-box-wrap">
+                                    <SelectBox
+                                        property="label"
+                                        value="value"
+                                        style={selectBoxStyle}
+                                        list={channelTypes}
+                                        defaultValue={inputs.channel}
+                                        eventHandler={(value) => setInputs((prev) => ({ ...prev, channel: value }))} />
+                                </div>
                             </div>
-                        </div>
+                            <div className="row">
+                                <label htmlFor="dpi">dpi</label>
+                                <input type="text" id="dpi" value={inputs.dpi} onChange={(e) => onChange({ target: { id: "dpi", value: e.target.value.replace(/[^0-9.]/g, '') } })} />
+                            </div>
+                        </>
                     }
                     <div className="row apply-method-row">
                         <label>적용 방법</label>
