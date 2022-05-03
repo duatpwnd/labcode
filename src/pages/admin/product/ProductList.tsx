@@ -95,7 +95,6 @@ const Product = () => {
                 <div className="btn-wrap">
                     {/* {
                         projectId != "" && <Btn className="add-sample-btn" background="#DBDFE1" color="#525A61" onClick={addSamples}>샘플 데이터 추가</Btn>
-
                     } */}
                     <Btn background="#5138E5" color="#FFFFFF" onClick={() => navigate(`/products/create/defaultInfo?projectId=${projectId}`)}>제품 등록</Btn>
                 </div>

@@ -54,6 +54,5 @@ export default function CreateRoutes() {
             <Route path="/inquiries/create" element={<Inquiries />}></Route>
             <Route path='*' element={<Dashboard />} />
         </Routes>
-
     );
 }

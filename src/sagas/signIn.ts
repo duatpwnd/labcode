@@ -27,6 +27,7 @@ function* signIn(action) {
   if (result.data.statusCode == 200) {
     console.log("성공");
     let date = new Date();
+
     date.setTime(date.getTime() + 1000 * 60 * 60);
     yield put({
       type: SIGN_IN_SUCCESS,
