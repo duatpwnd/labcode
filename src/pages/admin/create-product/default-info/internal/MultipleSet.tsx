@@ -14,7 +14,7 @@ const MultipleSet = ({ eventHandler }) => {
             return ({ ...prev, [e.target.id]: e.target.value })
         })
         if (e.target.id == "alphaMin") {
-            if (Number(e.target.value) > 100 || Number(e.target.value) < 2) {
+            if (Number(e.target.value) < 2) {
                 setAlphaRangeMin(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
@@ -24,7 +24,7 @@ const MultipleSet = ({ eventHandler }) => {
             }
         }
         if (e.target.id == "alphaMax") {
-            if (Number(e.target.value) > 100 || Number(e.target.value) < 2) {
+            if (Number(e.target.value) < 2) {
                 setAlphaRangeMax(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
@@ -34,7 +34,7 @@ const MultipleSet = ({ eventHandler }) => {
             }
         }
         if (e.target.id == "scaleMin") {
-            if (Number(e.target.value) < 1 || Number(e.target.value) > 100) {
+            if (Number(e.target.value) < 1) {
                 setScaleRangeMin(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
@@ -44,7 +44,7 @@ const MultipleSet = ({ eventHandler }) => {
             }
         }
         if (e.target.id == "scaleMax") {
-            if (Number(e.target.value) < 1 || Number(e.target.value) > 100) {
+            if (Number(e.target.value) < 1) {
                 setScaleRangeMax(true);
                 eventHandler((prev) => {
                     return ({ ...prev, [e.target.id]: undefined })
@@ -88,8 +88,8 @@ const MultipleSet = ({ eventHandler }) => {
                     <input type="text" id="scaleMax" placeholder="최대값" onChange={(e) => { setRange(e) }} />
                 </div>
                 {
-                    scaleRangeMin && <p className="warn-message">1이상 100이하의 숫자를 입력해주세요.</p> ||
-                    scaleRangeMax && <p className="warn-message">1이상 100이하의 숫자를 입력해주세요.</p>
+                    scaleRangeMin && <p className="warn-message">1이상 숫자를 입력해주세요.</p>
+                    // scaleRangeMax && <p className="warn-message">1이상 100이하의 숫자를 입력해주세요.</p>
                 }
             </div>
             <div className="row">
@@ -107,8 +107,8 @@ const MultipleSet = ({ eventHandler }) => {
                     <input type="text" id="alphaMax" placeholder="최대값" onChange={(e) => { setRange(e) }} />
                 </div>
                 {
-                    alphaRangeMin && <p className="warn-message">2이상 100이하의 숫자를 입력해주세요.</p> ||
-                    alphaRangeMax && <p className="warn-message">2이상 100이하의 숫자를 입력해주세요.</p>
+                    alphaRangeMin && <p className="warn-message">2이상 숫자를 입력해주세요.</p>
+                    // alphaRangeMax && <p className="warn-message">2이상 100이하의 숫자를 입력해주세요.</p>
                 }
             </div>
 
