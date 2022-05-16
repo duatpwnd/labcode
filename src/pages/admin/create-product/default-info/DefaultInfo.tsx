@@ -117,7 +117,7 @@ const DefaultInfo = () => {
             setBusinessImage("")
         }
         // 가변 산업군일때마 유효성 체크
-        if (pathname.startsWith("/products/create") && inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23) {
+        if ((pathname.startsWith("/products/create") && inputs.applyValue == "multiple") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29)) {
             if (inputs.unit == undefined || inputs.unit == 0) {
                 setInputs({
                     ...inputs,
@@ -141,13 +141,13 @@ const DefaultInfo = () => {
             }
         }
         if (homepageCheck && inputs.project.id != null && homepageCheck && inputs.sourceImage != null) {
-            if (inputs.applyValue == "multiple") {
-                if (inputs.alphaMin == undefined || inputs.alphaMax == undefined || inputs.scaleMin == undefined || inputs.scaleMax == undefined || inputs.scaleSkip == undefined || inputs.alphaSkip == undefined) {
-                    return false;
-                }
-            }
+            // if (inputs.applyValue == "multiple") {
+            //     if (inputs.alphaMin == undefined || inputs.alphaMax == undefined || inputs.scaleMin == undefined || inputs.scaleMax == undefined || inputs.scaleSkip == undefined || inputs.alphaSkip == undefined) {
+            //         return false;
+            //     }
+            // }
             const callMyFunction = axios
-                .post(inputs.applyValue == "single" ? apiUrl.products : apiUrl.productsBulk, formData)
+                .post(apiUrl.products, formData)
                 .then((result: any) => {
                     console.log("적용결과", result);
                     if (inputs.applyValue == "single") {
@@ -366,21 +366,22 @@ const DefaultInfo = () => {
                                 onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "single" }))} />
                             <label htmlFor="single"><span className="ball"></span><span className="title">단일 설정</span></label>
                             {
-                                pathname.startsWith("/products/create") && inputs.project.industryId != 14 && inputs.project.industryId != 16 && inputs.project.industryId != 20 && inputs.project.industryId != 23 && <>
+                                pathname.startsWith("/products/create") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29) && <>
                                     <input type="radio" checked={inputs.applyValue.includes('multiple') ? true : false} id="multiple" value="multiple" name="apply-method" onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "multiple" }))} />
-                                    <label htmlFor="multiple"><span className="ball"></span><span className="title">복수 설정</span></label>
+                                    <label htmlFor="multiple"><span className="ball"></span><span className="title">가변 설정</span></label>
 
                                 </>
                             }
                         </div>
                     </div>
                     {/* 가변 범위 설정 */}
-                    <VariableRangeSetting inputs={inputs} eventHandler={onChange} />
                     {
-                        inputs.applyValue == "single" ?
-                            <SingleSet isAdmin={isAdmin} inputs={inputs} scales={scales} alphas={alphas} eventHandler={setInputs} />
-                            : <MultipleSet eventHandler={setInputs} />
+                        (pathname.startsWith("/products/create") && inputs.applyValue == "multiple") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29) && <VariableRangeSetting inputs={inputs} eventHandler={onChange} />
                     }
+                    {/* {
+                        inputs.applyValue == "multiple" && inputs.project.industryId != 29 && <MultipleSet eventHandler={setInputs} />
+                    } */}
+                    <SingleSet isAdmin={isAdmin} inputs={inputs} scales={scales} alphas={alphas} eventHandler={setInputs} />
                     {
                         inputs.labcodeImage !== null && <div className="row">
                             <label>변경 이미지</label>
