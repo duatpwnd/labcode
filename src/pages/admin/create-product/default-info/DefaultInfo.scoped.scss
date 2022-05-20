@@ -115,8 +115,8 @@ section {
           background: url("~images/radio_check_on_ico.svg") no-repeat center /
             20px 20px;
         }
-        label[for="single"] {
-          margin-right: 24px;
+        label[for="single2"],label[for="multiple"] {
+          margin-left: 24px;
         }
       }
     }

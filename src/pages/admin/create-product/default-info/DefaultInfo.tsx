@@ -33,6 +33,7 @@ const DefaultInfo = () => {
     const [alphas, setAlphas] = useState<{ [key: string]: any }[]>([]);
     const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
     const [channelTypes, setChannelTypes] = useState<{ [key: string]: any }[]>([]);
+    const [applyName, setApplyName] = useState("single1");
     const [inputs, setInputs] = useState<{ [key: string]: any }>({
         project: {
             title: "",
@@ -362,13 +363,19 @@ const DefaultInfo = () => {
                     <div className="row apply-method-row">
                         <label>적용 방법</label>
                         <div className="apply-method-area">
-                            <input type="radio" checked={inputs.applyValue.includes('single') ? true : false} id="single" value="single" name="apply-method"
-                                onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "single" }))} />
-                            <label htmlFor="single"><span className="ball"></span><span className="title">단일 설정</span></label>
+                            <input type="radio" checked={applyName == "single1"} id="single1" value="single" name="apply-method" data-value="single1"
+                                onChange={(e) => { setApplyName("single1"); setInputs((prev) => ({ ...prev, applyValue: "single" })) }} />
+                            <label htmlFor="single1"><span className="ball"></span><span className="title">단일 설정</span></label>
+                            {
+                                (pathname.startsWith("/products/create") && inputs.project.versionId == 1) && <>
+                                    <input type="radio" checked={applyName == "multiple"} id="multiple" value="multiple" name="apply-method" onChange={(e) => { setApplyName("multiple"); setInputs((prev) => ({ ...prev, applyValue: "multiple" })) }} />
+                                    <label htmlFor="multiple"><span className="ball"></span><span className="title">복수 설정</span></label>
+                                </>
+                            }
                             {
                                 pathname.startsWith("/products/create") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29) && <>
-                                    <input type="radio" checked={inputs.applyValue.includes('multiple') ? true : false} id="multiple" value="multiple" name="apply-method" onChange={(e) => setInputs((prev) => ({ ...prev, applyValue: "multiple" }))} />
-                                    <label htmlFor="multiple"><span className="ball"></span><span className="title">가변 설정</span></label>
+                                    <input type="radio" checked={applyName == "single2"} id="single2" value="single" name="apply-method" data-value="single2" onChange={(e) => { setApplyName("single2"); setInputs((prev) => ({ ...prev, applyValue: "single" })) }} />
+                                    <label htmlFor="single2"><span className="ball"></span><span className="title">가변 설정</span></label>
 
                                 </>
                             }
@@ -376,11 +383,11 @@ const DefaultInfo = () => {
                     </div>
                     {/* 가변 범위 설정 */}
                     {
-                        (pathname.startsWith("/products/create") && inputs.applyValue == "multiple") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29) && <VariableRangeSetting inputs={inputs} eventHandler={onChange} />
+                        (pathname.startsWith("/products/create") && applyName == "single2") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29) && <VariableRangeSetting inputs={inputs} eventHandler={onChange} />
                     }
-                    {/* {
+                    {
                         inputs.applyValue == "multiple" && inputs.project.industryId != 29 && <MultipleSet eventHandler={setInputs} />
-                    } */}
+                    }
                     <SingleSet isAdmin={isAdmin} inputs={inputs} scales={scales} alphas={alphas} eventHandler={setInputs} />
                     {
                         inputs.labcodeImage !== null && <div className="row">
