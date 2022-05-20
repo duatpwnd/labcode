@@ -142,13 +142,13 @@ const DefaultInfo = () => {
             }
         }
         if (homepageCheck && inputs.project.id != null && homepageCheck && inputs.sourceImage != null) {
-            // if (inputs.applyValue == "multiple") {
-            //     if (inputs.alphaMin == undefined || inputs.alphaMax == undefined || inputs.scaleMin == undefined || inputs.scaleMax == undefined || inputs.scaleSkip == undefined || inputs.alphaSkip == undefined) {
-            //         return false;
-            //     }
-            // }
+            if (inputs.applyValue == "multiple") {
+                if (inputs.alphaMin == undefined || inputs.alphaMax == undefined || inputs.scaleMin == undefined || inputs.scaleMax == undefined || inputs.scaleSkip == undefined || inputs.alphaSkip == undefined) {
+                    return false;
+                }
+            }
             const callMyFunction = axios
-                .post(apiUrl.products, formData)
+                .post(inputs.applyValue == "single" ? apiUrl.products : apiUrl.productsBulk, formData)
                 .then((result: any) => {
                     console.log("적용결과", result);
                     if (inputs.applyValue == "single") {
