@@ -34,8 +34,6 @@ const DefaultInfo = () => {
     const [embeddingTypes, setEmbeddingTypes] = useState<{ [key: string]: any }[]>([]);
     const [channelTypes, setChannelTypes] = useState<{ [key: string]: any }[]>([]);
     const [applyName, setApplyName] = useState("single1");
-    // 가변 산업군 id
-    const varIndustryId = [14, 16, 20, 23, 29];
     const [inputs, setInputs] = useState<{ [key: string]: any }>({
         project: {
             title: "",
@@ -375,7 +373,7 @@ const DefaultInfo = () => {
                                 </>
                             }
                             {
-                                pathname.startsWith("/products/create") && varIndustryId.includes(inputs.project.industryId) && <>
+                                pathname.startsWith("/products/create") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29) && <>
                                     <input type="radio" checked={applyName == "single2"} id="single2" value="single" name="apply-method" data-value="single2" onChange={(e) => { setApplyName("single2"); setInputs((prev) => ({ ...prev, applyValue: "single" })) }} />
                                     <label htmlFor="single2"><span className="ball"></span><span className="title">가변 설정</span></label>
 
@@ -385,7 +383,7 @@ const DefaultInfo = () => {
                     </div>
                     {/* 가변 범위 설정 */}
                     {
-                        (pathname.startsWith("/products/create") && applyName == "single2") && varIndustryId.includes(inputs.project.industryId) && <VariableRangeSetting inputs={inputs} eventHandler={onChange} />
+                        (pathname.startsWith("/products/create") && applyName == "single2") && (inputs.project.industryId == 14 || inputs.project.industryId == 16 || inputs.project.industryId == 20 || inputs.project.industryId == 23 || inputs.project.industryId == 29) && <VariableRangeSetting inputs={inputs} eventHandler={onChange} />
                     }
                     {
                         inputs.applyValue == "multiple" && inputs.project.industryId != 29 && <MultipleSet eventHandler={setInputs} />
